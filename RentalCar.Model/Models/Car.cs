@@ -46,7 +46,7 @@ namespace RentalCar.Model.Models
         //Loại nhiên liệu
         public string? FuelType { get; set; }
         //Mức tiêu thụ nhiên liệu
-        public string? FuelConsumption { get; set; }
+        public int? FuelConsumption { get; set; }
         //AddressCar
         public string AddressCar { get; set; }
         List<CarImage>? CarImages { get; set; }
