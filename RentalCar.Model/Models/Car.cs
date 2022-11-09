@@ -23,9 +23,9 @@ namespace RentalCar.Model.Models
         
         public int Cost { get; set; }
         
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         
-        public DateTime UpdateAt { get; set; }
+        public DateTime? UpdateAt { get; set; }
         
         public int CarModelId { get; set; }
         
@@ -39,7 +39,18 @@ namespace RentalCar.Model.Models
         
         public User User { get; set; }
 
-        List<CarImage> CarImages { get; set; }
+        //Năm sản xuất
+        public int? YearManufacture { get; set; }
+        //Truyền động
+        public string? Transmission { get; set; }
+        //Loại nhiên liệu
+        public string? FuelType { get; set; }
+        //Mức tiêu thụ nhiên liệu
+        public string? FuelConsumption { get; set; }
+        //AddressCar
+        public string AddressCar { get; set; }
+        List<CarImage>? CarImages { get; set; }
+
         
         // Thieu BusyId khoa ngoai bang Car_Busydate
     }

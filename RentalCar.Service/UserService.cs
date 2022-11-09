@@ -15,6 +15,11 @@ namespace RentalCar.Service
             _repository = repository;
         }
 
+        public void CreateUser(User user)
+        {
+            _repository.CreateUser(user);
+        }
+
         public IEnumerable<Role> GetRolesOfUser(int idUser)
         {
             return _repository.GetRolesOfUser(idUser);

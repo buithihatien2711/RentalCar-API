@@ -33,20 +33,23 @@ namespace RentalCar.Data.Repositories
         {
             return _context.CarImages.FirstOrDefault(u => u.CarId == CarId).Path;
         }
-        // public IEnumerable<CarView> GetListCarView()
-        // {
-        //     var ListCar = GetCars();
-        //     IEnumerable<CarView> ListCarView
-        //     foreach (Car car in ListCar)
-        //     {
-        //         new CarView {
-        //             ImageAvt = GetImageAvtByCarId(car.Id),
-        //             Name = car.Name,
-        //             Cost = car.Cost,
-        //             numberStar = 5.0
-        //         };
-        //     }
+        public List<CarBrand> GetCarBrands()
+        {
+            return _context.CarBrands.ToList();
+        }
+        public List<CarModel> GetCarModels()
+        {
+            return _context.CarModels.ToList();
+        }
 
-        // }
+        public List<District> GetDistricts()
+        {
+            return _context.Districts.ToList();
+        }
+
+        public List<Ward> GetWards()
+        {
+            return _context.Wards.ToList();
+        }
     }
 }

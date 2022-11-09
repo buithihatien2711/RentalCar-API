@@ -25,6 +25,10 @@ namespace RentalCar.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Capacity")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -46,6 +50,9 @@ namespace RentalCar.Data.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -69,6 +76,8 @@ namespace RentalCar.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarModelId");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("StatusID");
 
@@ -339,6 +348,12 @@ namespace RentalCar.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RentalCar.Model.Models.Location", "Locations")
+                        .WithMany("Car")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RentalCar.Model.Models.Status", "Status")
                         .WithMany("Cars")
                         .HasForeignKey("StatusID")
@@ -352,6 +367,8 @@ namespace RentalCar.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CarModel");
+
+                    b.Navigation("Locations");
 
                     b.Navigation("Status");
 
@@ -445,6 +462,11 @@ namespace RentalCar.Data.Migrations
                     b.Navigation("Cars");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.Location", b =>
+                {
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.Role", b =>
                 {
                     b.Navigation("RoleUsers");
@@ -459,8 +481,7 @@ namespace RentalCar.Data.Migrations
                 {
                     b.Navigation("Cars");
 
-                    b.Navigation("License")
-                        .IsRequired();
+                    b.Navigation("License");
 
                     b.Navigation("Locations");
 

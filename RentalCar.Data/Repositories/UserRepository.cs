@@ -16,6 +16,10 @@ namespace RentalCar.Data.Repositories
             _context = context;
         }
 
+        public void CreateUser(User user)
+        {
+            _context.Users.Add(user);
+        }
         public IEnumerable<Role> GetRolesOfUser(int idUser)
         {
             var user = GetUserById(idUser);

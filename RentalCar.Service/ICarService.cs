@@ -8,5 +8,10 @@ namespace RentalCar.Service
         List<Car> GetCars();
         Car GetCarByCarname(string Carname);
         string GetImageAvtByCarId(int CarId);
+        List<CarModel> GetCarModels();
+        List<CarBrand> GetCarBrands();
+
+        List<District> GetDistricts();
+        List<Ward> GetWards();
     }
 }
