@@ -61,10 +61,6 @@ namespace RentalCar.API.Controllers
             return Ok(userDetails);
         }
 
-        [Route("Role/Rental")]
-        [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> Get()
-        {}
 
         [Route("Role/{role}")]
         [HttpGet]
