@@ -30,7 +30,8 @@ namespace RentalCar.API.Controllers
                     ImageAvt = _CarService.GetImageAvtByCarId(car.Id),
                     Name = car.Name,
                     Cost = car.Cost,
-                    numberStar = 5.0M
+                    numberStar = 5.0M,
+                    Address = car.AddressCar
                 });
             }
             return ListCarView;

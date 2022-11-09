@@ -36,6 +36,7 @@ services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<ICarService, CarService>();
 services.AddScoped<ICarReposity, CarReposity>();
 services.AddScoped<IUserRepository, UserRepository>();
+services.AddScoped<IUserService, UserService>();
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

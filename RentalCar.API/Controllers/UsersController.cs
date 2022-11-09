@@ -49,12 +49,12 @@ namespace RentalCar.API.Controllers
                     CreatedAt = user.CreatedAt,
                     Roles = roles,
                     LicenseDto = user.License == null ? null : new LicenseDto()
-                                        {
-                                            Number = user.License.Number,
-                                            Name = user.License.Name,
-                                            DateOfBirth = user.License.DateOfBirth,
-                                            Image = user.License.Image
-                                        }
+                                {
+                                    Number = user.License.Number,
+                                    Name = user.License.Name,
+                                    DateOfBirth = user.License.DateOfBirth,
+                                    Image = user.License.Image
+                                }
                 });
             }
             

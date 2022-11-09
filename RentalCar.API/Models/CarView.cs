@@ -8,6 +8,7 @@ namespace RentalCar.API.Models
         public int Cost { set; get; }
 
         public decimal numberStar { set; get; }
+        public string Address { get; set; }
 
     }
 }

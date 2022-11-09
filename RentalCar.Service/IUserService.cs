@@ -15,7 +15,7 @@ namespace RentalCar.Service
         IEnumerable<Role> GetRolesOfUser(int idUser);
 
         void UpdateUser(string username, User user);
-
+        void CreateUser(User user);
         bool SaveChanges();
     }
 }

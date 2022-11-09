@@ -44,8 +44,8 @@ namespace RentalCar.Model.Models
     
         public List<Car> Cars { get; set; }
 
-        public License License { get; set; }
+        public License? License { get; set; }
 
-        public List<Location> Locations { get; set; }
+        public List<Location>? Locations { get; set; }
     }
 }
