@@ -15,13 +15,13 @@ namespace RentalCar.Model.Models
         [MaxLength(30)]
         public string Color { get; set; }
         
-        public string Capacity { get; set; }
+        public int Capacity { get; set; }
         
         [Required]
         [MaxLength(20)]
         public string Plate_number { get; set; }
         
-        public int Cost { get; set; }
+        public decimal Cost { get; set; }
         
         public DateTime? CreatedAt { get; set; }
         
@@ -49,7 +49,12 @@ namespace RentalCar.Model.Models
         public int? FuelConsumption { get; set; }
         //AddressCar
         public string AddressCar { get; set; }
-        List<CarImage>? CarImages { get; set; }
+        //Điều khoản
+        public string? Rule { get; set; }
+
+        public decimal numberStar { get; set; }
+        List<CarImage> CarImages { get; set; }
+        public List<CarReview>  CarReview { get; set; }
 
         
         // Thieu BusyId khoa ngoai bang Car_Busydate

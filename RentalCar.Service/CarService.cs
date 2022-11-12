@@ -13,6 +13,11 @@ namespace RentalCar.Service
             _carRepository = carRepository;
         }
 
+        public void CreateCar(Car car)
+        {
+            _carRepository.CreateCar(car);
+        }
+
         public List<CarBrand> GetCarBrands()
         {
             return _carRepository.GetCarBrands();
@@ -25,6 +30,11 @@ namespace RentalCar.Service
         public Car GetCarById(int id)
         {
             return _carRepository.GetCarById(id);
+        }
+
+        public Car GetCarByPateNumber(string PateNumber)
+        {
+            return _carRepository.GetCarByPateNumber(PateNumber);
         }
 
         public List<CarModel> GetCarModels()
@@ -48,6 +58,11 @@ namespace RentalCar.Service
             return _carRepository.GetImageAvtByCarId(CarId);
         }
 
+        public List<string> GetImageByCarId(int CarId)
+        {
+            return _carRepository.GetImageByCarId(CarId);
+        }
+
         // public Location GetLocationByCarId(int CarId)
         // {
         //     return _carRepository.GetLocationByCarId(CarId);
@@ -56,6 +71,16 @@ namespace RentalCar.Service
         public List<Ward> GetWards()
         {
             return _carRepository.GetWards();
+        }
+
+        public void InsertImage(int carid,List<string> CarImage)
+        {
+            _carRepository.InsertImage(carid,CarImage);
+        }
+
+        public bool SaveChanges()
+        {
+            return _carRepository.SaveChanges();
         }
     }
 }
