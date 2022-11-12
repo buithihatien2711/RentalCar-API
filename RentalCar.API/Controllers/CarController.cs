@@ -10,31 +10,32 @@ namespace RentalCar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomepageController : ControllerBase
+    public class CarController : ControllerBase
     {
         private readonly ICarService _CarService;
         private readonly IMapper _mapper;
-        public HomepageController(ICarService CarService, IMapper mapper)
+        public CarController(ICarService CarService, IMapper mapper)
         {
             _mapper = mapper;
             _CarService = CarService;
         }
-        [HttpGet]
-        public ActionResult<List<CarView>> Homepage()
+
+        [HttpGet("Homepage")]
+        public ActionResult<List<CarViewDto>> Homepage()
         {
             List<Car> ListCar = _CarService.GetCars();
-            List<CarView> ListCarView = new List<CarView>();
+            List<CarViewDto> ListCarView = new List<CarViewDto>();
 
             foreach(var car in ListCar){
-                ListCarView.Add(new CarView{
-                    ImageAvt = _CarService.GetImageAvtByCarId(car.Id),
+                ListCarView.Add(new CarViewDto{
+                    Image = _CarService.GetImageByCarId(car.Id),
                     Name = car.Name,
                     Cost = car.Cost,
-                    numberStar = 5.0M,
-                    Address = car.AddressCar
+                    numberStar = car.numberStar,
+                    AddressCar = car.AddressCar
                 });
             }
-            return ListCarView;
+            return Ok(ListCarView);
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
     }

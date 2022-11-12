@@ -32,6 +32,7 @@ namespace RentalCar.Data
         public DbSet<CarImage> CarImages { get; set; }
 
         public DbSet<License> Licenses { get; set; }
+        public DbSet<CarReview> CarReviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

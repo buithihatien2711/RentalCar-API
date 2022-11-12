@@ -8,13 +8,16 @@ namespace RentalCar.Data.Repositories
         List<Car> GetCars();
         
         Car GetCarByCarname(string Carname);
+        Car GetCarByPateNumber(string PateNumber);
         string GetImageAvtByCarId(int CarId);
+        List<string> GetImageByCarId(int CarId);
 
         List<CarModel> GetCarModels();
         List<CarBrand> GetCarBrands();
-        // List<string> GetListCarModelName();
-        // List<string> GetListCarBrandName();
         List<District> GetDistricts();
         List<Ward> GetWards();
+        void CreateCar(Car car);
+        void InsertImage(int carid, List<string> CarImage);
+        bool SaveChanges();
     }
 }
