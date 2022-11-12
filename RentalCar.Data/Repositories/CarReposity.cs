@@ -51,5 +51,36 @@ namespace RentalCar.Data.Repositories
         {
             return _context.Wards.ToList();
         }
+
+        public List<string> GetImageByCarId(int CarId)
+        {
+            return _context.CarImages.Where(p=> p.CarId == CarId).Select(p => p.Path).ToList();
+        }
+
+        public void CreateCar(Car car)
+        {
+            _context.Cars.Add(car);
+        }
+
+        public void InsertImage(int carid, List<string> CarImage)
+        {
+            foreach(var carimage in CarImage)
+            {
+                _context.CarImages.Add(new CarImage{
+                    CarId=carid,
+                    Path = carimage
+                });
+            }   
+        }
+
+        public Car GetCarByPateNumber(string Platenumber)
+        {
+            return _context.Cars.FirstOrDefault(u => u.Plate_number == Platenumber);
+        }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() > 0);
+        }
     }
 }
