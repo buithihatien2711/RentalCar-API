@@ -57,7 +57,7 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet("selfdrive")]
+        [HttpGet("ViewCarAdd")]
         public ActionResult<CarAddDto> CarViewAdd()
         {
             var CarAdd = new CarAddDto{
@@ -74,7 +74,7 @@ namespace RentalCar.API.Controllers
         }
 
         [Authorize(Roles="lease")]
-        [HttpPost("selfdrive")]
+        [HttpPost("CarAdd")]
         public ActionResult<string> AddCar(CarAddInfo car)
         {
             try
