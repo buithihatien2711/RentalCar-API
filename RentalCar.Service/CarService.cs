@@ -109,5 +109,10 @@ namespace RentalCar.Service
         {
             return _carRepository.SaveChanges();
         }
+
+        public void UpdateStatusOfCar(int carId, int StatusID)
+        {
+            _carRepository.UpdateStatusOfCar(carId,StatusID);
+        }
     }
 }

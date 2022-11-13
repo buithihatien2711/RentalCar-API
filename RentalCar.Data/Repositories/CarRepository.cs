@@ -129,5 +129,11 @@ namespace RentalCar.Data.Repositories
         {
             return _context.Locations.FirstOrDefault(u => u.Address == Address);
         }
+
+        public void UpdateStatusOfCar(int carId, int StatusID)
+        {
+            var car = _context.Cars.FirstOrDefault(u => u.Id == carId);
+            car.StatusID = StatusID;
+        }
     }
 }

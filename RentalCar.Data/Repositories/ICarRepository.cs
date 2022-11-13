@@ -34,5 +34,8 @@ namespace RentalCar.Data.Repositories
         void InsertLocation(Location location);
         bool CreateLocation(Location location);
         Location GetLocationByAddress(string Address);
+
+        //Status
+        void UpdateStatusOfCar(int carId, int StatusID);
     }
 }

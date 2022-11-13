@@ -89,7 +89,7 @@ namespace RentalCar.API.Controllers
             if(_carService.CreateLocation(location) == true){
                 _carService.SaveChanges();
             };
-            
+
             if(_carService.GetCarByPateNumber(car.Plate_number) != null){
                 throw new UnauthorizedAccessException("Plate number is invalid.");
             }
@@ -121,13 +121,22 @@ namespace RentalCar.API.Controllers
             int CarId = Car.Id;
             _carService.InsertImage(CarId,car.Image);
             _carService.SaveChanges();
-            return Ok("add thành công");
+            return Ok("car registration successful");
             }
             catch (UnauthorizedAccessException ex)
             {
                 return Unauthorized(ex.Message);
             }
             
+        }
+
+        //admin có thể thêm hoặc từ chối xe
+        [Authorize(Roles="admin")]
+        [HttpPut("/admin/car/approval")]
+        public ActionResult<string> AddCar(int CarId, int StatusID){
+            _carService.UpdateStatusOfCar(CarId,StatusID);
+            _carService.SaveChanges();
+            return("admin update status car successful");
         }
     }
 }

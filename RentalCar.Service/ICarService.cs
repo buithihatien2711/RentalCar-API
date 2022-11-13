@@ -27,6 +27,9 @@ namespace RentalCar.Service
         void InsertLocation(Location location);
         bool CreateLocation(Location location);
         Location GetLocationByAddress(string Address);
+
+        //Status
+        void UpdateStatusOfCar(int carId, int StatusID);
         bool SaveChanges();
     }
 }
