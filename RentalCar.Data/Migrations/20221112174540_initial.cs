@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RentalCar.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,21 @@ namespace RentalCar.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "FuelTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FuelTypes", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -70,6 +85,21 @@ namespace RentalCar.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statuses", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Transmissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transmissions", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -250,17 +280,15 @@ namespace RentalCar.Data.Migrations
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     YearManufacture = table.Column<int>(type: "int", nullable: true),
-                    Transmission = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FuelType = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     FuelConsumption = table.Column<int>(type: "int", nullable: true),
-                    AddressCar = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Rule = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     numberStar = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: true)
+                    TransmissionID = table.Column<int>(type: "int", nullable: false),
+                    FuelTypeID = table.Column<int>(type: "int", nullable: false),
+                    FuelType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LocationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,14 +300,27 @@ namespace RentalCar.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Cars_FuelTypes_FuelTypeID",
+                        column: x => x.FuelTypeID,
+                        principalTable: "FuelTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Cars_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_Statuses_StatusID",
                         column: x => x.StatusID,
                         principalTable: "Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Cars_Transmissions_TransmissionID",
+                        column: x => x.TransmissionID,
+                        principalTable: "Transmissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -371,6 +412,11 @@ namespace RentalCar.Data.Migrations
                 column: "CarModelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cars_FuelTypeID",
+                table: "Cars",
+                column: "FuelTypeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cars_LocationId",
                 table: "Cars",
                 column: "LocationId");
@@ -379,6 +425,11 @@ namespace RentalCar.Data.Migrations
                 name: "IX_Cars_StatusID",
                 table: "Cars",
                 column: "StatusID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_TransmissionID",
+                table: "Cars",
+                column: "TransmissionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_UserId",
@@ -436,10 +487,16 @@ namespace RentalCar.Data.Migrations
                 name: "CarModels");
 
             migrationBuilder.DropTable(
+                name: "FuelTypes");
+
+            migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "Transmissions");
 
             migrationBuilder.DropTable(
                 name: "CarBrands");
