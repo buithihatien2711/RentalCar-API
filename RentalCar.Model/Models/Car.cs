@@ -10,10 +10,10 @@ namespace RentalCar.Model.Models
         [MaxLength(100)]
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
         
         [MaxLength(30)]
-        public string Color { get; set; }
+        public string? Color { get; set; }
         
         public int Capacity { get; set; }
         
@@ -41,21 +41,26 @@ namespace RentalCar.Model.Models
 
         //Năm sản xuất
         public int? YearManufacture { get; set; }
-        //Truyền động
-        public string? Transmission { get; set; }
-        //Loại nhiên liệu
-        public string? FuelType { get; set; }
         //Mức tiêu thụ nhiên liệu
         public int? FuelConsumption { get; set; }
-        //AddressCar
-        public string AddressCar { get; set; }
         //Điều khoản
         public string? Rule { get; set; }
 
-        public decimal numberStar { get; set; }
-        List<CarImage> CarImages { get; set; }
+        public decimal? numberStar { get; set; }
+        public List<CarImage> CarImages { get; set; }
         public List<CarReview>  CarReview { get; set; }
 
+        //Truyền động
+        public int TransmissionID  { get; set; }
+        public Transmission Transmission { get; set; }
+        //Loại nhiên liệu
+        public int FuelTypeID  { get; set; }
+        public FuelType FuelType { get; set; }
+
+        public int LocationId { get; set; }
+
+        public Location Location { get; set; }
+        
         
         // Thieu BusyId khoa ngoai bang Car_Busydate
     }

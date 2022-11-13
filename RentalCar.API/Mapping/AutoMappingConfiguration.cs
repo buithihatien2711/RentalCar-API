@@ -8,7 +8,12 @@ namespace RentalCar.API.Mapping
     {
         public AutoMappingConfiguration()
         {
-            CreateMap<CarViewDto, User>();
+            CreateMap<CarBrand, CarBrandDto>();
+            CreateMap<CarModel,CarModelDto>();
+            CreateMap<Transmission, TransmissionDto>();
+            CreateMap<FuelType, FuelTypeDto>();
+            CreateMap<Location, LocationDto>();
+            CreateMap<Ward, WardDto>();
             CreateMap<UserProfile, User>();
             CreateMap<User, UserProfile>().ForMember(
                 dest => dest.LicenseDto,

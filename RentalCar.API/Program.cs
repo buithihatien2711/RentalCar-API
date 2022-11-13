@@ -1,10 +1,12 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RentalCar.API.Mapping;
 using RentalCar.Data;
 using RentalCar.Data.Repositories;
+using RentalCar.Data.Repositoriess;
 using RentalCar.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,9 +36,11 @@ services.AddDbContext<DataContext>(
 );
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<ICarService, CarService>();
-services.AddScoped<ICarReposity, CarReposity>();
+services.AddScoped<ICarRepository, CarRepository>();
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IUserService, UserService>();
+services.AddScoped<ICarModelRepository, CarModelRepository>();
+services.AddScoped<ICarModelService, CarModelService>();
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -53,6 +57,12 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// services.AddControllers().AddJsonOptions(x =>
+//                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

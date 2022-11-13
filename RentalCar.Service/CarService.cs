@@ -6,9 +6,9 @@ namespace RentalCar.Service
 {
     public class CarService : ICarService
     {
-        private readonly ICarReposity _carRepository;
+        private readonly ICarRepository _carRepository;
 
-        public CarService(ICarReposity carRepository)
+        public CarService(ICarRepository carRepository)
         {
             _carRepository = carRepository;
         }
@@ -16,6 +16,12 @@ namespace RentalCar.Service
         public void CreateCar(Car car)
         {
             _carRepository.CreateCar(car);
+        }
+
+
+        public bool CreateLocation(Location location)
+        {
+            return _carRepository.CreateLocation(location);
         }
 
         public List<CarBrand> GetCarBrands()
@@ -37,11 +43,6 @@ namespace RentalCar.Service
             return _carRepository.GetCarByPateNumber(PateNumber);
         }
 
-        public List<CarModel> GetCarModels()
-        {
-            return _carRepository.GetCarModels();
-        }
-
         public List<Car> GetCars()
         {
             return _carRepository.GetCars();
@@ -53,14 +54,30 @@ namespace RentalCar.Service
 
         }
 
-        public string GetImageAvtByCarId(int CarId)
+
+        public List<FuelType> GetFuelTypes()
         {
-            return _carRepository.GetImageAvtByCarId(CarId);
+            return _carRepository.GetFuelTypes();
         }
+
+        // public string GetImageAvtByCarId(int CarId)
+        // {
+        //     return _carRepository.GetImageAvtByCarId(CarId);
+        // }
 
         public List<string> GetImageByCarId(int CarId)
         {
             return _carRepository.GetImageByCarId(CarId);
+        }
+
+        public Location GetLocationByAddress(string Address)
+        {
+            return _carRepository.GetLocationByAddress(Address);
+        }
+
+        public List<Transmission> GetTransmissions()
+        {
+            return _carRepository.GetTransmissions();
         }
 
         // public Location GetLocationByCarId(int CarId)
@@ -73,14 +90,29 @@ namespace RentalCar.Service
             return _carRepository.GetWards();
         }
 
+        public List<Ward> GetWardsByDictrictsId(int id)
+        {
+            return _carRepository.GetWardsByDictrictsId(id);
+        }
+
         public void InsertImage(int carid,List<string> CarImage)
         {
             _carRepository.InsertImage(carid,CarImage);
         }
 
+        public void InsertLocation(Location location)
+        {
+            _carRepository.InsertLocation(location);
+        }
+
         public bool SaveChanges()
         {
             return _carRepository.SaveChanges();
+        }
+
+        public void UpdateStatusOfCar(int carId, int StatusID)
+        {
+            _carRepository.UpdateStatusOfCar(carId,StatusID);
         }
     }
 }
