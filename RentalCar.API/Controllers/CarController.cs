@@ -50,6 +50,7 @@ namespace RentalCar.API.Controllers
                     AddressCar = _mapper.Map<Location,LocationDto>(car.Location),
                     numberStar = car.numberStar,
                     Rule = car.Rule,
+                    Status = _mapper.Map<Status,StatusDto>(car.Status),
                 });
             }
             return Ok(ListCarView);
@@ -110,7 +111,7 @@ namespace RentalCar.API.Controllers
                 FuelTypeID = car.FuelTypeId,
                 FuelConsumption = car.FuelConsumption,
                 Rule = car.Rule,
-                // numberStar = car.numberStar,
+                numberStar = 0,
                 LocationId = _carService.GetLocationByAddress(car.Address).Id
             };
 
