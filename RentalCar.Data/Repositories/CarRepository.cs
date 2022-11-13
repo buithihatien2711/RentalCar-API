@@ -30,6 +30,7 @@ namespace RentalCar.Data.Repositories
             var car = _context.Cars.Include(w => w.Location)
                         .Include(w => w.Transmission)
                         .Include(w => w.FuelType)
+                        .Include(w => w.Status)
                         .Include(u => u.CarModel)
                         .ThenInclude(l => l.CarBrand)
                         .ToList();

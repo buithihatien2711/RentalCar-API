@@ -10,6 +10,7 @@ namespace RentalCar.API.Models
         // public string? CarModels { get; set; }
         public CarBrandDto? CarBrandDtos { get; set; }
         public string? Color { get; set; }
+        public StatusDto? Status { get; set; }
          //Số ghế
         public int Capacity{ get; set; }
         //Năm sản xuất

@@ -9,6 +9,7 @@ namespace RentalCar.API.Mapping
         public AutoMappingConfiguration()
         {
             CreateMap<CarBrand, CarBrandDto>();
+            CreateMap<Status, StatusDto>();
             CreateMap<CarModel,CarModelDto>();
             CreateMap<Transmission, TransmissionDto>();
             CreateMap<FuelType, FuelTypeDto>();
