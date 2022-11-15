@@ -11,5 +11,12 @@ namespace RentalCar.Model.Models
         public string Name { get; set; }
         
         public List<Car> Cars { get; set; }        
+
+        public Transmission(){ }
+
+        public Transmission(string name)
+        { 
+            Name = name;
+        }
     }
 }

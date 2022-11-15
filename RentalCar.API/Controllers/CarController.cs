@@ -48,7 +48,7 @@ namespace RentalCar.API.Controllers
                     Description = car.Description,
                     Cost = car.Cost,
                     AddressCar = _mapper.Map<Location,LocationDto>(car.Location),
-                    numberStar = car.numberStar,
+                    numberStar = car.NumberStar,
                     Rule = car.Rule,
                     Status = _mapper.Map<Status,StatusDto>(car.Status),
                 });
@@ -111,7 +111,7 @@ namespace RentalCar.API.Controllers
                 FuelTypeID = car.FuelTypeId,
                 FuelConsumption = car.FuelConsumption,
                 Rule = car.Rule,
-                numberStar = 0,
+                NumberStar = 0,
                 LocationId = _carService.GetLocationByAddress(car.Address).Id
             };
 
@@ -138,6 +138,91 @@ namespace RentalCar.API.Controllers
             _carService.UpdateStatusOfCar(CarId,StatusID);
             _carService.SaveChanges();
             return("admin update status car successful");
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<CarDetailDto> Get(int id)
+        {
+            var car = _carService.GetCarById(id);
+            if(car == null) return NotFound();
+
+            var carImages = _carService.GetImageByCarId(id);
+            var carReviews = _carService.GetCarReviewsByCarId(id);
+            var carReviewDtos = new List<CarReviewDto>();
+
+            if(carReviews != null)
+            {
+                foreach (var carReview in carReviews)
+                {
+                    carReviewDtos.Add(new CarReviewDto()
+                    {
+                        Id = carReview.Id,
+                        Content = carReview.Content,
+                        Rating = carReview.Rating,
+                        CreatedAt = carReview.CreatedAt,
+                        UpdateAt = carReview.UpdateAt,
+                        AccountDto = new AccountDto()
+                        {
+                            ProfileImage = carReview.User.ProfileImage,
+                            Fullname = carReview.User.Fullname
+                        }
+                    });
+                }
+            } 
+
+            return Ok(new CarDetailDto()
+            {
+                Id = car.Id,
+                Description = car.Description,
+                Capacity = car.Capacity,
+                Cost = car.Cost,
+                CarModel = car.CarModel.Name,
+                CarBrand = car.CarModel.CarBrand.Name,
+                TransmissionDto = new TransmissionDto()
+                {
+                    Id = car.TransmissionID,
+                    Name = car.Transmission.Name
+                },
+                FuelTypeDto = new FuelTypeDto()
+                {
+                    Id = car.FuelType.Id,
+                    Name = car.FuelType.Name
+                },
+                FuelConsumption = car.FuelConsumption,
+
+                LocationDto = car.Location == null ? null : new LocationDto()
+                {
+                    Id = car.LocationId,
+                    Address = car.Location.Address
+                },
+                WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
+                {
+                    Id = car.Location.WardId,
+                    Name = car.Location.Ward.Name
+                }),
+
+                DistrictDto = car.Location == null ? null : (car.Location.Ward == null ? null : (car.Location.Ward.District == null ? null : new DistrictDto()
+                {
+                    Id = car.Location.Ward.DistrictID,
+                    Name = car.Location.Ward.District.Name
+                })),
+
+                Rule = car.Rule,
+                NumberStar = car.NumberStar,
+                CarImageDtos = carImages,
+                CarReviewDtos = carReviewDtos
+            });
+        }
+    
+        [HttpDelete("{id}")]
+        public ActionResult<CarDetailDto> Delete(int id)
+        {
+            var car = _carService.GetCarById(id);
+            if(car == null) return NotFound();
+
+            _carService.DeleteCar(car);
+            if(_carService.SaveChanges()) return NoContent();
+            return BadRequest();
         }
     }
 }

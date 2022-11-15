@@ -18,9 +18,27 @@ namespace RentalCar.Data.Repositories
 
         public void CreateUser(User user)
         {
+            // _context.RoleUsers.Add(new RoleUser());
             _context.Users.Add(user);
+            _context.SaveChanges();
+            var user_add = GetUserByUsername(user.Username);
+
+            var role = new RoleUser()
+            {
+                UserId = user_add.Id,
+                User = user_add,
+                RoleId = 3,
+                Role = GetRoleById(3)
+            };
+            _context.RoleUsers.Add(role);
         }
-        public IEnumerable<Role> GetRolesOfUser(int idUser)
+
+        public Role? GetRoleById(int id)
+        {
+            return _context.Roles.FirstOrDefault(r => r.Id == id);
+        }
+
+        public IEnumerable<Role>? GetRolesOfUser(int idUser)
         {
             var user = GetUserById(idUser);
             if (user == null) return null;
@@ -36,34 +54,22 @@ namespace RentalCar.Data.Repositories
             return roles;
         }
 
-        public User GetUserById(int id)
+        public User? GetUserById(int id)
         {
-            // var users = _context.Users.Include(u => u.Location)
-            //                 .ThenInclude(l => l.Ward)
-            //                 .ThenInclude(w => w.District)
-            //                 .ToList();
             return _context.Users.Include(u => u.License).FirstOrDefault(u => u.Id == id);
         }
 
-        public User GetUserByUsername(string username)
+        public User? GetUserByUsername(string username)
         {
-            // var user = _context.Users.Include(u => u.Location)
-            //             .ThenInclude(l => l.Ward)
-            //             .ThenInclude(w => w.District)
-            //             .ToList();
             return _context.Users.Include(u => u.License).FirstOrDefault(u => u.Username == username);
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User>? GetUsers()
         {
-            // var users = _context.Users.Include(u => u.Location)
-            //             .ThenInclude(l => l.Ward)
-            //             .ThenInclude(w => w.District)
-            //             .ToList();
             return _context.Users.Include(u => u.License).ToList();
         }
 
-        public IEnumerable<User> GetUsersByRole(int idRole)
+        public IEnumerable<User>? GetUsersByRole(int idRole)
         {
             var role = _context.RoleUsers.FirstOrDefault(r => r.RoleId == idRole);
 
@@ -71,10 +77,6 @@ namespace RentalCar.Data.Repositories
 
             List<RoleUser> roleUsers = _context.RoleUsers.Include(ru => ru.User).Include(ru => ru.Role)
                                         .Where(r => r.RoleId == idRole).ToList();
-
-            //List<RoleUser> roleUsers = _context.RoleUsers.Include(ru => ru.Role).Include(ru => ru.User).ToList();
-
-            //List<RoleUser> roleUsers = _context.RoleUsers.Include(ru => ru.User).Include(ru => ru.Role).ToList();
 
             List <User> users = new List<User>();
 

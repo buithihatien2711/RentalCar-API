@@ -46,9 +46,9 @@ namespace RentalCar.Model.Models
         //Điều khoản
         public string? Rule { get; set; }
 
-        public decimal? numberStar { get; set; }
+        public decimal NumberStar { get; set; }
         public List<CarImage> CarImages { get; set; }
-        public List<CarReview>  CarReview { get; set; }
+        public List<CarReview>  CarReviews { get; set; }
 
         //Truyền động
         public int TransmissionID  { get; set; }

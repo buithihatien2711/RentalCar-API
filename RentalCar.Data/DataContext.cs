@@ -7,9 +7,9 @@ namespace RentalCar.Data
     public class DataContext : DbContext
     {
         public DataContext(){}
+
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         
-
         public DbSet<CarModel> CarModels { get; set; }
 
         public DbSet<District> Districts { get; set; }
@@ -32,8 +32,11 @@ namespace RentalCar.Data
         public DbSet<CarImage> CarImages { get; set; }
 
         public DbSet<License> Licenses { get; set; }
+
         public DbSet<CarReview> CarReviews { get; set; }
+
         public DbSet<Transmission> Transmissions { get; set; }
+
         public DbSet<FuelType> FuelTypes { get; set; }
         
 
@@ -41,19 +44,41 @@ namespace RentalCar.Data
         {
             modelBuilder.Entity<RoleUser>()
                 .HasKey(ru => new { ru.UserId, ru.RoleId });
+
+            modelBuilder.Entity<Car>()
+                        .HasOne(c => c.User)
+                        .WithMany(u => u.Cars)
+                        .HasForeignKey(c => c.UserId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<CarReview>()
+                        .HasOne(r => r.Car)
+                        .WithMany(c => c.CarReviews)
+                        .HasForeignKey(r => r.CarId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<CarReview>()
+                        .HasOne(r => r.User)
+                        .WithMany(u => u.CarReviews)
+                        .HasForeignKey(r => r.UserId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
             base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "server=localhost;database=RentalCar;user=root;";
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
-            optionsBuilder
-                .UseMySql(connectionString, serverVersion)
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+            //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
+            //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+            ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
+            //optionsBuilder
+            //    .UseMySql(connectionString, serverVersion)
+            //    .LogTo(Console.WriteLine, LogLevel.Information)
+            //    .EnableSensitiveDataLogging()
+            //    .EnableDetailedErrors();
 
+            string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

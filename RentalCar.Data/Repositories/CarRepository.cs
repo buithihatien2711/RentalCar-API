@@ -20,9 +20,15 @@ namespace RentalCar.Data.Repositories
             return _context.Cars.FirstOrDefault(u => u.Name == Carname);
         }
 
-        public Car GetCarById(int id)
+        public Car? GetCarById(int id)
         {
-            return _context.Cars.Include(p => p.LocationId).FirstOrDefault(u => u.Id == id);
+            return _context.Cars.Include(p => p.LocationId)
+                                .Include(w => w.Transmission)
+                                .Include(w => w.FuelType)
+                                .Include(w => w.Status)
+                                .Include(u => u.CarModel)
+                                .ThenInclude(l => l.CarBrand)
+                                .FirstOrDefault(u => u.Id == id);
         }
 
         public List<Car> GetCars()
@@ -135,6 +141,21 @@ namespace RentalCar.Data.Repositories
         {
             var car = _context.Cars.FirstOrDefault(u => u.Id == carId);
             car.StatusID = StatusID;
+        }
+
+        public List<CarReview>? GetCarReviewsByCarId(int id)
+        {
+            return _context.CarReviews.Where(r => r.CarId == id).ToList();
+        }
+
+        public void DeleteCar(Car car)
+        {
+            _context.Cars.Remove(car);
+        }
+
+        public List<Car>? GetCarsByUser(int idUser)
+        {
+            return _context.Cars.Include(c => c.User).Where(c => c.UserId == idUser).ToList();
         }
     }
 }

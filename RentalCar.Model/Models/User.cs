@@ -47,5 +47,7 @@ namespace RentalCar.Model.Models
         public License? License { get; set; }
 
         public List<Location>? Locations { get; set; }
+
+        public List<CarReview>? CarReviews { get; set; }
     }
 }

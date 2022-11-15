@@ -15,13 +15,16 @@ namespace RentalCar.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly ICarService _carService;
 
-        public AccountController(IUserService userService, IMapper mapper)
+        public AccountController(IUserService userService, IMapper mapper, ICarService carService)
         {
+            _carService = carService;
             _userService = userService;
             _mapper = mapper;
         }
         
+        [Route("/profile/me")]
         [HttpGet]
         public ActionResult<UserProfile> Get()
         {
