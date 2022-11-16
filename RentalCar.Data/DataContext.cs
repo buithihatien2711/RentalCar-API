@@ -38,12 +38,25 @@ namespace RentalCar.Data
         public DbSet<Transmission> Transmissions { get; set; }
 
         public DbSet<FuelType> FuelTypes { get; set; }
+        public DbSet<CarRegister> CarRegisters { get; set; }
+        public DbSet<CarTypeRegister> CarTypeRegisters { get; set; }
+        public DbSet<CarImgRegister> CarImgRegisters { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RoleUser>()
                 .HasKey(ru => new { ru.UserId, ru.RoleId });
+            
+            // modelBuilder.Entity<CarRegister>()
+            //     .HasKey(ru => new { ru.CarId, ru.CarTypeRgtId});
+            
+            modelBuilder.Entity<CarImgRegister>()
+                        .HasOne(r => r.CarRegister)
+                        .WithMany(c => c.CarImgRegisters)
+                        .HasForeignKey(r => r.CarRegisterId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
 
             modelBuilder.Entity<Car>()
                         .HasOne(c => c.User)
@@ -77,7 +90,7 @@ namespace RentalCar.Data
             //    .EnableSensitiveDataLogging()
             //    .EnableDetailedErrors();
 
-            string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
+            string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
             optionsBuilder.UseSqlServer(connectionString);
         }
     }

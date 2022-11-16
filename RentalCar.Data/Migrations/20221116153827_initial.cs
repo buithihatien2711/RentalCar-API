@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RentalCar.Data.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,18 @@ namespace RentalCar.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarBrands", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarTypeRegisters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarTypeRegisters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,6 +319,32 @@ namespace RentalCar.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarRegisters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarId = table.Column<int>(type: "int", nullable: false),
+                    CarTypeRgtId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarRegisters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarRegisters_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarRegisters_CarTypeRegisters_CarTypeRgtId",
+                        column: x => x.CarTypeRgtId,
+                        principalTable: "CarTypeRegisters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CarReviews",
                 columns: table => new
                 {
@@ -334,15 +372,49 @@ namespace RentalCar.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CarImgRegisters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Path = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    CarRegisterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarImgRegisters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarImgRegisters_CarRegisters_CarRegisterId",
+                        column: x => x.CarRegisterId,
+                        principalTable: "CarRegisters",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CarImages_CarId",
                 table: "CarImages",
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarImgRegisters_CarRegisterId",
+                table: "CarImgRegisters",
+                column: "CarRegisterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CarModels_CarBrandId",
                 table: "CarModels",
                 column: "CarBrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarRegisters_CarId",
+                table: "CarRegisters",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarRegisters_CarTypeRgtId",
+                table: "CarRegisters",
+                column: "CarTypeRgtId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarReviews_CarId",
@@ -417,6 +489,9 @@ namespace RentalCar.Data.Migrations
                 name: "CarImages");
 
             migrationBuilder.DropTable(
+                name: "CarImgRegisters");
+
+            migrationBuilder.DropTable(
                 name: "CarReviews");
 
             migrationBuilder.DropTable(
@@ -426,10 +501,16 @@ namespace RentalCar.Data.Migrations
                 name: "RoleUsers");
 
             migrationBuilder.DropTable(
-                name: "Cars");
+                name: "CarRegisters");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Cars");
+
+            migrationBuilder.DropTable(
+                name: "CarTypeRegisters");
 
             migrationBuilder.DropTable(
                 name: "CarModels");

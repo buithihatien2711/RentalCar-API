@@ -12,7 +12,7 @@ namespace RentalCar.API.Models
         public string Name { get; set; }
         public string Plate_number { get; set; }
         public int CarModelId { get; set; }
-        public int CarBrandId { get; set; }
+        // public int CarBrandId { get; set; }
         // public int StatusId { get; set; }
         // public string? Color { get; set; }
          //Số ghế

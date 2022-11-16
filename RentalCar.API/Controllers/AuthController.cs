@@ -38,6 +38,8 @@ namespace RentalCar.API.Controllers
                     Fullname = register.YourName,
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password)),
                     PasswordSalt = hmac.Key,
+                    CreatedAt = DateTime.Now,
+                    UpdateAt = DateTime.Now
                 };
                 _userService.CreateUser(user);
                 _userService.SaveChanges();

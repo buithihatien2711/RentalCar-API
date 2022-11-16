@@ -4,6 +4,5 @@ namespace RentalCar.API.Models
     {
         public string AccessToken { get; set; }
         
-        
     }
 }

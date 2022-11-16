@@ -8,7 +8,7 @@ namespace RentalCar.API.Models
         public string? Plate_number { get; set; }
         public CarModelDto? CarModelDtos { get; set; }
         // public string? CarModels { get; set; }
-        public CarBrandDto? CarBrandDtos { get; set; }
+        // public CarBrandDto? CarBrandDtos { get; set; }
         public string? Color { get; set; }
         public StatusDto? Status { get; set; }
          //Số ghế
@@ -27,9 +27,9 @@ namespace RentalCar.API.Models
         //Giá
         public decimal Cost { get; set; }
         //AddressCar
-        public LocationDto AddressCar { get; set; }
+        public LocationDto LocationDto { get; set; }
         //Image
-        public List<string>? Image { get; set; }
+        public List<CarImageDtos>? ImageDtos { get; set; }
         //Số sao
         public decimal? numberStar { get; set; }
         //Rule

@@ -41,7 +41,7 @@ namespace RentalCar.API.Models
 
         public decimal NumberStar { get; set; }
 
-        public List<string>? CarImageDtos { get; set; }
+        public List<CarImageDtos>? CarImageDtos { get; set; }
 
         public List<CarReviewDto>?  CarReviewDtos { get; set; }
     }
