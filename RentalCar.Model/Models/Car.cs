@@ -60,6 +60,8 @@ namespace RentalCar.Model.Models
         public int LocationId { get; set; }
 
         public Location Location { get; set; }
+
+        public List<CarRegister> CarRegisters { get; set; }
         
         
         // Thieu BusyId khoa ngoai bang Car_Busydate

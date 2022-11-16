@@ -22,12 +22,15 @@ namespace RentalCar.Data.Repositories
 
         public Car? GetCarById(int id)
         {
-            return _context.Cars.Include(p => p.LocationId)
+            return _context.Cars.Include(p => p.Location)
                                 .Include(w => w.Transmission)
                                 .Include(w => w.FuelType)
                                 .Include(w => w.Status)
+                                .Include(w => w.CarImages)
                                 .Include(u => u.CarModel)
                                 .ThenInclude(l => l.CarBrand)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
                                 .FirstOrDefault(u => u.Id == id);
         }
 
@@ -37,8 +40,11 @@ namespace RentalCar.Data.Repositories
                         .Include(w => w.Transmission)
                         .Include(w => w.FuelType)
                         .Include(w => w.Status)
+                        .Include(w => w.CarImages)
                         .Include(u => u.CarModel)
                         .ThenInclude(l => l.CarBrand)
+                        .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                        .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
                         .ToList();
             return car;
             // return _context.Cars.Include(p => p.Location).Include(o => o.CarModel).Include(n => n.Transmission).Include(m => m.FuelType).ToList();
@@ -63,9 +69,10 @@ namespace RentalCar.Data.Repositories
             return _context.Wards.ToList();
         }
 
-        public List<string> GetImageByCarId(int CarId)
+        public List<CarImage> GetImageByCarId(int CarId)
         {
-            return _context.CarImages.Where(p=> p.CarId == CarId).Select(p => p.Path).ToList();
+            // return _context.CarImages.Where(p=> p.CarId == CarId).Select(p => p.Path).ToList();
+            return _context.CarImages.Where(p=> p.CarId == CarId).ToList();
         }
 
         public void CreateCar(Car car)

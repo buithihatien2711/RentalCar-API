@@ -33,11 +33,10 @@ namespace RentalCar.API.Controllers
 
             foreach(var car in ListCar){
                 ListCarView.Add(new CarViewDto{
-                    Image = _carService.GetImageByCarId(car.Id),
+                    ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(car.Id)),
                     Name = car.Name,
                     Plate_number = car.Plate_number,
-                    CarBrandDtos = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
-                    // CarModels = car.CarModel,
+                    // CarBrandDtos = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
                     CarModelDtos = _mapper.Map<CarModel,CarModelDto>(car.CarModel),
                     Color = car.Color,
                     Capacity = car.Capacity,
@@ -47,7 +46,7 @@ namespace RentalCar.API.Controllers
                     FuelConsumption = car.FuelConsumption,
                     Description = car.Description,
                     Cost = car.Cost,
-                    AddressCar = _mapper.Map<Location,LocationDto>(car.Location),
+                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     numberStar = car.NumberStar,
                     Rule = car.Rule,
                     Status = _mapper.Map<Status,StatusDto>(car.Status),
@@ -80,8 +79,8 @@ namespace RentalCar.API.Controllers
             try
             {
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _userService.GetUserByUsername(username);
-            var location = new Location{
+                var user = _userService.GetUserByUsername(username);
+                var location = new Location{
                 Address = car.Address,
                 WardId = car.WardId,
                 UserId = user.Id
@@ -122,7 +121,15 @@ namespace RentalCar.API.Controllers
             int CarId = Car.Id;
             _carService.InsertImage(CarId,car.Image);
             _carService.SaveChanges();
-            return Ok("car registration successful");
+            var result = _carService.GetCarById(CarId);
+            var caradd = _mapper.Map<Car,CarViewDto>(result);
+            caradd.CarModelDtos = _mapper.Map<CarModel,CarModelDto>(result.CarModel);
+            caradd.TransmissionDtos = _mapper.Map<Transmission,TransmissionDto>(result.Transmission);
+            caradd.FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(result.FuelType);
+            caradd.ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(result.CarImages);
+            caradd.LocationDto = _mapper.Map<Location,LocationDto>(result.Location);
+
+            return Ok(caradd);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -209,7 +216,7 @@ namespace RentalCar.API.Controllers
 
                 Rule = car.Rule,
                 NumberStar = car.NumberStar,
-                CarImageDtos = carImages,
+                CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
                 CarReviewDtos = carReviewDtos
             });
         }

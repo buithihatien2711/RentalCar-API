@@ -21,7 +21,7 @@ namespace RentalCar.Data.Repositories
         void CreateCar(Car car);
 
         //Image
-        List<string> GetImageByCarId(int CarId);
+        List<CarImage> GetImageByCarId(int CarId);
         // string GetImageAvtByCarId(int CarId)
 
         void InsertImage(int carid, List<string> CarImage);

@@ -168,6 +168,18 @@ catch (Exception ex)
     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "Migration Failed");
 }
+
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    context.Database.Migrate();
+    Seed.SeedTypeRegister(context);
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
 /////
 
 // Configure the HTTP request pipeline.

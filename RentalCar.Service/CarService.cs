@@ -65,7 +65,7 @@ namespace RentalCar.Service
         //     return _carRepository.GetImageAvtByCarId(CarId);
         // }
 
-        public List<string> GetImageByCarId(int CarId)
+        public List<CarImage> GetImageByCarId(int CarId)
         {
             return _carRepository.GetImageByCarId(CarId);
         }

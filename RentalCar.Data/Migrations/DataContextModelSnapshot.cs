@@ -147,6 +147,29 @@ namespace RentalCar.Data.Migrations
                     b.ToTable("CarImages");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.CarImgRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarRegisterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarRegisterId");
+
+                    b.ToTable("CarImgRegisters");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.CarModel", b =>
                 {
                     b.Property<int>("Id")
@@ -168,6 +191,29 @@ namespace RentalCar.Data.Migrations
                     b.HasIndex("CarBrandId");
 
                     b.ToTable("CarModels");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.CarRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarTypeRgtId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("CarTypeRgtId");
+
+                    b.ToTable("CarRegisters");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.CarReview", b =>
@@ -204,6 +250,21 @@ namespace RentalCar.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CarReviews");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.CarTypeRegister", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarTypeRegisters");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.District", b =>
@@ -505,6 +566,17 @@ namespace RentalCar.Data.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.CarImgRegister", b =>
+                {
+                    b.HasOne("RentalCar.Model.Models.CarRegister", "CarRegister")
+                        .WithMany("CarImgRegisters")
+                        .HasForeignKey("CarRegisterId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("CarRegister");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.CarModel", b =>
                 {
                     b.HasOne("RentalCar.Model.Models.CarBrand", "CarBrand")
@@ -514,6 +586,25 @@ namespace RentalCar.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CarBrand");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.CarRegister", b =>
+                {
+                    b.HasOne("RentalCar.Model.Models.Car", "Car")
+                        .WithMany("CarRegisters")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalCar.Model.Models.CarTypeRegister", "CarTypeRgt")
+                        .WithMany("CarRegisters")
+                        .HasForeignKey("CarTypeRgtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("CarTypeRgt");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.CarReview", b =>
@@ -599,12 +690,24 @@ namespace RentalCar.Data.Migrations
                 {
                     b.Navigation("CarImages");
 
+                    b.Navigation("CarRegisters");
+
                     b.Navigation("CarReviews");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.CarModel", b =>
                 {
                     b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.CarRegister", b =>
+                {
+                    b.Navigation("CarImgRegisters");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.CarTypeRegister", b =>
+                {
+                    b.Navigation("CarRegisters");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.FuelType", b =>
