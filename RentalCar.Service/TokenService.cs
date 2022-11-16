@@ -23,6 +23,7 @@ namespace RentalCar.Service
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Username),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.Fullname),
             };
 
             // var claims = new List<Claim>();

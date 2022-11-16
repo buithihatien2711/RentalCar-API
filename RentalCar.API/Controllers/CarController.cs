@@ -26,7 +26,7 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpGet("listCar")]
-        public ActionResult<List<CarViewDto>> Homepage()
+        public ActionResult<List<CarViewDto>> listCar()
         {
             List<Car> ListCar = _carService.GetCars();
             List<CarViewDto> ListCarView = new List<CarViewDto>();
@@ -231,5 +231,8 @@ namespace RentalCar.API.Controllers
             if(_carService.SaveChanges()) return NoContent();
             return BadRequest();
         }
+
+       
+
     }
 }
