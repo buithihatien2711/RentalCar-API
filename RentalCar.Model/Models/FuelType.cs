@@ -10,6 +10,13 @@ namespace RentalCar.Model.Models
         [MaxLength(50)]
         public string Name { get; set; }
         
-        public List<Car> Cars { get; set; }        
+        public List<Car> Cars { get; set; } 
+
+        public FuelType(){}
+
+        public FuelType(string name)
+        {
+            Name = name;
+        }       
     }
 }

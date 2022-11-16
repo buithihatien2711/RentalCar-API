@@ -114,5 +114,20 @@ namespace RentalCar.Service
         {
             _carRepository.UpdateStatusOfCar(carId,StatusID);
         }
+
+        public List<CarReview>? GetCarReviewsByCarId(int id)
+        {
+            return _carRepository.GetCarReviewsByCarId(id);
+        }
+
+        public void DeleteCar(Car car)
+        {
+            _carRepository.DeleteCar(car);
+        }
+
+        public List<Car>? GetCarsByUser(int idUser)
+        {
+            return _carRepository.GetCarsByUser(idUser);
+        }
     }
 }

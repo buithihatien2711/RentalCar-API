@@ -55,5 +55,10 @@ namespace RentalCar.Service
         {
             _repository.UpdateUser(username, user);
         }
+
+        public Role? GetRoleById(int id)
+        {
+            return _repository.GetRoleById(id);
+        }
     }
 }

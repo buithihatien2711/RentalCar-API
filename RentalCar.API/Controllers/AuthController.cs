@@ -37,12 +37,15 @@ namespace RentalCar.API.Controllers
                     Contact = register.PhoneNumber,
                     Fullname = register.YourName,
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password)),
-                    PasswordSalt = hmac.Key
+                    PasswordSalt = hmac.Key,
                 };
                 _userService.CreateUser(user);
                 _userService.SaveChanges();
                 var token = _tokenService.CreateToken(user);
-                return Ok(token);
+                return Ok(new TokenDto()
+                {
+                    AccessToken = token
+                });
             }
             catch (BadHttpRequestException ex)
             {
@@ -70,7 +73,10 @@ namespace RentalCar.API.Controllers
                     } 
                 }
                 var token = _tokenService.CreateToken(user);
-                return Ok(token);
+                return Ok(new TokenDto()
+                {
+                    AccessToken = token
+                });
             }
             catch (UnauthorizedAccessException ex)
             {

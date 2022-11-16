@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +29,61 @@ namespace RentalCar.API.Controllers
             if (users == null) return NotFound();
             // var profiles = _mapper.Map<List<User>, List<UserProfile>>(users);
 
-                        var userDetails = new List<UserDto>();
+            var userDetails = new List<UserDto>();
             foreach (var user in users)
             {
                 List<RoleDto> roles = new List<RoleDto>();
-                _userService.GetRolesOfUser(user.Id).ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
+                _userService.GetRolesOfUser(user.Id).ToList().ForEach(r => roles.Add(new RoleDto() { Id = r.Id, Name = r.Name }));
+
+                userDetails.Add(new UserDto()
+                {
+                    Id = user.Id,
+                    Fullname = user.Fullname,
+                    Contact = user.Contact,
+                    ProfileImage = user.ProfileImage,
+                    Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth,
+                    Username = user.Username,
+                    Email = user.Email,
+                    PasswordSalt = user.PasswordSalt,
+                    PasswordHash = user.PasswordHash,
+                    CreatedAt = user.CreatedAt,
+                    Roles = roles,
+                    LicenseDto = user.License == null ? null : new LicenseDto()
+                    {
+                        Number = user.License.Number,
+                        Name = user.License.Name,
+                        DateOfBirth = user.License.DateOfBirth,
+                        Image = user.License.Image
+                    }
+                });
+            }
+
+            return Ok(userDetails);
+        }
+
+
+        [Route("renter")]
+        [HttpGet]
+        public ActionResult<IEnumerable<UserProfile>> GetRenter()
+        {
+            //Them truong hop role co id nay ko co
+            //var role = _userService.GetRoleById(2);
+            //if(role == null) return NotFound();
+
+            var userList = _userService.GetUsers();
+
+            var users = _userService.GetUsersByRole(3);
+
+            if (users == null) return NotFound();
+            // var profiles = _mapper.Map<List<User>, List<UserProfile>>(users);
+            
+            var userDetails = new List<UserDto>();
+            foreach (var user in users.ToList())
+            {
+                List<RoleDto> roles = new List<RoleDto>();
+                var rolesOfUser = _userService.GetRolesOfUser(user.Id);
+                if(rolesOfUser != null) rolesOfUser.ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
                 
                 userDetails.Add(new UserDto()
                 {
@@ -49,32 +100,36 @@ namespace RentalCar.API.Controllers
                     CreatedAt = user.CreatedAt,
                     Roles = roles,
                     LicenseDto = user.License == null ? null : new LicenseDto()
-                                {
-                                    Number = user.License.Number,
-                                    Name = user.License.Name,
-                                    DateOfBirth = user.License.DateOfBirth,
-                                    Image = user.License.Image
-                                }
+                                        {
+                                            Number = user.License.Number,
+                                            Name = user.License.Name,
+                                            DateOfBirth = user.License.DateOfBirth,
+                                            Image = user.License.Image
+                                        }
                 });
             }
             
             return Ok(userDetails);
         }
 
-
-        [Route("Role/{role}")]
+        [Route("lease")]
         [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> Get(int role)
+        public ActionResult<IEnumerable<UserProfile>> GetLease()
         {
-            var users = _userService.GetUsersByRole(role).ToList();
+            var role = _userService.GetRoleById(2);
+            if(role == null) return NotFound();
+
+            //Them truong hop role co id nay ko co
+            var users = _userService.GetUsersByRole(2);
             if (users == null) return NotFound();
             // var profiles = _mapper.Map<List<User>, List<UserProfile>>(users);
             
             var userDetails = new List<UserDto>();
-            foreach (var user in users)
+            foreach (var user in users.ToList())
             {
                 List<RoleDto> roles = new List<RoleDto>();
-                _userService.GetRolesOfUser(user.Id).ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
+                var rolesOfUser = _userService.GetRolesOfUser(user.Id);
+                if(rolesOfUser != null) rolesOfUser.ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
                 
                 userDetails.Add(new UserDto()
                 {
@@ -108,10 +163,10 @@ namespace RentalCar.API.Controllers
         {
             var user = _userService.GetUserByUsername(username);
             if(user == null) return NotFound("user not exist");
-            // var userProfile = _mapper.Map<User, UserProfile>(user);
-            // Role[] roles = _userService.
+
             List<RoleDto> roles = new List<RoleDto>();
-            _userService.GetRolesOfUser(user.Id).ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
+            var rolesOfUser = _userService.GetRolesOfUser(user.Id);
+            if(rolesOfUser != null) rolesOfUser.ToList().ForEach(r => roles.Add(new RoleDto(){Id = r.Id, Name = r.Name}));
 
             var userDetail = new UserDetailDto()
             {
@@ -137,20 +192,5 @@ namespace RentalCar.API.Controllers
             };
             return Ok(userDetail);
        }
-
-        // [HttpPost]
-        // public void Post([FromBody] string value)
-        // {
-        // }
-
-        // [HttpPut("{id}")]
-        // public void Put(int id, [FromBody] string value)
-        // {
-        // }
-
-        // [HttpDelete("{id}")]
-        // public void Delete(int id)
-        // {
-        // }
     }
 }
