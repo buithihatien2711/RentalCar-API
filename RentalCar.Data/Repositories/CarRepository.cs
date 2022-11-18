@@ -198,14 +198,14 @@ namespace RentalCar.Data.Repositories
             return _context.Wards.FirstOrDefault(u => u.Id == id);
         }
 
-        // public CarImage? GetCarImagebyId(int ImgId)
-        // {
-        //     return _context.CarImages.FirstOrDefault(u => u.Id == ImgId);
-        // }
-        // public void DeleteCarImagebyId(int ImgId)
-        // { 
-        //     _context.CarImages.Remove(GetCarImagebyId(ImgId));
-        // }
+        public CarImage? GetCarImagebyId(int ImgId)
+        {
+            return _context.CarImages.FirstOrDefault(u => u.Id == ImgId);
+        }
+        public void DeleteCarImagebyId(int ImgId)
+        { 
+            _context.CarImages.Remove(GetCarImagebyId(ImgId));
+        }
 
     }
 }

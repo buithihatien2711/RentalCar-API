@@ -144,14 +144,14 @@ namespace RentalCar.Service
             return _carRepository.GetWardById(id);
         }
 
-        // public CarImage? GetCarImagebyId(int ImgId)
-        // {
-        //     return _carRepository.GetCarImagebyId(ImgId);
-        // }
+        public CarImage? GetCarImagebyId(int ImgId)
+        {
+            return _carRepository.GetCarImagebyId(ImgId);
+        }
 
-        // public void DeleteCarImagebyId(int ImgId)
-        // {
-        //     _carRepository.DeleteCarImagebyId(ImgId);
-        // }
+        public void DeleteCarImagebyId(int ImgId)
+        {
+            _carRepository.DeleteCarImagebyId(ImgId);
+        }
     }
 }
