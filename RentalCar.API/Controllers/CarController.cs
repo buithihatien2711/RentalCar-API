@@ -327,40 +327,40 @@ namespace RentalCar.API.Controllers
             }
         }
         
-        // [HttpGet("View/CarImage")]
-        // public ActionResult<string> ViewCarImage(int Carid)
-        // {
-        //     var car = _carService.GetCarById(Carid);
-        //     if(car == null) return NotFound("Car doesn't exist");
+        [HttpGet("View/CarImage")]
+        public ActionResult<string> ViewCarImage(int Carid)
+        {
+            var car = _carService.GetCarById(Carid);
+            if(car == null) return NotFound("Car doesn't exist");
 
-        //     var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
+            var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
 
-        //     return Ok(CarImage);
-        // }
+            return Ok(CarImage);
+        }
 
-        // [HttpPut("Add/CarImage")]
-        // public ActionResult<string> AddCarImage(List<string> listImage,int CarId)
-        // {
-        //     try{
-        //         var car = _carService.GetCarById(CarId);
-        //         if(car == null) return NotFound("Car doesn't exist");
-        //         _carService.InsertImage(CarId,listImage);
-        //         _carService.SaveChanges();
-        //         List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
-        //         return Ok(images);
-        //     }
-        //     catch(Exception ex){
-        //         return BadRequest(ex);
-        //     }
-        // }
+        [HttpPut("Add/CarImage")]
+        public ActionResult<string> AddCarImage(List<string> listImage,int CarId)
+        {
+            try{
+                var car = _carService.GetCarById(CarId);
+                if(car == null) return NotFound("Car doesn't exist");
+                _carService.InsertImage(CarId,listImage);
+                _carService.SaveChanges();
+                List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
+                return Ok(images);
+            }
+            catch(Exception ex){
+                return BadRequest(ex);
+            }
+        }
 
-        // [HttpDelete("Delete/CarImage")]
-        // public ActionResult<CarDetailDto> DeleteCarImage(int ImgId)
-        // {
-        //     _carService.DeleteCarImagebyId(ImgId);
-        //     if(_carService.SaveChanges()) return NoContent();
-        //     return BadRequest();
-        // }
+        [HttpDelete("Delete/CarImage")]
+        public ActionResult<CarDetailDto> DeleteCarImage(int ImgId)
+        {
+            _carService.DeleteCarImagebyId(ImgId);
+            if(_carService.SaveChanges()) return NoContent();
+            return BadRequest();
+        }
 
         [HttpGet("View/CarBrands")]
         public ActionResult<CarBrandDto>ViewCarBrand()

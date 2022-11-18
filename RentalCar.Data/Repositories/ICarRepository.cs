@@ -59,7 +59,7 @@ namespace RentalCar.Data.Repositories
 
         Ward? GetWardById(int id);
 
-        // CarImage? GetCarImagebyId(int ImgId);
-        // void DeleteCarImagebyId(int ImgId);
+        CarImage? GetCarImagebyId(int ImgId);
+        void DeleteCarImagebyId(int ImgId);
     }
 }
