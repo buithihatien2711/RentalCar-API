@@ -45,6 +45,8 @@ namespace RentalCar.Service
 
         void DeleteCar(Car car);
 
-        List<Car>? GetCarsByUser(int idUser);
+        List<Car>? GetCarsByUserAndStatus(int idUser, int idStatus);
+
+        Status? GetStatuById(int idStatus);
     }
 }

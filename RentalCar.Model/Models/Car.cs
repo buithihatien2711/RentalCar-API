@@ -47,7 +47,11 @@ namespace RentalCar.Model.Models
         public string? Rule { get; set; }
 
         public decimal NumberStar { get; set; }
+
+        public int NumberTrip { get; set; }
+
         public List<CarImage> CarImages { get; set; }
+        
         public List<CarReview>  CarReviews { get; set; }
 
         //Truyền động

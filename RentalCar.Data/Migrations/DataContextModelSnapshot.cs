@@ -66,6 +66,9 @@ namespace RentalCar.Data.Migrations
                     b.Property<decimal>("NumberStar")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("NumberTrip")
+                        .HasColumnType("int");
+
                     b.Property<string>("Plate_number")
                         .IsRequired()
                         .HasMaxLength(20)
