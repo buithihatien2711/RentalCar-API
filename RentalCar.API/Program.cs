@@ -74,7 +74,7 @@ builder.Services.AddControllersWithViews()
 );
 var app = builder.Build();
 
-////
+// //
 // var service = (IServiceScopeFactory)app.Services.GetService(typeof(IServiceScopeFactory));
 // using(var db = service.CreateScope().ServiceProvider.GetService<DataContext>())
 // {
@@ -88,11 +88,11 @@ var app = builder.Build();
 //     }
 // }
 
-// using (var scope_migrate = app.Services.CreateScope())
-// {
-//     var dataContext = scope_migrate.ServiceProvider.GetRequiredService<DataContext>();
-//     dataContext.Database.Migrate();
-// }
+using (var scope_migrate = app.Services.CreateScope())
+{
+    var dataContext = scope_migrate.ServiceProvider.GetRequiredService<DataContext>();
+    dataContext.Database.Migrate();
+}
 /////
 
 using var scope = app.Services.CreateScope();
@@ -174,6 +174,30 @@ try
     var context = serviceProvider.GetRequiredService<DataContext>();
     context.Database.Migrate();
     Seed.SeedTypeRegister(context);
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    context.Database.Migrate();
+    Seed.SeedUser(context);
+}
+catch (Exception ex)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Migration Failed");
+}
+
+try
+{
+    var context = serviceProvider.GetRequiredService<DataContext>();
+    context.Database.Migrate();
+    Seed.SeedRoleUser(context);
 }
 catch (Exception ex)
 {

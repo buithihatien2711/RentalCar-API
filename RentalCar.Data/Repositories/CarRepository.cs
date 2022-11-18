@@ -22,7 +22,7 @@ namespace RentalCar.Data.Repositories
 
         public Car? GetCarById(int id)
         {
-            return _context.Cars.Include(p => p.Location)
+            return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
                                 .Include(w => w.Transmission)
                                 .Include(w => w.FuelType)
                                 .Include(w => w.Status)
@@ -36,7 +36,7 @@ namespace RentalCar.Data.Repositories
 
         public List<Car> GetCars()
         {
-            var car = _context.Cars.Include(w => w.Location)
+            var car = _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
                         .Include(w => w.Transmission)
                         .Include(w => w.FuelType)
                         .Include(w => w.Status)
@@ -160,9 +160,24 @@ namespace RentalCar.Data.Repositories
             _context.Cars.Remove(car);
         }
 
-        public List<Car>? GetCarsByUser(int idUser)
+        public List<Car>? GetCarsByUserAndStatus(int idUser, int idStatus)
         {
-            return _context.Cars.Include(c => c.User).Where(c => c.UserId == idUser).ToList();
+            return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
+                                .Include(w => w.Transmission)
+                                .Include(w => w.FuelType)
+                                .Include(w => w.Status)
+                                .Include(w => w.CarImages)
+                                .Include(u => u.CarModel)
+                                .ThenInclude(l => l.CarBrand)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                                .Where(c => c.UserId == idUser)
+                                .Where(s => s.StatusID == idStatus).ToList();
+        }
+
+        public Status? GetStatuById(int idStatus)
+        {
+            return _context.Statuses.FirstOrDefault(s => s.Id == idStatus);
         }
     }
 }

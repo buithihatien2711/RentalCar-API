@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RentalCar.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -254,6 +254,7 @@ namespace RentalCar.Data.Migrations
                     FuelConsumption = table.Column<int>(type: "int", nullable: true),
                     Rule = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberStar = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NumberTrip = table.Column<int>(type: "int", nullable: false),
                     TransmissionID = table.Column<int>(type: "int", nullable: false),
                     FuelTypeID = table.Column<int>(type: "int", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false)

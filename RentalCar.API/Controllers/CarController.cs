@@ -232,7 +232,51 @@ namespace RentalCar.API.Controllers
             return BadRequest();
         }
 
-       
+        [Authorize(Roles="lease")]
+        [HttpGet("mycar/{idStatus}")]
+        public ActionResult<List<CarOverview>> GetMyCar(int idStatus)
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if(string.IsNullOrEmpty(username)) return NotFound();
+
+            var idUser = _userService.GetUserByUsername(username).Id;
+
+            var cars = _carService.GetCarsByUserAndStatus(idUser, idStatus);
+            if(cars == null) return Ok(null);
+
+            var carOverviews = new List<CarOverview>();
+
+            foreach (var car in cars)
+            {
+                carOverviews.Add(new CarOverview()
+                {
+                    Id = car.Id,
+                    Name = car.Name,
+                    Cost = car.Cost,
+                    LocationDto = car.Location == null ? null : new LocationDto()
+                    {
+                        Id = car.LocationId,
+                        Address = car.Location.Address
+                    },
+                    WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
+                    {
+                        Id = car.Location.WardId,
+                        Name = car.Location.Ward.Name
+                    }),
+
+                    DistrictDto = car.Location == null ? null : (car.Location.Ward == null ? null : (car.Location.Ward.District == null ? null : new DistrictDto()
+                    {
+                        Id = car.Location.Ward.DistrictID,
+                        Name = car.Location.Ward.District.Name
+                    })),
+                    Status = car.Status.Name,
+                    Image = car.CarImages == null ? null : car.CarImages[0].Path
+                    });
+            }
+
+            return Ok(carOverviews);
+        }
 
     }
 }

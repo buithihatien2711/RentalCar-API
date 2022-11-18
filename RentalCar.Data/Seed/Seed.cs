@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using RentalCar.Model.Models;
 
@@ -34,7 +36,7 @@ namespace RentalCar.Data.Seed
             //var district = context.Districts.Any();
             if (context.Districts.Any()) return;
 
-            var locationText = System.IO.File.ReadAllText("D:/DUT/PBL6/RentalCar-API/RentalCar.Data/Seed/Location.json");
+            var locationText = System.IO.File.ReadAllText("D:/Ki7/RentalCar-API/RentalCar.Data/Seed/Location.json");
 
             var locations = JsonSerializer.Deserialize<List<LocationSeed>>(locationText);
 
@@ -71,7 +73,7 @@ namespace RentalCar.Data.Seed
         {
             if(context.CarBrands.Any()) return;
 
-            var modelText = System.IO.File.ReadAllText("D:/DUT/PBL6/RentalCar-API/RentalCar.Data/Seed/ModelBrand.json");
+            var modelText = System.IO.File.ReadAllText("D:/Ki7/RentalCar-API/RentalCar.Data/Seed/ModelBrand.json");
 
             var brands = JsonSerializer.Deserialize<List<BrandSeed>>(modelText);
 
@@ -124,6 +126,53 @@ namespace RentalCar.Data.Seed
             context.CarTypeRegisters.Add(new CarTypeRegister(1,"Cà vẹt / Giấy đăng ký xe ô tô"));
             context.CarTypeRegisters.Add(new CarTypeRegister(2,"Đăng kiểm"));
             context.CarTypeRegisters.Add(new CarTypeRegister(3,"Bảo hiểm vật chất"));
+            context.SaveChanges();
+        }
+
+        public static void SeedUser(DataContext context)
+        {
+            if(context.Users.Any()) return;
+
+            var usersText = System.IO.File.ReadAllText("D:/Ki7/RentalCar-API/RentalCar.Data/Seed/User.json");
+
+            var users = JsonSerializer.Deserialize<List<User>>(usersText);
+
+            foreach (var user in users)
+            {
+                using var hmac = new HMACSHA512();
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("password"));
+                user.PasswordSalt = hmac.Key;
+                user.CreatedAt = DateTime.Now;
+                user.ProfileImage = "https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg";
+                context.Users.Add(user);
+            }
+
+            context.SaveChanges();
+        }
+    
+        public static void SeedRoleUser(DataContext context)
+        {
+            if(context.RoleUsers.Any()) return;
+
+            foreach (var user in context.Users)
+            {
+                var roleuser = new RoleUser()
+                {
+                    UserId = user.Id,
+                    RoleId = 3,
+                };
+                context.Add(roleuser);
+            }
+
+            foreach (var user in context.Users.Take(50))
+            {
+                var roleuser = new RoleUser()
+                {
+                    UserId = user.Id,
+                    RoleId = 2,
+                };
+                context.Add(roleuser);
+            }
             context.SaveChanges();
         }
     }

@@ -12,8 +12,8 @@ using RentalCar.Data;
 namespace RentalCar.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221116153827_initial")]
-    partial class initial
+    [Migration("20221116200254_InitDb")]
+    partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,9 @@ namespace RentalCar.Data.Migrations
 
                     b.Property<decimal>("NumberStar")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("NumberTrip")
+                        .HasColumnType("int");
 
                     b.Property<string>("Plate_number")
                         .IsRequired()
