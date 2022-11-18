@@ -42,7 +42,7 @@ namespace RentalCar.Model.Models
         //Năm sản xuất
         public int? YearManufacture { get; set; }
         //Mức tiêu thụ nhiên liệu
-        public int? FuelConsumption { get; set; }
+        public int FuelConsumption { get; set; }
         //Điều khoản
         public string? Rule { get; set; }
 

@@ -12,8 +12,8 @@ using RentalCar.Data;
 namespace RentalCar.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221116200254_InitDb")]
-    partial class InitDb
+    [Migration("20221118185418_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
