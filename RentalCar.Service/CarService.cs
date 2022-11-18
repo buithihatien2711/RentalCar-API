@@ -134,5 +134,24 @@ namespace RentalCar.Service
         {
             return _carRepository.GetStatuById(idStatus);
         }
+        public void UpdateCarInfor(int carid, Location location, int fuelco, string des)
+        {
+            _carRepository.UpdateCarInfor(carid,location,fuelco,des);
+        }
+
+        public Ward? GetWardById(int id)
+        {
+            return _carRepository.GetWardById(id);
+        }
+
+        // public CarImage? GetCarImagebyId(int ImgId)
+        // {
+        //     return _carRepository.GetCarImagebyId(ImgId);
+        // }
+
+        // public void DeleteCarImagebyId(int ImgId)
+        // {
+        //     _carRepository.DeleteCarImagebyId(ImgId);
+        // }
     }
 }

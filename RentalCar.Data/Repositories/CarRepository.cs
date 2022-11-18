@@ -179,5 +179,33 @@ namespace RentalCar.Data.Repositories
         {
             return _context.Statuses.FirstOrDefault(s => s.Id == idStatus);
         }
+        public void UpdateCarInfor(int carid, Location location,int fuelco, string des)
+        {
+            var car = _context.Cars.FirstOrDefault(u => u.Id == carid);
+            if(car != null){
+                if(CreateLocation(location) == true){
+                    SaveChanges();
+                }
+                car.Location = GetLocationByAddress(location.Address);
+                car.Description = des;  
+                car.FuelConsumption = fuelco;
+                SaveChanges();
+            }
+        }
+
+        public Ward? GetWardById(int id)
+        {
+            return _context.Wards.FirstOrDefault(u => u.Id == id);
+        }
+
+        // public CarImage? GetCarImagebyId(int ImgId)
+        // {
+        //     return _context.CarImages.FirstOrDefault(u => u.Id == ImgId);
+        // }
+        // public void DeleteCarImagebyId(int ImgId)
+        // { 
+        //     _context.CarImages.Remove(GetCarImagebyId(ImgId));
+        // }
+
     }
 }

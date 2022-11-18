@@ -56,21 +56,21 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet("ViewCarAdd")]
-        public ActionResult<CarAddDto> CarViewAdd()
-        {
-            var CarAdd = new CarAddDto{
-                CarBrands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands()),
-                CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels()),
-                Districts = _carService.GetDistricts(),
-                Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
-                // Capacity = new List<int>(){1,2,3,4,5,6,7,8,9,10,11,12,13,14},
-                // YearManufacture = new List<int>(){2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022},
-                Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions()),
-                FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes())
-            };
-            return Ok(CarAdd);
-        }
+        // [HttpGet("ViewCarAdd")]
+        // public ActionResult<CarAddDto> CarViewAdd()
+        // {
+        //     var CarAdd = new CarAddDto{
+        //         CarBrands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands()),
+        //         CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels()),
+        //         Districts = _carService.GetDistricts(),
+        //         Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
+        //         // Capacity = new List<int>(){1,2,3,4,5,6,7,8,9,10,11,12,13,14},
+        //         // YearManufacture = new List<int>(){2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022},
+        //         Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions()),
+        //         FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes())
+        //     };
+        //     return Ok(CarAdd);
+        // }
 
         [Authorize(Roles="lease")]
         [HttpPost("CarAdd")]
@@ -81,59 +81,59 @@ namespace RentalCar.API.Controllers
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var user = _userService.GetUserByUsername(username);
                 var location = new Location{
-                Address = car.Address,
-                WardId = car.WardId,
-                UserId = user.Id
-            };
+                    Address = car.Address,
+                    WardId = car.WardId,
+                    UserId = user.Id
+                };
 
-            if(_carService.CreateLocation(location) == true){
+                if(_carService.CreateLocation(location) == true){
+                    _carService.SaveChanges();
+                };
+
+                if(_carService.GetCarByPateNumber(car.Plate_number) != null){
+                    throw new UnauthorizedAccessException("Plate number is invalid.");
+                }
+                var carAdd = new Car{
+                    Name = car.Name,
+                    Description = car.Description,
+                    // Color = car.Color,
+                    Capacity = car.Capacity,
+                    Plate_number = car.Plate_number,
+                    Cost = car.Cost,
+                    CreatedAt = DateTime.Now,
+                    UpdateAt = DateTime.Now,
+                    CarModelId = car.CarModelId,
+                    StatusID = 1,
+                    UserId = user.Id,
+                    YearManufacture = car.YearManufacture,
+                    TransmissionID = car.TransmissionId,
+                    FuelTypeID = car.FuelTypeId,
+                    FuelConsumption = car.FuelConsumption,
+                    Rule = car.Rule,
+                    NumberStar = 0,
+                    LocationId = _carService.GetLocationByAddress(car.Address).Id
+                };
+
+                _carService.CreateCar(carAdd);
                 _carService.SaveChanges();
-            };
+                var Car = _carService.GetCarByPateNumber(car.Plate_number);
 
-            if(_carService.GetCarByPateNumber(car.Plate_number) != null){
-                throw new UnauthorizedAccessException("Plate number is invalid.");
-            }
-            var carAdd = new Car{
-                Name = car.Name,
-                Description = car.Description,
-                // Color = car.Color,
-                Capacity = car.Capacity,
-                Plate_number = car.Plate_number,
-                Cost = car.Cost,
-                CreatedAt = DateTime.Now,
-                UpdateAt = DateTime.Now,
-                CarModelId = car.CarModelId,
-                StatusID = 1,
-                UserId = user.Id,
-                YearManufacture = car.YearManufacture,
-                TransmissionID = car.TransmissionId,
-                FuelTypeID = car.FuelTypeId,
-                FuelConsumption = car.FuelConsumption,
-                Rule = car.Rule,
-                NumberStar = 0,
-                LocationId = _carService.GetLocationByAddress(car.Address).Id
-            };
+                int CarId = Car.Id;
+                _carService.InsertImage(CarId,car.Image);
+                _carService.SaveChanges();
+                var result = _carService.GetCarById(CarId);
+                var caradd = _mapper.Map<Car,CarViewDto>(result);
+                caradd.CarModelDtos = _mapper.Map<CarModel,CarModelDto>(result.CarModel);
+                caradd.TransmissionDtos = _mapper.Map<Transmission,TransmissionDto>(result.Transmission);
+                caradd.FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(result.FuelType);
+                caradd.ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(result.CarImages);
+                caradd.LocationDto = _mapper.Map<Location,LocationDto>(result.Location);
 
-            _carService.CreateCar(carAdd);
-            _carService.SaveChanges();
-            var Car = _carService.GetCarByPateNumber(car.Plate_number);
-
-            int CarId = Car.Id;
-            _carService.InsertImage(CarId,car.Image);
-            _carService.SaveChanges();
-            var result = _carService.GetCarById(CarId);
-            var caradd = _mapper.Map<Car,CarViewDto>(result);
-            caradd.CarModelDtos = _mapper.Map<CarModel,CarModelDto>(result.CarModel);
-            caradd.TransmissionDtos = _mapper.Map<Transmission,TransmissionDto>(result.Transmission);
-            caradd.FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(result.FuelType);
-            caradd.ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(result.CarImages);
-            caradd.LocationDto = _mapper.Map<Location,LocationDto>(result.Location);
-
-            return Ok(caradd);
-            }
-            catch (UnauthorizedAccessException ex)
+                return Ok(caradd);
+                }
+            catch (Exception ex)
             {
-                return Unauthorized(ex.Message);
+                return BadRequest(ex.Message);
             }
             
         }
@@ -276,6 +276,127 @@ namespace RentalCar.API.Controllers
             }
 
             return Ok(carOverviews);
+        }
+
+        [HttpGet("View/CarInfor/{id}")]
+        public ActionResult<CarInfoView_UpdateDto> ViewCarInfor(int id)
+        {
+            var car = _carService.GetCarById(id);
+            if(car == null) return NotFound();
+
+            var carInfoView = new CarInfoView_UpdateDto(){
+                Name = car.Name,
+                Status = car.Status,
+                Plate_number = car.Plate_number,
+                location = _mapper.Map<Location,LocationDto>(car.Location),
+                Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                District = car.Location.Ward.District,
+                Capacity = car.Capacity,
+                Transmission = _mapper.Map<Transmission,TransmissionDto>(car.Transmission),
+                FuelType = _mapper.Map<FuelType,FuelTypeDto>(car.FuelType),
+                FuelConsumption = car.FuelConsumption,
+                Description = car.Description,
+                carImages = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id)),
+                Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
+                Districts = _carService.GetDistricts()
+            };
+
+            return Ok(carInfoView);
+        }
+        [HttpPut("Update/CarInfor/{id}")]
+        public ActionResult<string> UpdateCarInfor(CarInfo_UpdateDto carInput)
+        {
+            try{
+                var car = _carService.GetCarById(carInput.Id);
+                var ward = _carService.GetWardById(carInput.WardId);
+                if(car == null) return NotFound("Car doesn't exist");
+                if(ward == null) return NotFound("Ward doesn't exist");
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = _userService.GetUserByUsername(username);
+
+                var location = new Location{
+                        Address = carInput.Address,
+                        WardId = carInput.WardId,
+                        UserId = user.Id
+                    };
+                _carService.UpdateCarInfor(car.Id,location,carInput.FuelConsumption,carInput.Description);
+                return Ok(carInput);
+            }
+            catch(Exception ex){
+                return BadRequest(ex);
+            }
+        }
+        
+        // [HttpGet("View/CarImage")]
+        // public ActionResult<string> ViewCarImage(int Carid)
+        // {
+        //     var car = _carService.GetCarById(Carid);
+        //     if(car == null) return NotFound("Car doesn't exist");
+
+        //     var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
+
+        //     return Ok(CarImage);
+        // }
+
+        // [HttpPut("Add/CarImage")]
+        // public ActionResult<string> AddCarImage(List<string> listImage,int CarId)
+        // {
+        //     try{
+        //         var car = _carService.GetCarById(CarId);
+        //         if(car == null) return NotFound("Car doesn't exist");
+        //         _carService.InsertImage(CarId,listImage);
+        //         _carService.SaveChanges();
+        //         List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
+        //         return Ok(images);
+        //     }
+        //     catch(Exception ex){
+        //         return BadRequest(ex);
+        //     }
+        // }
+
+        // [HttpDelete("Delete/CarImage")]
+        // public ActionResult<CarDetailDto> DeleteCarImage(int ImgId)
+        // {
+        //     _carService.DeleteCarImagebyId(ImgId);
+        //     if(_carService.SaveChanges()) return NoContent();
+        //     return BadRequest();
+        // }
+
+        [HttpGet("View/CarBrands")]
+        public ActionResult<CarBrandDto>ViewCarBrand()
+        {
+            var CarBrands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands());
+            return Ok(CarBrands);
+        }
+        [HttpGet("View/CarModels")]
+        public ActionResult<CarBrandDto>ViewCarModel()
+        {
+            var CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels());
+            return Ok(CarModels);
+        }
+        [HttpGet("View/Districts")]
+        public ActionResult<CarBrandDto>ViewDistricts()
+        {
+            var Districts = _carService.GetDistricts();
+            return Ok(Districts);
+        }
+        [HttpGet("View/Wards")]
+        public ActionResult<CarBrandDto>ViewWards()
+        {
+            var Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards());
+            return Ok(Wards);
+        }
+        [HttpGet("View/Transmissions")]
+        public ActionResult<CarBrandDto>ViewTransmissions()
+        {
+            var Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions());
+            return Ok(Transmissions);
+        }
+        [HttpGet("View/FuelTypes")]
+        public ActionResult<CarBrandDto>ViewFuelTypes()
+        {
+            var FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes());
+            return Ok(FuelTypes);
         }
 
     }
