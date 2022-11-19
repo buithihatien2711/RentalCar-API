@@ -55,5 +55,6 @@ namespace RentalCar.Service
 
         CarImage? GetCarImagebyId(int ImgId);
         void DeleteCarImagebyId(int ImgId);
+        List<Car>? GetCarsStatus(int idStatus);
     }
 }

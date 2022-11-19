@@ -208,5 +208,17 @@ namespace RentalCar.Data.Repositories
             _context.CarImages.Remove(GetCarImagebyId(ImgId));
         }
 
+        public List<Car> GetCarsStatus(int StatusId){
+            return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
+                                .Include(w => w.Transmission)
+                                .Include(w => w.FuelType)
+                                .Include(w => w.Status)
+                                .Include(w => w.CarImages)
+                                .Include(u => u.CarModel)
+                                .ThenInclude(l => l.CarBrand)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                                .Where(s => s.StatusID == StatusId).ToList();
+        }
     }
 }

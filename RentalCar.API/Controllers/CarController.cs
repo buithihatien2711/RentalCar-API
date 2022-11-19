@@ -28,7 +28,7 @@ namespace RentalCar.API.Controllers
         [HttpGet("listCar")]
         public ActionResult<List<CarViewDto>> listCar()
         {
-            List<Car> ListCar = _carService.GetCars();
+            List<Car> ListCar = _carService.GetCarsStatus(3);
             List<CarViewDto> ListCarView = new List<CarViewDto>();
 
             foreach(var car in ListCar){
