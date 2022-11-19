@@ -90,8 +90,15 @@ var app = builder.Build();
 
 using (var scope_migrate = app.Services.CreateScope())
 {
-    var dataContext = scope_migrate.ServiceProvider.GetRequiredService<DataContext>();
-    dataContext.Database.Migrate();
+    try
+    {
+        var dataContext = scope_migrate.ServiceProvider.GetRequiredService<DataContext>();
+        dataContext.Database.Migrate();
+    }
+    catch (System.Exception ex)
+    {
+
+    }
 }
 /////
 
@@ -207,10 +214,11 @@ catch (Exception ex)
 /////
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
 
 app.UseCors("CorsPolicy");
