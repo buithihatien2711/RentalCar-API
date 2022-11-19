@@ -11,6 +11,7 @@ namespace RentalCar.API.Models
             public int Id { get; set; }
             public string Name { get; set; }
             public string Plate_number { get; set; }
+            public decimal Cost { get; set; }
             public LocationDto location { get; set; }
             public WardDto Ward { get; set; }
             public District District{ get; set; }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LBvt2+j5p+H8hB8g3z3Gspy/AtF6r3Vf06JqGyDu4r0nN7dVbnz/6+IFXdWSkOEGcUYuaoDdQMY1OJlFTHcZLA==",
+  "dgSpecHash": "St7ZU5SxzsK/pGxJW84KLK0weqO++jmPcY5GE2w9rh0mi5HoERSpDi2lvzBlGNfgkCslFUfwhWPichLFByv/ig==",
   "success": true,
   "projectFilePath": "D:\\DUT\\PBL6_GopCode\\RentalCar-API\\RentalCar.API\\RentalCar.API.csproj",
   "expectedPackageFiles": [
@@ -66,6 +66,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.design\\6.0.10\\microsoft.entityframeworkcore.design.6.0.10.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.10\\microsoft.entityframeworkcore.relational.6.0.10.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.10\\microsoft.entityframeworkcore.sqlserver.6.0.10.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.5\\microsoft.entityframeworkcore.tools.6.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",

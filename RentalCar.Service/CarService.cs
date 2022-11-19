@@ -134,9 +134,9 @@ namespace RentalCar.Service
         {
             return _carRepository.GetStatuById(idStatus);
         }
-        public void UpdateCarInfor(int carid, Location location, int fuelco, string des)
+        public void UpdateCarInfor(int carid, Location location, int fuelco, string des,decimal Cost)
         {
-            _carRepository.UpdateCarInfor(carid,location,fuelco,des);
+            _carRepository.UpdateCarInfor(carid,location,fuelco,des,Cost);
         }
 
         public Ward? GetWardById(int id)

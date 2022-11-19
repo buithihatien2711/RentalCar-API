@@ -179,7 +179,7 @@ namespace RentalCar.Data.Repositories
         {
             return _context.Statuses.FirstOrDefault(s => s.Id == idStatus);
         }
-        public void UpdateCarInfor(int carid, Location location,int fuelco, string des)
+        public void UpdateCarInfor(int carid, Location location,int fuelco, string des,decimal Cost)
         {
             var car = _context.Cars.FirstOrDefault(u => u.Id == carid);
             if(car != null){
@@ -189,6 +189,7 @@ namespace RentalCar.Data.Repositories
                 car.Location = GetLocationByAddress(location.Address);
                 car.Description = des;  
                 car.FuelConsumption = fuelco;
+                car.Cost = Cost;
                 SaveChanges();
             }
         }

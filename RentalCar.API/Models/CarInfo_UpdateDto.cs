@@ -13,6 +13,7 @@ namespace RentalCar.API.Models
             public int WardId { get; set; }
             public int FuelConsumption { get; set; }
             public string Description { get; set; }
+            public decimal Cost { get; set; }
 
     }
 }

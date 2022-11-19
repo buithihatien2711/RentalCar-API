@@ -55,7 +55,7 @@ namespace RentalCar.Data.Repositories
         List<Car>? GetCarsByUserAndStatus(int idUser, int idStatus);
 
         Status? GetStatuById(int idStatus);
-        void UpdateCarInfor(int carid,Location location,int fuelco,string des);
+        void UpdateCarInfor(int carid,Location location,int fuelco,string des,decimal Cost);
 
         Ward? GetWardById(int id);
 
