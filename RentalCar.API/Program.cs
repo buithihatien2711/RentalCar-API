@@ -44,12 +44,19 @@ services.AddDbContext<DataContext>();
 /////
 
 services.AddScoped<ITokenService, TokenService>();
+
 services.AddScoped<ICarService, CarService>();
 services.AddScoped<ICarRepository, CarRepository>();
+
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IUserService, UserService>();
+
 services.AddScoped<ICarModelRepository, CarModelRepository>();
 services.AddScoped<ICarModelService, CarModelService>();
+
+services.AddScoped<ICarReviewRepository, CarReviewRepository>();
+services.AddScoped<ICarReviewService, CarReviewService>();
+
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
