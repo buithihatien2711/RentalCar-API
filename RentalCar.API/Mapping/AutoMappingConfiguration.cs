@@ -120,6 +120,8 @@ namespace RentalCar.API.Mapping
                         Fullname = src.User.Fullname
                     })
                 );
+
+            CreateMap<Status, CarStatusDto>();
         }
     }
 }

@@ -57,6 +57,9 @@ services.AddScoped<ICarModelService, CarModelService>();
 services.AddScoped<ICarReviewRepository, CarReviewRepository>();
 services.AddScoped<ICarReviewService, CarReviewService>();
 
+services.AddScoped<ICarStatusRepository, CarStatusRepository>();
+services.AddScoped<ICarStatusService, CarStatusService>();
+
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
