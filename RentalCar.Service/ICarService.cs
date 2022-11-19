@@ -49,7 +49,7 @@ namespace RentalCar.Service
 
         Status? GetStatuById(int idStatus);
 
-        void UpdateCarInfor(int carid, Location location,int fuelco, string des);
+        void UpdateCarInfor(int carid, Location location,int fuelco, string des, decimal Cost);
 
         Ward? GetWardById(int id);
 
