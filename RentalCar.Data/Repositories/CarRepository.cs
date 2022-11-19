@@ -157,6 +157,15 @@ namespace RentalCar.Data.Repositories
 
         public void DeleteCar(Car car)
         {
+            var carId = car.Id;
+            var reviews = GetCarReviewsByCarId(carId);
+            if(reviews != null)
+            {
+                foreach (var review in reviews)
+                {
+                    _context.Remove(review);
+                }
+            }
             _context.Cars.Remove(car);
         }
 
