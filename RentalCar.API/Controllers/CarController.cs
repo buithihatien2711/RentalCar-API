@@ -162,28 +162,28 @@ namespace RentalCar.API.Controllers
             if(car == null) return NotFound();
 
             var carImages = _carService.GetImageByCarId(id);
-            var carReviews = _carService.GetCarReviewsByCarId(id);
-            var carReviewDtos = new List<CarReviewDto>();
+            // var carReviews = _carService.GetCarReviewsByCarId(id);
+            // var carReviewDtos = new List<CarReviewDto>();
 
-            if(carReviews != null)
-            {
-                foreach (var carReview in carReviews)
-                {
-                    carReviewDtos.Add(new CarReviewDto()
-                    {
-                        Id = carReview.Id,
-                        Content = carReview.Content,
-                        Rating = carReview.Rating,
-                        CreatedAt = carReview.CreatedAt,
-                        UpdateAt = carReview.UpdateAt,
-                        AccountDto = new AccountDto()
-                        {
-                            ProfileImage = carReview.User.ProfileImage,
-                            Fullname = carReview.User.Fullname
-                        }
-                    });
-                }
-            } 
+            // if(carReviews != null)
+            // {
+            //     foreach (var carReview in carReviews)
+            //     {
+            //         carReviewDtos.Add(new CarReviewDto()
+            //         {
+            //             Id = carReview.Id,
+            //             Content = carReview.Content,
+            //             Rating = carReview.Rating,
+            //             CreatedAt = carReview.CreatedAt,
+            //             UpdateAt = carReview.UpdateAt,
+            //             AccountDto = car.User == null ? null : new AccountDto()
+            //             {
+            //                 ProfileImage = carReview.User.ProfileImage,
+            //                 Fullname = carReview.User.Fullname
+            //             }
+            //         });
+            //     }
+            // } 
 
             return Ok(new CarDetailDto()
             {
@@ -225,7 +225,7 @@ namespace RentalCar.API.Controllers
                 Rule = car.Rule,
                 NumberStar = car.NumberStar,
                 CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
-                CarReviewDtos = carReviewDtos
+                // CarReviewDtos = carReviewDtos
             });
         }
     

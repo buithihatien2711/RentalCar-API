@@ -43,6 +43,6 @@ namespace RentalCar.API.Models
 
         public List<CarImageDtos>? CarImageDtos { get; set; }
 
-        public List<CarReviewDto>?  CarReviewDtos { get; set; }
+        // public List<CarReviewDto>?  CarReviewDtos { get; set; }
     }
 }
