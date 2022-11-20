@@ -19,10 +19,10 @@ namespace RentalCar.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<List<CarReviewDto>> GetReviewByCar(int id)
+        [HttpGet("{id}/{pageIndex}")]
+        public ActionResult<List<CarReviewDto>> GetReviewByCar(int id, int pageIndex)
         {
-            var reviews = _carReviewService.GetReviewByCar(id);
+            var reviews = _carReviewService.GetReviewByCar(id, pageIndex);
             return Ok(_mapper.Map<List<CarReview>, List<CarReviewDto>>(reviews));
         }
     }
