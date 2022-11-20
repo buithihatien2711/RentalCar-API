@@ -239,11 +239,16 @@ namespace RentalCar.Data.Repositories
             var CarRegisters = _context.CarRegisters.Include(p => p.CarImgRegisters)
                                                     .Where(p => p.CarId == CarId)
                                                     .Where(p => p.CarTypeRgtId == CarTypeRegisterId)
-                                                    .FirstOrDefault();
+                                                    .ToList();
             List<CarImgRegister> CarImageRegister = new List<CarImgRegister>();
             if(CarRegisters == null) CarImageRegister = null;
             else{
-                CarImageRegister = CarRegisters.CarImgRegisters;
+                // CarImageRegister = CarRegisters.CarImgRegisters;
+                foreach(var carRgt in CarRegisters){
+                    foreach(var carImg in carRgt.CarImgRegisters){
+                        CarImageRegister.Add(carImg);
+                    }
+                }
             }
             return CarImageRegister;
         }
