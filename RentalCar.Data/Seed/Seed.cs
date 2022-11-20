@@ -36,7 +36,7 @@ namespace RentalCar.Data.Seed
             //var district = context.Districts.Any();
             if (context.Districts.Any()) return;
 
-            var locationText = System.IO.File.ReadAllText("D:/DUT/PBL6/RentalCar-API/RentalCar.Data/Seed/Location.json");
+            var locationText = System.IO.File.ReadAllText("D:/DUT/PBL6_Final/RentalCar-API/RentalCar.Data/Seed/Location.json");
 
             var locations = JsonSerializer.Deserialize<List<LocationSeed>>(locationText);
 
@@ -73,7 +73,7 @@ namespace RentalCar.Data.Seed
         {
             if(context.CarBrands.Any()) return;
 
-            var modelText = System.IO.File.ReadAllText("D:/DUT/PBL6/RentalCar-API/RentalCar.Data/Seed/ModelBrand.json");
+            var modelText = System.IO.File.ReadAllText("D:/DUT/PBL6_Final/RentalCar-API/RentalCar.Data/Seed/ModelBrand.json");
 
             var brands = JsonSerializer.Deserialize<List<BrandSeed>>(modelText);
 
@@ -133,7 +133,7 @@ namespace RentalCar.Data.Seed
         {
             if(context.Users.Any()) return;
 
-            var usersText = System.IO.File.ReadAllText("D:/DUT/PBL6/RentalCar-API/RentalCar.Data/Seed/User.json");
+            var usersText = System.IO.File.ReadAllText("D:/DUT/PBL6_Final/RentalCar-API/RentalCar.Data/Seed/User.json");
 
             var users = JsonSerializer.Deserialize<List<User>>(usersText);
 
