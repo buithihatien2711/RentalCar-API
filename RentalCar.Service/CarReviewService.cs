@@ -12,9 +12,9 @@ namespace RentalCar.Service
             _carRepository = carRepository;
         }
 
-        public List<CarReview>? GetReviewByCar(int idCar)
+        public List<CarReview>? GetReviewByCar(int idCar, int pageIndex)
         {
-            return _carRepository.GetReviewByCar(idCar);
+            return _carRepository.GetReviewByCar(idCar, pageIndex);
         }
     }
 }
