@@ -18,6 +18,7 @@ namespace RentalCar.API.Mapping
             CreateMap<FuelType, FuelTypeDto>();
             CreateMap<Location, LocationDto>();
             CreateMap<Ward, WardDto>();
+            CreateMap<CarTypeRegister, CarTypeRegisterDto>();
             CreateMap<UserProfile, User>();
             CreateMap<User, UserProfile>().ForMember(
                 dest => dest.LicenseDto,

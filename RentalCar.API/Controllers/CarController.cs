@@ -332,8 +332,18 @@ namespace RentalCar.API.Controllers
             try{
                 var car = _carService.GetCarById(carInput.Id);
                 var ward = _carService.GetWardById(carInput.WardId);
-                if(car == null) return NotFound("Car doesn't exist");
-                if(ward == null) return NotFound("Ward doesn't exist");
+                if(car == null) {
+                    // return NotFound("Car doesn't exist");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Car doesn't exist");
+                    return NotFound(message);
+                }
+                if(ward == null) {
+                    // return NotFound("Ward doesn't exist");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Ward doesn't exist");
+                    return NotFound(message);
+                }
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var user = _userService.GetUserByUsername(username);
 
@@ -346,7 +356,10 @@ namespace RentalCar.API.Controllers
                 return Ok(carInput);
             }
             catch(Exception ex){
-                return BadRequest(ex);
+                // return BadRequest(ex);
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", ex.Message);
+                return BadRequest(message);
             }
         }
         
@@ -354,7 +367,12 @@ namespace RentalCar.API.Controllers
         public ActionResult<string> ViewCarImage(int Carid)
         {
             var car = _carService.GetCarById(Carid);
-            if(car == null) return NotFound("Car doesn't exist");
+            if(car == null){
+                // return NotFound("Car doesn't exist");
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", "Car doesn't exist");
+                return NotFound(message);
+            }
 
             var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
 
@@ -366,97 +384,60 @@ namespace RentalCar.API.Controllers
         {
             try{
                 var car = _carService.GetCarById(CarId);
-                if(car == null) return NotFound("Car doesn't exist");
+                if(car == null){
+                    // return NotFound("Car doesn't exist");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Car doesn't exist");
+                    return NotFound(message);
+                } 
                 _carService.InsertImage(CarId,listImage);
                 _carService.SaveChanges();
                 List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
                 return Ok(images);
             }
             catch(Exception ex){
-                return BadRequest(ex);
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", ex.Message);
+                return BadRequest(message);
             }
         }
 
         [HttpDelete("Delete/CarImage")]
-        public ActionResult<CarDetailDto> DeleteCarImage(int ImgId)
+        public ActionResult<string> DeleteCarImage(int ImgId)
         {
-            _carService.DeleteCarImagebyId(ImgId);
-            if(_carService.SaveChanges()) return NoContent();
-            return BadRequest();
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                _carService.DeleteCarImagebyId(ImgId);
+                if(_carService.SaveChanges()) {
+                    message.Add("Message", "Delete Image successfull");
+                    return NotFound(message);
+                    // return NoContent();
+                }
+                // Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message","Delete Image fail");
+                return BadRequest(message);
         }
 
-        //
-        // [HttpGet("View/CarImageRegister")]
-        // public ActionResult<string> ViewCarImgRegister(int Carid)
-        // {
-        //     var car = _carService.GetCarById(Carid);
-        //     if(car == null) return NotFound("Car doesn't exist");
-
-        //     var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
-
-        //     return Ok(CarImage);
-        // }
-
-        // [HttpPut("Add/CarImageRegister")]
-        // public ActionResult<string> AddCarImgRegister(List<string> listImage,int CarId)
-        // {
-        //     try{
-        //         var car = _carService.GetCarById(CarId);
-        //         if(car == null) return NotFound("Car doesn't exist");
-        //         _carService.InsertImage(CarId,listImage);
-        //         _carService.SaveChanges();
-        //         List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
-        //         return Ok(images);
-        //     }
-        //     catch(Exception ex){
-        //         return BadRequest(ex);
-        //     }
-        // }
-
-        // [HttpDelete("Delete/CarImageRegister")]
-        // public ActionResult<CarDetailDto> DeleteCarImgRegister(int ImgId)
-        // {
-        //     _carService.DeleteCarImagebyId(ImgId);
-        //     if(_carService.SaveChanges()) return NoContent();
-        //     return BadRequest();
-        // }
-
-        // [HttpGet("View/CarBrands")]
-        // public ActionResult<CarBrandDto>ViewCarBrand()
-        // {
-        //     var CarBrands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands());
-        //     return Ok(CarBrands);
-        // }
-        // [HttpGet("View/CarModels")]
-        // public ActionResult<CarBrandDto>ViewCarModel()
-        // {
-        //     var CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels());
-        //     return Ok(CarModels);
-        // }
-        // [HttpGet("View/Districts")]
-        // public ActionResult<CarBrandDto>ViewDistricts()
-        // {
-        //     var Districts = _carService.GetDistricts();
-        //     return Ok(Districts);
-        // }
-        // [HttpGet("View/Wards")]
-        // public ActionResult<CarBrandDto>ViewWards()
-        // {
-        //     var Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards());
-        //     return Ok(Wards);
-        // }
-        // [HttpGet("View/Transmissions")]
-        // public ActionResult<CarBrandDto>ViewTransmissions()
-        // {
-        //     var Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions());
-        //     return Ok(Transmissions);
-        // }
-        // [HttpGet("View/FuelTypes")]
-        // public ActionResult<CarBrandDto>ViewFuelTypes()
-        // {
-        //     var FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes());
-        //     return Ok(FuelTypes);
-        // }
-
+        [HttpGet("View/CarImageRegister")]
+        public ActionResult<string> ViewCarImgRegister(int Carid)
+        {
+            if (_carService.GetCarById(Carid) == null){
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", "Delete Image successfull");
+                return NotFound("Car doesn't exist");
+            } 
+            var CarTypeRegisters = _carService.GetCarTypeRegister();
+            List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
+            foreach(var carType in CarTypeRegisters){
+                CarRegister.Add(new CarRegisterDto{
+                    IdType = carType.Id,
+                    NameType = carType.Name,
+                    listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
+                                (_carService.GetCarImgRegistersByCarIdAndTypeId(Carid,1) == null 
+                                ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(Carid,carType.Id))
+                    });
+            }
+            return Ok(CarRegister);
+        }
+       
     }
 }
