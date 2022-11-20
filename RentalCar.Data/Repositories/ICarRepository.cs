@@ -63,5 +63,8 @@ namespace RentalCar.Data.Repositories
         void DeleteCarImagebyId(int ImgId);
 
         List<Car>? GetCarsStatus(int idStatus);
+        
+        List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId);
+
     }
 }

@@ -220,5 +220,19 @@ namespace RentalCar.Data.Repositories
                                 .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
                                 .Where(s => s.StatusID == StatusId).ToList();
         }
+
+        public List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId)
+        {
+            var CarRegisters = _context.CarRegisters.Include(p => p.CarImgRegisters)
+                                                    .Where(p => p.CarId == CarId)
+                                                    .Where(p => p.CarTypeRgtId == CarTypeRegisterId)
+                                                    .FirstOrDefault();
+            List<CarImgRegister> CarImageRegister = new List<CarImgRegister>();
+            if(CarRegisters == null) CarImageRegister = null;
+            else{
+                CarImageRegister = CarRegisters.CarImgRegisters;
+            }
+            return CarImageRegister;
+        }
     }
 }

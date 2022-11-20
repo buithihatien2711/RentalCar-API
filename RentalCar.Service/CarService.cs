@@ -158,5 +158,10 @@ namespace RentalCar.Service
         {
             return _carRepository.GetCarsStatus(idStatus);
         }
+
+        public List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId, int CarTypeRegisterId)
+        {
+            return _carRepository.GetCarImgRegistersByCarIdAndTypeId(CarId,CarTypeRegisterId);
+        }
     }
 }

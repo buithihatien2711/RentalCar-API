@@ -8,7 +8,9 @@ namespace RentalCar.API.Models
 {
     public class AddressDto
     {
-        public List<District> Districts { get; set; }
+        public int IdDictrict { get; set; }
+        public string Name { get; set; }
+        // public List<District> Districts { get; set; }
         public List<WardDto> Wards { get; set; }
     }
 }
