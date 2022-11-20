@@ -64,22 +64,28 @@ namespace RentalCar.API.Controllers
                 CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels()),
                 // Districts = _carService.GetDistricts(),
                 // Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
-                Capacity = new List<int>(){1,2,3,4,5,6,7,8,9,10,11,12,13,14},
-                YearManufacture = new List<int>(){2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022},
+                Capacity = new List<int>(){4,5,6,7,8},
+                YearManufacture = new List<int>(){2015,2016,2017,2018,2019,2020,2021,2022},
                 Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions()),
                 FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes())
             };
             return Ok(CarAdd);
         }
-         [HttpGet("View/WardDistrict")]
+        [HttpGet("View/WardDistrict")]
         public ActionResult<string> WardDistrict()
         {
-            var address = new AddressDto{
-                Districts = _carService.GetDistricts(),
-                Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
-            };
+            var Districts = _carService.GetDistricts();
+            List<AddressDto> address = new List<AddressDto>();
+            foreach(var District in Districts){
+                address.Add(new AddressDto{
+                    IdDictrict = District.Id,
+                    Name = District.Name,
+                    Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
+                });
+            }
             return Ok(address);
         }
+
         [Authorize(Roles="lease")]
         [HttpPost("CarAdd")]
         public ActionResult<string> AddCar(CarAddInfo car)
@@ -99,7 +105,10 @@ namespace RentalCar.API.Controllers
                 };
 
                 if(_carService.GetCarByPateNumber(car.Plate_number) != null){
-                    throw new UnauthorizedAccessException("Plate number is invalid.");
+                    // throw new UnauthorizedAccessException("Plate number is invalid.");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Plate number is invalid.");
+                    return NotFound(message);
                 }
                 var carAdd = new Car{
                     Name = car.Name,
@@ -141,10 +150,13 @@ namespace RentalCar.API.Controllers
                 }
             catch (Exception ex)
             {
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", ex.Message);
                 return BadRequest(ex.Message);
             }
             
         }
+
 
         //admin có thể thêm hoặc từ chối xe
         [Authorize(Roles="admin")]
@@ -152,9 +164,11 @@ namespace RentalCar.API.Controllers
         public ActionResult<string> AddCar(int CarId, int StatusID){
             _carService.UpdateStatusOfCar(CarId,StatusID);
             _carService.SaveChanges();
-            return("admin update status car successful");
+            // return("admin update status car successful");
+            Dictionary<string, string> message = new Dictionary<string, string>();
+            message.Add("Message", "admin update status car successful");
+            return Ok(message);
         }
-
         [HttpGet("{id}")]
         public ActionResult<CarDetailDto> Get(int id)
         {
