@@ -71,20 +71,37 @@ namespace RentalCar.API.Controllers
             };
             return Ok(CarAdd);
         }
-        [HttpGet("View/WardDistrict")]
-        public ActionResult<string> WardDistrict()
+        [HttpGet("View/District")]
+        public ActionResult<District> Districts()
         {
             var Districts = _carService.GetDistricts();
-            List<AddressDto> address = new List<AddressDto>();
-            foreach(var District in Districts){
-                address.Add(new AddressDto{
-                    IdDictrict = District.Id,
-                    Name = District.Name,
-                    Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
-                });
-            }
-            return Ok(address);
+            // List<AddressDto> address = new List<AddressDto>();
+            // foreach(var District in Districts){
+            //     address.Add(new AddressDto{
+            //         IdDictrict = District.Id,
+            //         Name = District.Name,
+            //         Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
+            //     });
+            // }
+            return Ok(Districts);
         }
+
+        [HttpGet("View/District/{Id}")]
+        public ActionResult<WardDto> WardByDistrict(int Id)
+        {
+            // var Districts = _carService.GetDistricts();
+            // List<AddressDto> address = new List<AddressDto>();
+            // foreach(var District in Districts){
+            //     address.Add(new AddressDto{
+            //         IdDictrict = District.Id,
+            //         Name = District.Name,
+            //         Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
+            //     });
+            // }
+            List<WardDto> wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(Id));
+            return Ok(wards);
+        }
+
 
         [Authorize(Roles="lease")]
         [HttpPost("CarAdd")]
@@ -363,7 +380,7 @@ namespace RentalCar.API.Controllers
             }
         }
         
-        [HttpGet("View/CarImage")]
+        [HttpGet("View/CarImage/{Carid}")]
         public ActionResult<string> ViewCarImage(int Carid)
         {
             var car = _carService.GetCarById(Carid);
