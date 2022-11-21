@@ -20,7 +20,7 @@ namespace RentalCar.API.Models
             public TransmissionDto Transmission { get; set; }
             public FuelTypeDto FuelType { get; set; }
             public int FuelConsumption { get; set; }
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public List<CarImageDtos> carImages { get; set; }
 
