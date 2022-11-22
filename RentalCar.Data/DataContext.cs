@@ -90,7 +90,7 @@ namespace RentalCar.Data
            //    .EnableSensitiveDataLogging()
            //    .EnableDetailedErrors();
 
-           string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
+           string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
            optionsBuilder.UseSqlServer(connectionString);
         }
     }
