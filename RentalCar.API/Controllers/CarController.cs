@@ -119,7 +119,7 @@ namespace RentalCar.API.Controllers
             return Ok(Districts);
         }
 
-        [HttpGet("View/District/{Id}")]
+        [HttpGet("VieWard/District/{Id}")]
         public ActionResult<WardDto> WardByDistrict(int Id)
         {
             // var Districts = _carService.GetDistricts();
