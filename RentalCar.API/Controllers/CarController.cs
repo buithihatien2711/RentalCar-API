@@ -358,7 +358,7 @@ namespace RentalCar.API.Controllers
 
             var carInfoView = new CarInfoView_UpdateDto(){
                 Name = car.Name,
-                Status = car.Status,
+                Status =  _mapper.Map<Status, StatusDto>(car.Status),
                 Cost = car.Cost,
                 Plate_number = car.Plate_number,
                 location = _mapper.Map<Location,LocationDto>(car.Location),
@@ -370,8 +370,8 @@ namespace RentalCar.API.Controllers
                 FuelConsumption = car.FuelConsumption,
                 Description = car.Description,
                 carImages = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id)),
-                Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
-                Districts = _carService.GetDistricts()
+                // Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
+                // Districts = _carService.GetDistricts()
             };
 
             return Ok(carInfoView);

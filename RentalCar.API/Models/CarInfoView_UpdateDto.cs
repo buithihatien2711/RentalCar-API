@@ -15,7 +15,7 @@ namespace RentalCar.API.Models
             public LocationDto location { get; set; }
             public WardDto Ward { get; set; }
             public District District{ get; set; }
-            public Status Status{ get; set; }
+            public StatusDto Status{ get; set; }
             public int Capacity { get; set; }
             public TransmissionDto Transmission { get; set; }
             public FuelTypeDto FuelType { get; set; }
@@ -24,8 +24,8 @@ namespace RentalCar.API.Models
 
             public List<CarImageDtos> carImages { get; set; }
 
-            public List<WardDto> Wards { get; set; }
-            public List<District> Districts { get; set; }
+            // public List<WardDto> Wards { get; set; }
+            // public List<District> Districts { get; set; }
 
     }
 }
