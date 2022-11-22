@@ -28,11 +28,44 @@ namespace RentalCar.API.Controllers
         [HttpGet("listCar")]
         public ActionResult<List<CarViewDto>> listCar()
         {
+            List<Car> ListCar = _carService.GetCars();
+            List<CarViewDto> ListCarView = new List<CarViewDto>();
+
+            foreach(var car in ListCar){
+                ListCarView.Add(new CarViewDto{
+                    Id = car.Id,
+                    ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(car.Id)),
+                    Name = car.Name,
+                    Plate_number = car.Plate_number,
+                    // CarBrandDtos = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
+                    CarModelDtos = _mapper.Map<CarModel,CarModelDto>(car.CarModel),
+                    Color = car.Color,
+                    Capacity = car.Capacity,
+                    YearManufacture = car.YearManufacture,
+                    TransmissionDtos = _mapper.Map<Transmission,TransmissionDto>(car.Transmission),
+                    FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(car.FuelType),
+                    FuelConsumption = car.FuelConsumption,
+                    Description = car.Description,
+                    Cost = car.Cost,
+                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
+                    numberStar = car.NumberStar,
+                    Rule = car.Rule,
+                    Status = _mapper.Map<Status,StatusDto>(car.Status),
+                });
+            }
+            return Ok(ListCarView);
+            // ImageAvt = _CarService.GetImageAvtByCarId()
+        }
+
+        [HttpGet("listCarActive")]
+        public ActionResult<List<CarViewDto>> listCarActive()
+        {
             List<Car> ListCar = _carService.GetCarsStatus(3);
             List<CarViewDto> ListCarView = new List<CarViewDto>();
 
             foreach(var car in ListCar){
                 ListCarView.Add(new CarViewDto{
+                    Id = car.Id,
                     ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(car.Id)),
                     Name = car.Name,
                     Plate_number = car.Plate_number,

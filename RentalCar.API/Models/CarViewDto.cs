@@ -4,6 +4,7 @@ namespace RentalCar.API.Models
 {
     public class CarViewDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? Plate_number { get; set; }
         public CarModelDto? CarModelDtos { get; set; }
