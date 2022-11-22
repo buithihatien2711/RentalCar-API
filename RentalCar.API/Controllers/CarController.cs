@@ -119,7 +119,7 @@ namespace RentalCar.API.Controllers
             return Ok(Districts);
         }
 
-        [HttpGet("View/District/{Id}")]
+        [HttpGet("ViewWard/District/{Id}")]
         public ActionResult<WardDto> WardByDistrict(int Id)
         {
             // var Districts = _carService.GetDistricts();
@@ -252,6 +252,7 @@ namespace RentalCar.API.Controllers
             return Ok(new CarDetailDto()
             {
                 Id = car.Id,
+                Name = car.Name,
                 Description = car.Description,
                 Capacity = car.Capacity,
                 Cost = car.Cost,
