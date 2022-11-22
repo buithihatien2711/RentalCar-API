@@ -210,7 +210,7 @@ namespace RentalCar.API.Controllers
 
         //admin có thể thêm hoặc từ chối xe
         [Authorize(Roles="admin")]
-        [HttpPut("/admin/car/approval")]
+        [HttpPut("/admin/car/{CarID}/approval/{StatusID}")]
         public ActionResult<string> AddCar(int CarId, int StatusID){
             _carService.UpdateStatusOfCar(CarId,StatusID);
             _carService.SaveChanges();
@@ -350,7 +350,7 @@ namespace RentalCar.API.Controllers
             return Ok(carOverviews);
         }
 
-        [HttpGet("View/CarInfor/{id}")]
+        [HttpGet("{id}/View/CarInfor")]
         public ActionResult<CarInfoView_UpdateDto> ViewCarInfor(int id)
         {
             var car = _carService.GetCarById(id);
@@ -376,7 +376,7 @@ namespace RentalCar.API.Controllers
 
             return Ok(carInfoView);
         }
-        [HttpPut("Update/CarInfor/{id}")]
+        [HttpPut("Update/CarInfor")]
         public ActionResult<string> UpdateCarInfor(CarInfo_UpdateDto carInput)
         {
             try{
@@ -413,10 +413,10 @@ namespace RentalCar.API.Controllers
             }
         }
         
-        [HttpGet("View/CarImage/{Carid}")]
-        public ActionResult<string> ViewCarImage(int Carid)
+        [HttpGet("{id}/View/CarImage")]
+        public ActionResult<string> ViewCarImage(int id)
         {
-            var car = _carService.GetCarById(Carid);
+            var car = _carService.GetCarById(id);
             if(car == null){
                 // return NotFound("Car doesn't exist");
                 Dictionary<string, string> message = new Dictionary<string, string>();
@@ -424,7 +424,7 @@ namespace RentalCar.API.Controllers
                 return NotFound(message);
             }
 
-            var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(Carid));
+            var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
 
             return Ok(CarImage);
         }
@@ -452,7 +452,7 @@ namespace RentalCar.API.Controllers
             }
         }
 
-        [HttpDelete("Delete/CarImage")]
+        [HttpDelete("Delete/CarImage/{ImgId}")]
         public ActionResult<string> DeleteCarImage(int ImgId)
         {
                 Dictionary<string, string> message = new Dictionary<string, string>();
@@ -467,10 +467,10 @@ namespace RentalCar.API.Controllers
                 return BadRequest(message);
         }
 
-        [HttpGet("View/CarImageRegister")]
-        public ActionResult<string> ViewCarImgRegister(int Carid)
+        [HttpGet("{id}/View/CarImageRegister")]
+        public ActionResult<string> ViewCarImgRegister(int id)
         {
-            if (_carService.GetCarById(Carid) == null){
+            if (_carService.GetCarById(id) == null){
                 Dictionary<string, string> message = new Dictionary<string, string>();
                 message.Add("Message", "Delete Image successfull");
                 return NotFound("Car doesn't exist");
@@ -482,8 +482,8 @@ namespace RentalCar.API.Controllers
                     IdType = carType.Id,
                     NameType = carType.Name,
                     listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
-                                (_carService.GetCarImgRegistersByCarIdAndTypeId(Carid,1) == null 
-                                ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(Carid,carType.Id))
+                                (_carService.GetCarImgRegistersByCarIdAndTypeId(id,1) == null 
+                                ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
                     });
             }
             return Ok(CarRegister);
