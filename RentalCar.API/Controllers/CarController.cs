@@ -104,33 +104,16 @@ namespace RentalCar.API.Controllers
             };
             return Ok(CarAdd);
         }
-        [HttpGet("/District")]
+        [HttpGet("/api/District")]
         public ActionResult<District> Districts()
         {
             var Districts = _carService.GetDistricts();
-            // List<AddressDto> address = new List<AddressDto>();
-            // foreach(var District in Districts){
-            //     address.Add(new AddressDto{
-            //         IdDictrict = District.Id,
-            //         Name = District.Name,
-            //         Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
-            //     });
-            // }
             return Ok(Districts);
         }
 
-        [HttpGet("/District/{Id}")]
+        [HttpGet("/api/District/{Id}")]
         public ActionResult<WardDto> WardByDistrict(int Id)
         {
-            // var Districts = _carService.GetDistricts();
-            // List<AddressDto> address = new List<AddressDto>();
-            // foreach(var District in Districts){
-            //     address.Add(new AddressDto{
-            //         IdDictrict = District.Id,
-            //         Name = District.Name,
-            //         Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(District.Id)),
-            //     });
-            // }
             List<WardDto> wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWardsByDictrictsId(Id));
             return Ok(wards);
         }
