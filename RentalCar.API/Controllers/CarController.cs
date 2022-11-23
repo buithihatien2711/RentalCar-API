@@ -371,8 +371,6 @@ namespace RentalCar.API.Controllers
                 FuelConsumption = car.FuelConsumption,
                 Description = car.Description,
                 carImages = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id)),
-                // Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
-                // Districts = _carService.GetDistricts()
             };
 
             return Ok(carInfoView);

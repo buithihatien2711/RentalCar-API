@@ -234,6 +234,7 @@ namespace RentalCar.Data.Repositories
         {
             return _context.CarTypeRegisters.Include(p => p.CarRegisters).ToList();
         }
+        
         public List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId)
         {
             var CarRegisters = _context.CarRegisters.Include(p => p.CarImgRegisters)
