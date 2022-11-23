@@ -168,5 +168,15 @@ namespace RentalCar.Service
         {
             return _carRepository.GetCarImgRegistersByCarIdAndTypeId(CarId,CarTypeRegisterId);
         }
+
+        public void InsertImageRegister(int carid, int IdType, List<string> Images)
+        {
+            _carRepository.InsertImageRegister(carid,IdType,Images);
+        }
+
+        public void DeleteCarImageRgtbyId(int ImgId)
+        {
+            _carRepository.DeleteCarImageRgtbyId(ImgId);
+        }
     }
 }

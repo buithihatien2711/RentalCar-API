@@ -57,7 +57,7 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet("listCarActive")]
+        [HttpGet()]
         public ActionResult<List<CarViewDto>> listCarActive()
         {
             List<Car> ListCar = _carService.GetCarsStatus(3);
@@ -89,7 +89,7 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet("View/CarAdd")]
+        [HttpGet("CarAdd")]
         public ActionResult<CarAddDto> CarViewAdd()
         {
             var CarAdd = new CarAddDto{
@@ -104,7 +104,7 @@ namespace RentalCar.API.Controllers
             };
             return Ok(CarAdd);
         }
-        [HttpGet("View/District")]
+        [HttpGet("/District")]
         public ActionResult<District> Districts()
         {
             var Districts = _carService.GetDistricts();
@@ -119,7 +119,7 @@ namespace RentalCar.API.Controllers
             return Ok(Districts);
         }
 
-        [HttpGet("VieWard/District/{Id}")]
+        [HttpGet("/District/{Id}")]
         public ActionResult<WardDto> WardByDistrict(int Id)
         {
             // var Districts = _carService.GetDistricts();
@@ -350,7 +350,7 @@ namespace RentalCar.API.Controllers
             return Ok(carOverviews);
         }
 
-        [HttpGet("{id}/View/CarInfor")]
+        [HttpGet("{id}/CarInfor")]
         public ActionResult<CarInfoView_UpdateDto> ViewCarInfor(int id)
         {
             var car = _carService.GetCarById(id);
@@ -376,7 +376,7 @@ namespace RentalCar.API.Controllers
 
             return Ok(carInfoView);
         }
-        [HttpPut("Update/CarInfor")]
+        [HttpPut("CarInfor")]
         public ActionResult<string> UpdateCarInfor(CarInfo_UpdateDto carInput)
         {
             try{
@@ -413,7 +413,7 @@ namespace RentalCar.API.Controllers
             }
         }
         
-        [HttpGet("{id}/View/CarImage")]
+        [HttpGet("{id}/CarImage")]
         public ActionResult<string> ViewCarImage(int id)
         {
             var car = _carService.GetCarById(id);
@@ -429,7 +429,7 @@ namespace RentalCar.API.Controllers
             return Ok(CarImage);
         }
 
-        [HttpPut("Add/CarImage")]
+        [HttpPost("CarImage")]
         public ActionResult<string> AddCarImage(List<string> listImage,int CarId)
         {
             try{
@@ -452,14 +452,14 @@ namespace RentalCar.API.Controllers
             }
         }
 
-        [HttpDelete("Delete/CarImage/{ImgId}")]
+        [HttpDelete("CarImage/{ImgId}")]
         public ActionResult<string> DeleteCarImage(int ImgId)
         {
                 Dictionary<string, string> message = new Dictionary<string, string>();
                 _carService.DeleteCarImagebyId(ImgId);
                 if(_carService.SaveChanges()) {
                     message.Add("Message", "Delete Image successfull");
-                    return NotFound(message);
+                    return Ok(message);
                     // return NoContent();
                 }
                 // Dictionary<string, string> message = new Dictionary<string, string>();
@@ -467,7 +467,7 @@ namespace RentalCar.API.Controllers
                 return BadRequest(message);
         }
 
-        [HttpGet("{id}/View/CarImageRegister")]
+        [HttpGet("{id}/CarImageRegister")]
         public ActionResult<string> ViewCarImgRegister(int id)
         {
             if (_carService.GetCarById(id) == null){
@@ -482,12 +482,62 @@ namespace RentalCar.API.Controllers
                     IdType = carType.Id,
                     NameType = carType.Name,
                     listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
-                                (_carService.GetCarImgRegistersByCarIdAndTypeId(id,1) == null 
+                                (_carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id) == null 
                                 ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
                     });
             }
             return Ok(CarRegister);
         }
+
+        [HttpPost("{id}/CarImageRegister")]
+        public ActionResult<string> AddCarImgRegister(int id,List<ImageTypeRegister> imageTypes)
+        {
+            try{
+                var car = _carService.GetCarById(id);
+                if(car == null){
+                    // return NotFound("Car doesn't exist");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Car doesn't exist");
+                    return NotFound(message);
+                } 
+                foreach(var imageType in imageTypes){
+                _carService.InsertImageRegister(id,imageType.IdType,imageType.Path);
+                // _carService.SaveChanges();
+                }
+                var CarTypeRegisters = _carService.GetCarTypeRegister();
+                List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
+                foreach(var carType in CarTypeRegisters){
+                    CarRegister.Add(new CarRegisterDto{
+                        IdType = carType.Id,
+                        NameType = carType.Name,
+                        listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
+                                    (_carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id) == null 
+                                    ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
+                        });
+            }
+            return Ok(CarRegister);
+                
+            }
+            catch(Exception ex){
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message", ex.Message);
+                return BadRequest(message);
+            }
+        }
        
+       [HttpDelete("CarImageRegister/{ImgId}")]
+        public ActionResult<string> DeleteCarImageRegister(int ImgId)
+        {
+                Dictionary<string, string> message = new Dictionary<string, string>();
+                _carService.DeleteCarImageRgtbyId(ImgId);
+                if(_carService.SaveChanges()) {
+                    message.Add("Message", "Delete Image successfull");
+                    return Ok(message);
+                    // return NoContent();
+                }
+                // Dictionary<string, string> message = new Dictionary<string, string>();
+                message.Add("Message","Delete Image fail");
+                return BadRequest(message);
+        }
     }
 }

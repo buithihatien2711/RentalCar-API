@@ -252,5 +252,45 @@ namespace RentalCar.Data.Repositories
             }
             return CarImageRegister;
         }
+
+        // public void InsertImageRegister(int carid, int type1, List<string> CarImage1, int type2, List<string> CarImage2, int type3, List<string> CarImage3)
+        // {
+        //     foreach(var carimage in CarImage)
+        //     {
+        //         _context.CarImages.Add(new CarImage{
+        //             CarId=carid,
+        //             Path = carimage
+        //         });
+        //     }   
+        // }
+
+        public void InsertImageRegister(int carid, int IdType, List<string> CarImages)
+        {
+            foreach(var carimage in CarImages)
+            {
+                _context.CarRegisters.Add(new CarRegister{
+                    CarId = carid,
+                    CarTypeRgtId = IdType
+                });
+                SaveChanges();
+                var CarRegister = _context.CarRegisters.Max(o=>o.Id);
+                _context.CarImgRegisters.Add(new CarImgRegister{
+                    CarRegisterId = CarRegister,
+                    Path = carimage
+                });
+                SaveChanges();
+            };
+        }
+
+        public void DeleteCarImageRgtbyId(int ImgId)
+        {
+            var image = _context.CarImgRegisters.Include(p => p.CarRegister).FirstOrDefault(u => u.Id == ImgId);
+            if(image != null){
+                _context.CarImgRegisters.Remove(image);
+                SaveChanges();
+                _context.CarRegisters.Remove(image.CarRegister);
+            }
+
+        }
     }
 }
