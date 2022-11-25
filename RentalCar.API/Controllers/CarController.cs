@@ -89,20 +89,29 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet("CarAdd")]
+        [HttpGet("CarMoreInfor")]
         public ActionResult<CarAddDto> CarViewAdd()
         {
             var CarAdd = new CarAddDto{
-                CarBrands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands()),
-                CarModels =  _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModels()),
-                // Districts = _carService.GetDistricts(),
-                // Wards = _mapper.Map<List<Ward>,List<WardDto>>(_carService.GetWards()),
                 Capacity = new List<int>(){4,5,6,7,8},
                 YearManufacture = new List<int>(){2015,2016,2017,2018,2019,2020,2021,2022},
                 Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions()),
                 FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes())
             };
             return Ok(CarAdd);
+        }
+        [HttpGet("/api/Brand")]
+        public ActionResult<District> Brands()
+        {
+            var Brands = _mapper.Map<List<CarBrand>,List<CarBrandDto>>(_carService.GetCarBrands());
+            return Ok(Brands);
+        }
+
+        [HttpGet("/api/Brand/{Id}")]
+        public ActionResult<CarModelDto> ModelByBrand(int Id)
+        {
+            List<CarModelDto> wards = _mapper.Map<List<CarModel>,List<CarModelDto>>(_carmodelService.GetCarModelsByCarBrandId(Id));
+            return Ok(wards);
         }
         [HttpGet("/api/District")]
         public ActionResult<District> Districts()
@@ -411,20 +420,20 @@ namespace RentalCar.API.Controllers
             return Ok(CarImage);
         }
 
-        [HttpPut("CarImage")]
-        public ActionResult<string> AddCarImage(List<string> listImage,int CarId)
+        [HttpPut("{id}/CarImage")]
+        public ActionResult<string> AddCarImage(List<string> listImage,int id)
         {
             try{
-                var car = _carService.GetCarById(CarId);
+                var car = _carService.GetCarById(id);
                 if(car == null){
                     // return NotFound("Car doesn't exist");
                     Dictionary<string, string> message = new Dictionary<string, string>();
                     message.Add("Message", "Car doesn't exist");
                     return NotFound(message);
                 } 
-                _carService.InsertImage(CarId,listImage);
+                _carService.InsertImage(id,listImage);
                 _carService.SaveChanges();
-                List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(CarId));
+                List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
                 return Ok(images);
             }
             catch(Exception ex){

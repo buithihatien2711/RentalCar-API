@@ -24,7 +24,7 @@ namespace RentalCar.Data.Repositories
 
         public List<CarModel> GetCarModelsByCarBrandId(int id)
         {
-            return _context.CarModels.Where(p => p.CarBrandId == id).ToList();
+            return _context.CarModels.Include(p => p.CarBrand).Where(p => p.CarBrandId == id).ToList();
         }
     }
 }

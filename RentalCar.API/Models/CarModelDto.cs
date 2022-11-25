@@ -6,7 +6,7 @@ namespace RentalCar.API.Models
         
         public string Name { get; set; }
 
-        public int CarBrandId { get; set; }
+        // public int CarBrandId { get; set; }
         
     }
 }
