@@ -179,5 +179,6 @@ namespace RentalCar.Service
         {
             _carRepository.DeleteCarImageRgtbyId(ImgId);
         }
+        
     }
 }
