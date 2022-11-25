@@ -25,7 +25,7 @@ namespace RentalCar.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet("listCar")]
+        [HttpGet("allCars")]
         public ActionResult<List<CarViewDto>> listCar()
         {
             List<Car> ListCar = _carService.GetCars();
@@ -57,7 +57,7 @@ namespace RentalCar.API.Controllers
             // ImageAvt = _CarService.GetImageAvtByCarId()
         }
 
-        [HttpGet()]
+        [HttpGet("carsActive")]
         public ActionResult<List<CarViewDto>> listCarActive()
         {
             List<Car> ListCar = _carService.GetCarsStatus(3);
