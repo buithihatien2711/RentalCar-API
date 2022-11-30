@@ -217,7 +217,7 @@ namespace RentalCar.Data.Repositories
             _context.CarImages.Remove(GetCarImagebyId(ImgId));
         }
 
-        public List<Car> GetCarsStatus(int StatusId){
+        public List<Car> GetCarsByStatus(int StatusId){
             return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
                                 .Include(w => w.Transmission)
                                 .Include(w => w.FuelType)
