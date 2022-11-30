@@ -515,6 +515,55 @@ namespace RentalCar.API.Controllers
                 }
                 return BadRequest();
         }
-       
+
+        [HttpGet("cars/{idStatus}")]
+        public ActionResult<List<CarViewAdminDto>>? GetListCarByStatus(int idStatus)
+        {
+            List<Car>? listCar = _carService.GetCarsByStatus(idStatus);
+            if(listCar == null) return null;
+
+            List<CarViewAdminDto> listCarViews = new List<CarViewAdminDto>();
+            foreach (var car in listCar)
+            {
+                List<CarRegisterDto> carRegisterDtos = new List<CarRegisterDto>();
+                
+                foreach (var carRegister in car.CarRegisters)
+                {
+                    carRegisterDtos.Add(new CarRegisterDto()
+                    {
+                        IdType = carRegister.CarTypeRgtId,
+                        NameType = carRegister.CarTypeRgt.Name,
+                        listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>(carRegister.CarImgRegisters)
+                    });
+                }
+
+                listCarViews.Add(new CarViewAdminDto()
+                {
+                    Id = car.Id,
+                    Name = car.Name,
+                    Description = car.Description,
+                    Color = car.Color,
+                    Capacity = car.Capacity,
+                    Plate_number = car.Plate_number,
+                    Cost = car.Cost,
+                    CreatedAt = car.CreatedAt,
+                    UpdateAt = car.UpdateAt,
+                    CarModel = _mapper.Map<CarModel, CarModelDto>(car.CarModel),
+                    CarBrand = _mapper.Map<CarBrand, CarBrandDto>(car.CarModel.CarBrand),
+                    Status = _mapper.Map<Status, CarStatusDto>(car.Status),
+                    User = _mapper.Map<User, UserOverviewDto>(car.User),
+                    YearManufacture = car.YearManufacture,
+                    Rule = car.Rule,
+                    NumberStar = car.NumberStar,
+                    NumberTrip = car.NumberTrip,
+                    CarImages = _mapper.Map<List<CarImage>, List<CarImageDtos>>(car.CarImages),
+                    Transmission = _mapper.Map<Transmission, TransmissionDto>(car.Transmission),
+                    FuelType = _mapper.Map<FuelType, FuelTypeDto>(car.FuelType),
+                    Location = _mapper.Map<Location,LocationDto>(car.Location),
+                    CarRegisters = carRegisterDtos
+                });
+            }
+            return Ok(listCarViews);
+        }
     }
 }
