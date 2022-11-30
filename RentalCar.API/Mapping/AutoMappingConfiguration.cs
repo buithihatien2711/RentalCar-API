@@ -125,6 +125,8 @@ namespace RentalCar.API.Mapping
                 );
 
             CreateMap<Status, CarStatusDto>();
+            CreateMap<User, UserOverviewDto>();
+
         }
     }
 }
