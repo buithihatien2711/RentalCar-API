@@ -9742,19 +9742,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
+      "projectUniqueName": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
       "projectName": "RentalCar.Service",
-      "projectPath": "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Service\\obj\\",
+      "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9768,11 +9768,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
-              "projectPath": "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj"
+            "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
+              "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj"
             },
-            "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
-              "projectPath": "D:\\DUT\\PBL6_MergeCode\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
+            "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+              "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\copy\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
             }
           }
         }
@@ -9826,7 +9826,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -19,9 +19,15 @@ services.AddControllers();
 
 services.AddCors(o =>
     o.AddPolicy("CorsPolicy", builder =>
-        builder.WithOrigins("http://localhost:4200")
+        builder.WithOrigins("*")
             .AllowAnyHeader()
             .AllowAnyMethod()));
+
+// services.AddCors(o =>
+//     o.AddPolicy("CorsPolicy", builder =>
+//         builder.AllowAnyOrigin()
+//             .AllowAnyHeader()
+//             .AllowAnyMethod()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
