@@ -154,9 +154,9 @@ namespace RentalCar.Service
             _carRepository.DeleteCarImagebyId(ImgId);
         }
 
-        public List<Car>? GetCarsStatus(int idStatus)
+        public List<Car>? GetCarsByStatus(int idStatus)
         {
-            return _carRepository.GetCarsStatus(idStatus);
+            return _carRepository.GetCarsByStatus(idStatus);
         }
 
         public List<CarTypeRegister> GetCarTypeRegister()

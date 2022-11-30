@@ -27,10 +27,10 @@ namespace RentalCar.API.Controllers
             {
                 var username = register.UserName.ToLower();
                 if(_userService.GetUserByUsername(username) != null){
-                    Dictionary<string, string> message = new Dictionary<string, string>();
-                    message.Add("Message", "Username already exists");
-                    return BadRequest(message);
-                    // return BadRequest("Username already exists");
+                    // Dictionary<string, string> message = new Dictionary<string, string>();
+                    // message.Add("Message", "Username already exists");
+                    // return BadRequest(message);
+                    return BadRequest("Username already exists");
                 }
 
                 using var hmac = new HMACSHA512();
@@ -54,10 +54,10 @@ namespace RentalCar.API.Controllers
             }
             catch (BadHttpRequestException ex)
             {
-                    Dictionary<string, string> message = new Dictionary<string, string>();
-                    message.Add("Message", ex.ToString());
-                    return BadRequest(message);
-                // return Unauthorized(ex.Message);
+                // Dictionary<string, string> message = new Dictionary<string, string>();
+                // message.Add("Message", ex.ToString());
+                // return BadRequest(message);
+                return Unauthorized(ex.Message);
             }
         }
 
@@ -69,20 +69,20 @@ namespace RentalCar.API.Controllers
                 // return Ok(_authService.Login(authUserDto));
                 var user = _userService.GetUserByUsername(login.UserName);
                 if(user == null) {
-                    // throw new UnauthorizedAccessException("Username is invalid.");
-                    Dictionary<string, string> message = new Dictionary<string, string>();
-                    message.Add("Message", "Username is invalid.");
-                    return BadRequest(message);
+                    throw new UnauthorizedAccessException("Username is invalid.");
+                    // Dictionary<string, string> message = new Dictionary<string, string>();
+                    // message.Add("Message", "Username is invalid.");
+                    // return BadRequest(message);
                 } 
                 
                 using var hmac = new HMACSHA512(user.PasswordSalt);
                 var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
                 for( var i = 0; i < computeHash.Length; i++){
                     if(computeHash[i] != user.PasswordHash[i]){
-                        // throw new UnauthorizedAccessException("Password is invalid.");
-                        Dictionary<string, string> message = new Dictionary<string, string>();
-                        message.Add("Message", "Password is invalid.");
-                        return BadRequest(message);
+                        throw new UnauthorizedAccessException("Password is invalid.");
+                        // Dictionary<string, string> message = new Dictionary<string, string>();
+                        // message.Add("Message", "Password is invalid.");
+                        // return BadRequest(message);
                     } 
                 }
                 var token = _tokenService.CreateToken(user);
@@ -93,9 +93,9 @@ namespace RentalCar.API.Controllers
             }
             catch (UnauthorizedAccessException ex)
             {
-                Dictionary<string, string> message = new Dictionary<string, string>();
-                message.Add("Message", ex.Message);
-                return BadRequest(message);
+                // Dictionary<string, string> message = new Dictionary<string, string>();
+                // message.Add("Message", ex.Message);
+                return BadRequest(ex);
             }
         }
     }
