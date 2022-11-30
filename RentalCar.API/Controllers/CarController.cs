@@ -47,10 +47,12 @@ namespace RentalCar.API.Controllers
                     FuelConsumption = car.FuelConsumption,
                     Description = car.Description,
                     Cost = car.Cost,
-                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     numberStar = car.NumberStar,
                     Rule = car.Rule,
                     Status = _mapper.Map<Status,StatusDto>(car.Status),
+                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
+                    Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                    District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
                 });
             }
             return Ok(ListCarView);
@@ -79,10 +81,12 @@ namespace RentalCar.API.Controllers
                     FuelConsumption = car.FuelConsumption,
                     Description = car.Description,
                     Cost = car.Cost,
-                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     numberStar = car.NumberStar,
                     Rule = car.Rule,
                     Status = _mapper.Map<Status,StatusDto>(car.Status),
+                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
+                    Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                    District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
                 });
             }
             return Ok(ListCarView);
@@ -96,7 +100,8 @@ namespace RentalCar.API.Controllers
                 Capacity = new List<int>(){4,5,6,7,8},
                 YearManufacture = new List<int>(){2015,2016,2017,2018,2019,2020,2021,2022},
                 Transmissions = _mapper.Map<List<Transmission>,List<TransmissionDto>>(_carService.GetTransmissions()),
-                FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes())
+                FuelTypes = _mapper.Map<List<FuelType>,List<FuelTypeDto>>(_carService.GetFuelTypes()),
+                
             };
             return Ok(CarAdd);
         }

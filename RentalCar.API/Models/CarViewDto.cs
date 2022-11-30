@@ -35,8 +35,8 @@ namespace RentalCar.API.Models
         public decimal? numberStar { get; set; }
         //Rule
         public string? Rule { get; set; }
-        // public List<District>? Districts { get; set; }
-        // public List<Ward>? Wards { get; set; }
+        public DistrictDto District { get; set; }
+        public WardDto Ward { get; set; }
 
     }
 }
