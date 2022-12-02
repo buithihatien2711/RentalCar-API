@@ -31,6 +31,7 @@ namespace RentalCar.Data.Repositories
                                 .ThenInclude(l => l.CarBrand)
                                 .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
                                 .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                                .Include(w => w.User)
                                 .FirstOrDefault(u => u.Id == id);
         }
 
@@ -45,6 +46,7 @@ namespace RentalCar.Data.Repositories
                         .ThenInclude(l => l.CarBrand)
                         .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
                         .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                        .Include(w => w.User)
                         .ToList();
             return car;
             // return _context.Cars.Include(p => p.Location).Include(o => o.CarModel).Include(n => n.Transmission).Include(m => m.FuelType).ToList();
