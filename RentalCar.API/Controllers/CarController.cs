@@ -53,6 +53,7 @@ namespace RentalCar.API.Controllers
                     LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
                     District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
+                    Username = car.User.Username
                 });
             }
             return Ok(ListCarView);
@@ -87,6 +88,7 @@ namespace RentalCar.API.Controllers
                     LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
                     District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
+                    Username = car.User.Username
                 });
             }
             return Ok(ListCarView);
