@@ -16,12 +16,14 @@ namespace RentalCar.API.Controllers
         private readonly ICarService _carService;
         private readonly ICarModelService _carmodelService;
         private readonly IUserService _userService;
+        private readonly IUploadImgService _uploadImgService;
         private readonly IMapper _mapper;
-        public CarController(ICarService carService,ICarModelService carmodelService,IUserService userService, IMapper mapper)
+        public CarController(ICarService carService,ICarModelService carmodelService,IUserService userService, IUploadImgService uploadImgService,IMapper mapper)
         {
             _mapper = mapper;
             _carService = carService;
             _carmodelService = carmodelService;
+            _uploadImgService = uploadImgService;
             _userService = userService;
         }
 
@@ -151,7 +153,7 @@ namespace RentalCar.API.Controllers
 
         [Authorize(Roles="lease")]
         [HttpPost("CarAdd")]
-        public ActionResult<string> AddCar(CarAddInfo car)
+        public async Task<ActionResult<string>> AddCar([FromForm] CarAddInfo car)
         {
             try
             {
@@ -199,8 +201,11 @@ namespace RentalCar.API.Controllers
                 var Car = _carService.GetCarByPateNumber(car.Plate_number);
 
                 int CarId = Car.Id;
-                _carService.InsertImage(CarId,car.Image);
-                _carService.SaveChanges();
+                foreach(var image in car.Image){
+                    var linkImage = await _uploadImgService.UploadImage(image);
+                    _carService.InsertImage(CarId,linkImage);
+                    _carService.SaveChanges();
+                }
                 var result = _carService.GetCarById(CarId);
                 var caradd = _mapper.Map<Car,CarViewDto>(result);
                 caradd.CarModelDtos = _mapper.Map<CarModel,CarModelDto>(result.CarModel);
@@ -430,15 +435,18 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpPut("{id}/CarImage")]
-        public ActionResult<string> AddCarImage(List<string> listImage,int id)
+        public async Task<ActionResult<string>> AddCarImage(List<IFormFile> listImage,int id)
         {
             try{
                 var car = _carService.GetCarById(id);
                 if(car == null){
                     return NotFound("Car doesn't exist");
                 } 
-                _carService.InsertImage(id,listImage);
-                _carService.SaveChanges();
+                foreach(var image in listImage){
+                    var linkImage = await _uploadImgService.UploadImage(image);
+                    _carService.InsertImage(id,linkImage);
+                    _carService.SaveChanges();
+                }
                 List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
                 return Ok(images);
             }

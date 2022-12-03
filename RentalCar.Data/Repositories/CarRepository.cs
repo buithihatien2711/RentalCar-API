@@ -82,15 +82,20 @@ namespace RentalCar.Data.Repositories
             _context.Cars.Add(car);
         }
 
-        public void InsertImage(int carid, List<string> CarImage)
+        public void InsertImage(int carid, string CarImage)
         {
-            foreach(var carimage in CarImage)
-            {
-                _context.CarImages.Add(new CarImage{
-                    CarId=carid,
-                    Path = carimage
-                });
-            }   
+            // foreach(var carimage in CarImage)
+            // {
+            //     _context.CarImages.Add(new CarImage{
+            //         CarId=carid,
+            //         Path = carimage
+            //     });
+            // } 
+
+            _context.CarImages.Add(new CarImage{
+                CarId=carid,
+                Path = CarImage
+            });   
         }
 
         public Car GetCarByPateNumber(string Platenumber)
