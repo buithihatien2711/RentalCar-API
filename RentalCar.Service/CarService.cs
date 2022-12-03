@@ -95,7 +95,7 @@ namespace RentalCar.Service
             return _carRepository.GetWardsByDictrictsId(id);
         }
 
-        public void InsertImage(int carid,List<string> CarImage)
+        public void InsertImage(int carid,string CarImage)
         {
             _carRepository.InsertImage(carid,CarImage);
         }

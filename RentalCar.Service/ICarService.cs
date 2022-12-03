@@ -27,7 +27,7 @@ namespace RentalCar.Service
 
         Car GetCarByPateNumber(string PateNumber);
 
-        void InsertImage(int carid,List<string> CarImage);
+        void InsertImage(int carid,string CarImage);
 
         //Location
         void InsertLocation(Location location);
@@ -61,6 +61,7 @@ namespace RentalCar.Service
         List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId);
         void InsertImageRegister(int carid, int IdType, List<string> paths);
         void DeleteCarImageRgtbyId(int ImgId);
+
 
     }
 }

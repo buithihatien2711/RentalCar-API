@@ -66,6 +66,8 @@ services.AddScoped<ICarReviewService, CarReviewService>();
 services.AddScoped<ICarStatusRepository, CarStatusRepository>();
 services.AddScoped<ICarStatusService, CarStatusService>();
 
+services.AddScoped<IUploadImgService, UploadImgService>();
+
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

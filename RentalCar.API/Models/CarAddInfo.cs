@@ -12,9 +12,6 @@ namespace RentalCar.API.Models
         public string Name { get; set; }
         public string Plate_number { get; set; }
         public int CarModelId { get; set; }
-        // public int CarBrandId { get; set; }
-        // public int StatusId { get; set; }
-        // public string? Color { get; set; }
          //Số ghế
         public int Capacity{ get; set; }
         //Năm sản xuất
@@ -37,6 +34,6 @@ namespace RentalCar.API.Models
         //Rule
         public string? Rule { get; set; }
         //Image
-        public List<string>? Image { get; set; }
+        public List<IFormFile>? Image { get; set; }
     }
 }
