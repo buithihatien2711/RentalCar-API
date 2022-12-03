@@ -173,6 +173,20 @@ namespace RentalCar.Data.Repositories
 
         public List<Car>? GetCarsByUserAndStatus(int idUser, int idStatus)
         {
+            if(GetStatuById(idStatus) == null)
+            {
+                return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
+                                .Include(w => w.Transmission)
+                                .Include(w => w.FuelType)
+                                .Include(w => w.Status)
+                                .Include(w => w.CarImages)
+                                .Include(u => u.CarModel)
+                                .ThenInclude(l => l.CarBrand)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                                .Where(c => c.UserId == idUser).ToList();
+            }    
+
             return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
                                 .Include(w => w.Transmission)
                                 .Include(w => w.FuelType)
@@ -220,16 +234,21 @@ namespace RentalCar.Data.Repositories
         }
 
         public List<Car> GetCarsByStatus(int StatusId){
-            return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
-                                .Include(w => w.Transmission)
-                                .Include(w => w.FuelType)
-                                .Include(w => w.Status)
-                                .Include(w => w.CarImages)
-                                .Include(u => u.CarModel)
-                                .ThenInclude(l => l.CarBrand)
-                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
-                                .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
-                                .Where(s => s.StatusID == StatusId).ToList();
+        if(GetStatuById(StatusId) == null)
+        {
+            return GetCars();
+        }
+        return _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
+                            .Include(w => w.Transmission)
+                            .Include(w => w.FuelType)
+                            .Include(w => w.Status)
+                            .Include(w => w.CarImages)
+                            .Include(u => u.CarModel)
+                            .ThenInclude(l => l.CarBrand)
+                            .Include(c => c.User)
+                            .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
+                            .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
+                            .Where(s => s.StatusID == StatusId).ToList();
         }
 
         public List<CarTypeRegister> GetCarTypeRegister()

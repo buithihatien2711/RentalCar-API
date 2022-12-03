@@ -230,7 +230,7 @@ namespace RentalCar.API.Controllers
             // message.Add("Message", "admin update status car successful");
             // return Ok(message);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public ActionResult<CarDetailDto> Get(int id)
         {
             var car = _carService.GetCarById(id);
@@ -301,10 +301,12 @@ namespace RentalCar.API.Controllers
                 Rule = car.Rule,
                 NumberStar = car.NumberStar,
                 CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
+                Account = _mapper.Map<User, AccountDto>(car.User)
                 // CarReviewDtos = carReviewDtos
             });
         }
     
+        [Authorize(Roles = "lease, admin")]
         [HttpDelete("{id}")]
         public ActionResult<CarDetailDto> Delete(int id)
         {
@@ -561,6 +563,8 @@ namespace RentalCar.API.Controllers
                     CarImages = _mapper.Map<List<CarImage>, List<CarImageDtos>>(car.CarImages),
                     Transmission = _mapper.Map<Transmission, TransmissionDto>(car.Transmission),
                     FuelType = _mapper.Map<FuelType, FuelTypeDto>(car.FuelType),
+                    Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                    District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
                     Location = _mapper.Map<Location,LocationDto>(car.Location),
                     CarRegisters = carRegisterDtos
                 });

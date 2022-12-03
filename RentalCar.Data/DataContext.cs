@@ -76,6 +76,12 @@ namespace RentalCar.Data
                         .HasForeignKey(r => r.UserId)
                         .OnDelete(DeleteBehavior.ClientCascade);
 
+            modelBuilder.Entity<Booking>()
+                        .HasOne(r => r.Location)
+                        .WithMany(u => u.Bookings)
+                        .HasForeignKey(r => r.LocationId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
             base.OnModelCreating(modelBuilder);
         }
 
