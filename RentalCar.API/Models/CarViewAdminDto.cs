@@ -54,6 +54,10 @@ namespace RentalCar.API.Models
 
         public LocationDto Location { get; set; }
 
+        public WardDto? Ward { get; set; }
+        
+        public DistrictDto? District { get; set; }
+
         public List<CarRegisterDto> CarRegisters { get; set; }
     }
 }

@@ -53,6 +53,7 @@ namespace RentalCar.API.Controllers
                     LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
                     District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
+                    Username = car.User.Username
                 });
             }
             return Ok(ListCarView);
@@ -87,6 +88,7 @@ namespace RentalCar.API.Controllers
                     LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
                     Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
                     District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
+                    Username = car.User.Username
                 });
             }
             return Ok(ListCarView);
@@ -228,13 +230,13 @@ namespace RentalCar.API.Controllers
             // message.Add("Message", "admin update status car successful");
             // return Ok(message);
         }
-        [HttpGet("{id}")]
-        public ActionResult<CarDetailDto> Get(int id)
+        [HttpGet("{Id}")]
+        public ActionResult<CarDetailDto> Get(int Id)
         {
-            var car = _carService.GetCarById(id);
+            var car = _carService.GetCarById(Id);
             if(car == null) return NotFound("Car doesn't exist");
 
-            var carImages = _carService.GetImageByCarId(id);
+            var carImages = _carService.GetImageByCarId(Id);
             // var carReviews = _carService.GetCarReviewsByCarId(id);
             // var carReviewDtos = new List<CarReviewDto>();
 
@@ -299,10 +301,12 @@ namespace RentalCar.API.Controllers
                 Rule = car.Rule,
                 NumberStar = car.NumberStar,
                 CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
+                Account = _mapper.Map<User, AccountDto>(car.User)
                 // CarReviewDtos = carReviewDtos
             });
         }
-    
+
+        [Authorize(Roles = "lease, admin")]
         [HttpDelete("{id}")]
         public ActionResult<CarDetailDto> Delete(int id)
         {
@@ -559,6 +563,8 @@ namespace RentalCar.API.Controllers
                     CarImages = _mapper.Map<List<CarImage>, List<CarImageDtos>>(car.CarImages),
                     Transmission = _mapper.Map<Transmission, TransmissionDto>(car.Transmission),
                     FuelType = _mapper.Map<FuelType, FuelTypeDto>(car.FuelType),
+                    Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                    District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
                     Location = _mapper.Map<Location,LocationDto>(car.Location),
                     CarRegisters = carRegisterDtos
                 });

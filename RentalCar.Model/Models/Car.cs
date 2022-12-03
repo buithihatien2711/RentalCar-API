@@ -67,7 +67,8 @@ namespace RentalCar.Model.Models
 
         public List<CarRegister> CarRegisters { get; set; }
         
+        public List<Booking> Bookings { get; set; }
         
-        // Thieu BusyId khoa ngoai bang Car_Busydate
+        public List<PriceByDate> PriceByDates { get; set; }
     }
 }

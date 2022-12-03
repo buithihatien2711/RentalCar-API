@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 
@@ -59,6 +60,11 @@ namespace RentalCar.Service
         public Role? GetRoleById(int id)
         {
             return _repository.GetRoleById(id);
+        }
+
+        public void UpdateUserPatch(string username, JsonPatchDocument user)
+        {
+            _repository.UpdateUserPatch(username, user);
         }
     }
 }

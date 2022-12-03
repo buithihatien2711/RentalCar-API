@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
 using RentalCar.Model.Models;
@@ -38,7 +39,7 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult<UserProfile> Put(UserProfile userProfile)
+        public ActionResult<UserProfile> UpdateUserPut(UserProfile userProfile)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // var username = "nguyenvana";
@@ -50,6 +51,20 @@ namespace RentalCar.API.Controllers
             _mapper.Map<UserProfile, User>(userProfile, userExist);
 
             _userService.UpdateUser(username, userExist);
+
+            if(_userService.SaveChanges()) return NoContent();
+            return BadRequest();
+        }
+
+        [HttpPatch]
+        public ActionResult<UserProfile> UpdateUserPatch(JsonPatchDocument userModel)
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var username = "nguyenvana";
+
+            if(string.IsNullOrEmpty(username)) return NotFound();
+
+            _userService.UpdateUserPatch(username, userModel);
 
             if(_userService.SaveChanges()) return NoContent();
             return BadRequest();

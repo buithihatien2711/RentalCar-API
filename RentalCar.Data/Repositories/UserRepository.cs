@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using RentalCar.Model.Models;
 
@@ -96,8 +97,15 @@ namespace RentalCar.Data.Repositories
         public void UpdateUser(string username, User user)
         {
             var existUser = GetUserByUsername(username);
-            if(user == null) return;
+            if(existUser == null) return;
             existUser = user;
+        }
+
+        public void UpdateUserPatch(string username, JsonPatchDocument user)
+        {
+            var existUser = GetUserByUsername(username);
+            if(existUser == null) return;
+            user.ApplyTo(existUser);
         }
     }
 }

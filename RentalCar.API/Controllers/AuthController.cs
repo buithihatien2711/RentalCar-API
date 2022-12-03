@@ -69,7 +69,8 @@ namespace RentalCar.API.Controllers
                 // return Ok(_authService.Login(authUserDto));
                 var user = _userService.GetUserByUsername(login.UserName);
                 if(user == null) {
-                    throw new UnauthorizedAccessException("Username is invalid.");
+                    return Unauthorized("Username is invalid.");
+                    //throw new UnauthorizedAccessException("Username is invalid.");
                     // Dictionary<string, string> message = new Dictionary<string, string>();
                     // message.Add("Message", "Username is invalid.");
                     // return BadRequest(message);
@@ -79,7 +80,8 @@ namespace RentalCar.API.Controllers
                 var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
                 for( var i = 0; i < computeHash.Length; i++){
                     if(computeHash[i] != user.PasswordHash[i]){
-                        throw new UnauthorizedAccessException("Password is invalid.");
+                        return Unauthorized("Password is invalid.");
+                        //throw new UnauthorizedAccessException("Password is invalid.");
                         // Dictionary<string, string> message = new Dictionary<string, string>();
                         // message.Add("Message", "Password is invalid.");
                         // return BadRequest(message);

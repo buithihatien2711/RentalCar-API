@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +28,11 @@ namespace RentalCar.API.Controllers
         public ActionResult<List<CarStatusDto>> Get()
         {
             var statuses = _carStatusService.GetStatuses();
-
+            statuses.Add(new Status()
+            {
+                Id = 0,
+                Name = "Tất Cả"
+            });
             return Ok(_mapper.Map<List<Status>, List<CarStatusDto>>(statuses));
         }
     }

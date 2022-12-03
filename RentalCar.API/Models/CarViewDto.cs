@@ -37,6 +37,7 @@ namespace RentalCar.API.Models
         public string? Rule { get; set; }
         public DistrictDto District { get; set; }
         public WardDto Ward { get; set; }
-
+        
+        public string Username { get; set; }
     }
 }

@@ -292,3 +292,6 @@ D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\obj\Debug\net6.0\
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\obj\Debug\net6.0\RentalCar.API.pdb
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\obj\Debug\net6.0\RentalCar.API.genruntimeconfig.cache
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\obj\Debug\net6.0\ref\RentalCar.API.dll
+D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Auth.dll
+D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Storage.dll
+D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll

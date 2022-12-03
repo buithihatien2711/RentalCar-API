@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 using RentalCar.Model.Models;
 
 namespace RentalCar.Data.Repositories
@@ -19,6 +20,8 @@ namespace RentalCar.Data.Repositories
         IEnumerable<Role>? GetRolesOfUser(int idUser);
 
         void UpdateUser(string username, User user);
+
+        void UpdateUserPatch(string username, JsonPatchDocument user);
         
         void CreateUser(User user);
 
