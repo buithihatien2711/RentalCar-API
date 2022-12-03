@@ -9,6 +9,8 @@ namespace RentalCar.API.Models
     {
         public int Id { get; set; }
 
+        public string Username { get; set; }
+
         public string? ProfileImage { get; set; }
         
         public string? Fullname { get; set; }

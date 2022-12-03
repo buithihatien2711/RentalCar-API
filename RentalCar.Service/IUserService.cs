@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.JsonPatch;
 using RentalCar.Model.Models;
 
 namespace RentalCar.Service
@@ -21,5 +22,7 @@ namespace RentalCar.Service
         bool SaveChanges();
 
         Role? GetRoleById(int id);
+
+        void UpdateUserPatch(string username, JsonPatchDocument user);
     }
 }

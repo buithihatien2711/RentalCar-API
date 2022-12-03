@@ -15,7 +15,7 @@ var services = builder.Services;
 var connectionString = builder.Configuration.GetConnectionString("Default");
 // Add services to the container.
 
-services.AddControllers();
+services.AddControllers().AddNewtonsoftJson();;
 
 services.AddCors(o =>
     o.AddPolicy("CorsPolicy", builder =>
