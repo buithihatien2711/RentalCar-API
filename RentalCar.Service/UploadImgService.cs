@@ -14,7 +14,7 @@ namespace RentalCar.Service
         private static string Bucket = "pbl6-b8cad.appspot.com";
         private static string AuthEmail = "buithihatien2711@gmail.com";
         private static string AuthPassword = "BTHTien2711@";
-        public async Task<string> UploadImage(IFormFile model)
+        public async Task<string> UploadImage(string folder,string username,IFormFile model)
         {
             string projectPath = System.Environment.CurrentDirectory;
             string folderName = Path.Combine(projectPath, "Image\\");
@@ -42,8 +42,9 @@ namespace RentalCar.Service
                         ThrowOnCancel = true
                     })
                     .Child("pbl6")
-                    .Child("avata")
-                    .Child($"aspcore.png")
+                    .Child(folder)
+                    .Child(username)
+                    .Child(DateTime.Now.ToString())
                     .PutAsync(ms, cancellation.Token);
                 task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
                 try

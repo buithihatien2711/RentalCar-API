@@ -9,7 +9,7 @@ namespace RentalCar.API.Models
     //Data lấy từ FE để thêm vào DB
     public class CarAddInfo
     {
-        public string Name { get; set; }
+        // public string Name { get; set; }
         public string Plate_number { get; set; }
         public int CarModelId { get; set; }
          //Số ghế

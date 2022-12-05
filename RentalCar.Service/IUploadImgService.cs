@@ -4,6 +4,6 @@ namespace RentalCar.Service
 {
     public interface IUploadImgService
     {
-        Task<string> UploadImage(IFormFile model);
+        Task<string> UploadImage(string folder,string username,IFormFile model);
     }
 }
