@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iGzV0qbWbM9Fc9wt37ywdWS6p4diADupccvOmrCuVGs/Ueyeftb4/qqAC+Bd2+GuHkOMXypIthkcdU6umx/bZQ==",
+  "dgSpecHash": "Cb7OiSHoDGeTcDy0HMijW0camNoFbohnbKQwINLZx4wS8dLGmWuxAyn0/WH+4xf8ExLrA07+MxGmRMQ8HoGahQ==",
   "success": true,
-  "projectFilePath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.API\\RentalCar.API.csproj",
+  "projectFilePath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.API\\RentalCar.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

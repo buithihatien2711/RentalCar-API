@@ -2246,11 +2246,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+      "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
       "projectName": "RentalCar.Model",
-      "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+      "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\obj\\",
+      "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj": {}
+    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj": {}
   },
   "projects": {
-    "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
+    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
+        "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
         "projectName": "RentalCar.Data",
-        "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
+        "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\obj\\",
+        "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
-                "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
+              "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+                "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
               }
             }
           }
@@ -105,14 +105,14 @@
         }
       }
     },
-    "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+        "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
         "projectName": "RentalCar.Model",
-        "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+        "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\obj\\",
+        "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -196,14 +196,14 @@
         }
       }
     },
-    "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj": {
+    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
+        "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
         "projectName": "RentalCar.Service",
-        "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
+        "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Service\\RentalCar.Service.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Service\\obj\\",
+        "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Service\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -220,11 +220,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
-                "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj"
+              "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
+                "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj"
               },
-              "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
-                "projectPath": "D:\\DUT\\PBL6_api\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
+              "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+                "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
               }
             }
           }

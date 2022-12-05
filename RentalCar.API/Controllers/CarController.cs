@@ -176,7 +176,9 @@ namespace RentalCar.API.Controllers
                     // return NotFound(message);
                 }
                 var carAdd = new Car{
-                    Name = car.Name,
+                    Name = _carmodelService.GetCarModelById(car.CarModelId).CarBrand.Name + " "
+                            +_carmodelService.GetCarModelById(car.CarModelId).Name + " "
+                            + car.YearManufacture,
                     Description = car.Description,
                     // Color = car.Color,
                     Capacity = car.Capacity,
@@ -202,7 +204,7 @@ namespace RentalCar.API.Controllers
 
                 int CarId = Car.Id;
                 foreach(var image in car.Image){
-                    var linkImage = await _uploadImgService.UploadImage(image);
+                    var linkImage = await _uploadImgService.UploadImage("car",username,image);
                     _carService.InsertImage(CarId,linkImage);
                     _carService.SaveChanges();
                 }
@@ -213,6 +215,9 @@ namespace RentalCar.API.Controllers
                 caradd.FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(result.FuelType);
                 caradd.ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(result.CarImages);
                 caradd.LocationDto = _mapper.Map<Location,LocationDto>(result.Location);
+                caradd.District = _mapper.Map<District,DistrictDto>(result.Location.Ward.District);
+                caradd.Ward = _mapper.Map<Ward,WardDto>(result.Location.Ward);
+                caradd.Username = username;
 
                 return Ok(caradd);
                 }
@@ -434,16 +439,18 @@ namespace RentalCar.API.Controllers
             return Ok(CarImage);
         }
 
-        [HttpPut("{id}/CarImage")]
+        [Authorize(Roles="lease")]
+        [HttpPost("{id}/CarImage")]
         public async Task<ActionResult<string>> AddCarImage(List<IFormFile> listImage,int id)
         {
             try{
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var car = _carService.GetCarById(id);
                 if(car == null){
                     return NotFound("Car doesn't exist");
                 } 
                 foreach(var image in listImage){
-                    var linkImage = await _uploadImgService.UploadImage(image);
+                    var linkImage = await _uploadImgService.UploadImage("car",username,image);
                     _carService.InsertImage(id,linkImage);
                     _carService.SaveChanges();
                 }
