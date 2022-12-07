@@ -66,7 +66,7 @@ namespace RentalCar.Data.Repositories
         List<CarTypeRegister> GetCarTypeRegister();
         
         List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId);
-        void InsertImageRegister(int carid, int IdType, List<string> Images);
+        void InsertImageRegister(int carid, int IdType, string Images);
         void DeleteCarImageRgtbyId(int ImgId);
 
     }

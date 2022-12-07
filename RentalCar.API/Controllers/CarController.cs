@@ -101,7 +101,7 @@ namespace RentalCar.API.Controllers
         public ActionResult<CarAddDto> CarViewAdd()
         {
             List<CapacityDto> capacities = new List<CapacityDto>();
-            for(int i =1; i<5; i++){
+            for(int i =4; i<8; i++){
                 capacities.Add(new CapacityDto{
                     Id = i,
                     Capacity = i
@@ -385,9 +385,9 @@ namespace RentalCar.API.Controllers
                 Status =  _mapper.Map<Status, StatusDto>(car.Status),
                 Cost = car.Cost,
                 Plate_number = car.Plate_number,
-                location = _mapper.Map<Location,LocationDto>(car.Location),
-                Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
-                District = car.Location.Ward.District,
+                Address = _mapper.Map<Location,LocationDto>(car.Location).Address,
+                WardId = _mapper.Map<Ward,WardDto>(car.Location.Ward).Id,
+                DistrictId = car.Location.Ward.District.Id,
                 Capacity = car.Capacity,
                 Transmission = _mapper.Map<Transmission,TransmissionDto>(car.Transmission),
                 FuelType = _mapper.Map<FuelType,FuelTypeDto>(car.FuelType),
@@ -494,30 +494,62 @@ namespace RentalCar.API.Controllers
             return Ok(CarRegister);
         }
 
-        [HttpPost("{id}/CarImageRegister")]
-        public ActionResult<string> AddCarImgRegister(int id,List<ImageTypeRegister> imageTypes)
+        // [HttpPost("{id}/CarImageRegister")]
+        // public async Task<ActionResult<string>> AddCarImgRegister(int id,[FromForm]List<ImageTypeRegister> imageTypes)
+        // {
+        //     var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //     try{
+        //         var car = _carService.GetCarById(id);
+        //         if(car == null){
+        //             return NotFound("Car doesn't exist");
+        //         } 
+        //         foreach(var imageType in imageTypes){
+        //             if(imageType.Path !=null){
+        //                 List<string> listImage = new List<string>();
+        //                 foreach(var image in imageType.Path){
+        //                     var linkImage = await _uploadImgService.UploadImage("CarRegister",username,image);
+        //                     listImage.Add(linkImage);
+        //                 }
+        //                 _carService.InsertImageRegister(id,imageType.IdType,listImage);
+        //             }
+        //         // _carService.SaveChanges();
+        //         }
+        //         var CarTypeRegisters = _carService.GetCarTypeRegister();
+        //         List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
+        //         foreach(var carType in CarTypeRegisters){
+        //             CarRegister.Add(new CarRegisterDto{
+        //                 IdType = carType.Id,
+        //                 NameType = carType.Name,
+        //                 listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
+        //                             (_carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id) == null 
+        //                             ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
+        //                 });
+        //     }
+        //     return Ok(CarRegister);
+                
+        //     }
+        //     catch(Exception ex){
+        //         return BadRequest(ex.Message);
+        //     }
+        // }
+
+        [HttpPost("{id}/CarImageType/{idType}")]
+        public async Task<ActionResult<string>> AddCarImgRegister(int id,int idType,[FromForm]List<IFormFile> images)
         {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             try{
                 var car = _carService.GetCarById(id);
                 if(car == null){
                     return NotFound("Car doesn't exist");
                 } 
-                foreach(var imageType in imageTypes){
-                _carService.InsertImageRegister(id,imageType.IdType,imageType.Path);
-                // _carService.SaveChanges();
+                if(images !=null){
+                    foreach(var image in images){
+                        var linkImage = await _uploadImgService.UploadImage("CarRegister",username,image);
+                        _carService.InsertImageRegister(id,idType,linkImage);
+                    }
                 }
-                var CarTypeRegisters = _carService.GetCarTypeRegister();
-                List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
-                foreach(var carType in CarTypeRegisters){
-                    CarRegister.Add(new CarRegisterDto{
-                        IdType = carType.Id,
-                        NameType = carType.Name,
-                        listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
-                                    (_carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id) == null 
-                                    ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
-                        });
-            }
-            return Ok(CarRegister);
+                var CarRegister =_carService.GetCarImgRegistersByCarIdAndTypeId(id,idType);
+                return Ok(_mapper.Map<List<CarImgRegister>,List<CarImageDtos>>(CarRegister));
                 
             }
             catch(Exception ex){

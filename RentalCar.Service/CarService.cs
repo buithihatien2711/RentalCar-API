@@ -170,7 +170,7 @@ namespace RentalCar.Service
             return _carRepository.GetCarImgRegistersByCarIdAndTypeId(CarId,CarTypeRegisterId);
         }
 
-        public void InsertImageRegister(int carid, int IdType, List<string> Images)
+        public void InsertImageRegister(int carid, int IdType, string Images)
         {
             _carRepository.InsertImageRegister(carid,IdType,Images);
         }
