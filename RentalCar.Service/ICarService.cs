@@ -59,7 +59,8 @@ namespace RentalCar.Service
         List<CarTypeRegister> GetCarTypeRegister();
         
         List<CarImgRegister>? GetCarImgRegistersByCarIdAndTypeId(int CarId,int CarTypeRegisterId);
-        void InsertImageRegister(int carid, int IdType, List<string> paths);
+        // void InsertImageRegister(int carid, int IdType, List<string> paths);
+        void InsertImageRegister(int carid, int IdType,string path);
         void DeleteCarImageRgtbyId(int ImgId);
 
 

@@ -8,6 +8,6 @@ namespace RentalCar.API.Models
     public class ImageTypeRegister
     {
         public int IdType { get; set; }
-        public List<string> Path { get; set; }
+        public List<IFormFile> Path { get; set; }
     }
 }

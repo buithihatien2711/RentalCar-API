@@ -279,22 +279,19 @@ namespace RentalCar.Data.Repositories
             }
             return CarImageRegister;
         }
-        public void InsertImageRegister(int carid, int IdType, List<string> CarImages)
+        public void InsertImageRegister(int carid, int IdType, string CarImages)
         {
-            foreach(var carimage in CarImages)
-            {
-                _context.CarRegisters.Add(new CarRegister{
-                    CarId = carid,
-                    CarTypeRgtId = IdType
-                });
-                SaveChanges();
-                var CarRegister = _context.CarRegisters.Max(o=>o.Id);
-                _context.CarImgRegisters.Add(new CarImgRegister{
-                    CarRegisterId = CarRegister,
-                    Path = carimage
-                });
-                SaveChanges();
-            };
+            _context.CarRegisters.Add(new CarRegister{
+                CarId = carid,
+                CarTypeRgtId = IdType
+            });
+            SaveChanges();
+            var CarRegister = _context.CarRegisters.Max(o=>o.Id);
+            _context.CarImgRegisters.Add(new CarImgRegister{
+                CarRegisterId = CarRegister,
+                Path = CarImages
+            });
+            SaveChanges();
         }
 
         public void DeleteCarImageRgtbyId(int ImgId)
