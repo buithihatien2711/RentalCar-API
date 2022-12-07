@@ -28,5 +28,9 @@ namespace RentalCar.Data.Repositories
         bool SaveChanges();
 
         Role? GetRoleById(int id);
+
+        void UpdateLicense(License license, string username);
+
+        License? GetLicenseByUser(string username);
     }
 }

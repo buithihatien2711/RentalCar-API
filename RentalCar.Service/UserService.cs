@@ -66,5 +66,15 @@ namespace RentalCar.Service
         {
             _repository.UpdateUserPatch(username, user);
         }
+
+        public void UpdateLicense(License license, string username)
+        {
+            _repository.UpdateLicense(license, username);
+        }
+
+        public License? GetLicenseByUser(string username)
+        {
+            return _repository.GetLicenseByUser(username);
+        }
     }
 }

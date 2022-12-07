@@ -24,5 +24,9 @@ namespace RentalCar.Service
         Role? GetRoleById(int id);
 
         void UpdateUserPatch(string username, JsonPatchDocument user);
+
+        void UpdateLicense(License license, string username);
+
+        License? GetLicenseByUser(string username);
     }
 }

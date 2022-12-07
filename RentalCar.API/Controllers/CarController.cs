@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Mapping;
 using RentalCar.API.Models;
+using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 using RentalCar.Service;
 
@@ -617,6 +618,28 @@ namespace RentalCar.API.Controllers
                 });
             }
             return Ok(listCarViews);
+        }
+
+        [HttpGet("find")]
+        public ActionResult<List<CarOverview>> ViewCarImgRegister([FromQuery]SearchParam searchParam)
+        {
+            List<Car>? cars = _carService.GetCarsFilterSort(searchParam);
+            if (cars == null) return Ok(null);
+            return Ok(_mapper.Map<List<Car>, List<CarOverview>>(cars));
+        }
+
+        [HttpGet("/api/Car/sortby")]
+        public ActionResult<Dictionary<string, string>> GetSortByParam()
+        {
+            Dictionary<string, List<string>> sortBy= new Dictionary<string, List<string>>();
+            var sorts = new List<string>();
+            sorts.Add("price_asc");
+            sorts.Add("price_desc");
+            sorts.Add("rate_desc");
+
+            sortBy.Add("sortby", sorts);
+
+            return Ok(sortBy);
         }
     }
 }

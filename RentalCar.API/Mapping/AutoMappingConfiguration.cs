@@ -22,16 +22,15 @@ namespace RentalCar.API.Mapping
             CreateMap<District, DistrictDto>();
             CreateMap<CarTypeRegister, CarTypeRegisterDto>();
             CreateMap<UserProfile, User>();
-            CreateMap<User, UserProfile>().ForMember(
-                dest => dest.LicenseDto,
-                opt => opt.MapFrom(src => src.License == null ? null : new LicenseDto()
-                                    {
-                                        Number = src.License.Number,
-                                        Name = src.License.Name,
-                                        DateOfBirth = src.License.DateOfBirth,
-                                        Image = src.License.Image
-                                    })
-            );
+            CreateMap<License, LicenseViewDto>();
+            CreateMap<LicenseViewDto, License>();
+            CreateMap<User, AdminProfileDto>();
+            CreateMap<UpdateAdminDto, User>();
+            CreateMap<User, UserProfile>()
+                .ForMember(
+                    dest => dest.LicenseDto,
+                    opt => opt.MapFrom(src => src.License == null ? null : src.License.Number)
+                );
             CreateMap<Car, CarDetailDto>()
                 .ForMember(
                     dest => dest.CarModel,

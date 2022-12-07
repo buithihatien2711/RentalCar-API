@@ -49,7 +49,7 @@ namespace RentalCar.Model.Models
         public List<Location>? Locations { get; set; }
 
         public List<CarReview>? CarReviews { get; set; }
-    
-        public List<Booking> Bookings { get; set; }
+
+        public double Rating { get; set; }
     }
 }

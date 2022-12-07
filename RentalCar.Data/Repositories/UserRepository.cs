@@ -107,5 +107,19 @@ namespace RentalCar.Data.Repositories
             if(existUser == null) return;
             user.ApplyTo(existUser);
         }
+
+        public void UpdateLicense(License license, string username)
+        {
+            var existUser = GetUserByUsername(username);
+            if(existUser == null) return;
+            existUser.License = license;
+        }
+
+        public License? GetLicenseByUser(string username)
+        {
+            var existUser = GetUserByUsername(username);
+            if(existUser == null) return null;
+            return existUser.License;
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace RentalCar.API.Controllers
                     PasswordHash = user.PasswordHash,
                     CreatedAt = user.CreatedAt,
                     Roles = roles,
-                    LicenseDto = user.License == null ? null : new LicenseDto()
+                    LicenseDto = user.License == null ? null : new LicenseViewDto()
                     {
                         Number = user.License.Number,
                         Name = user.License.Name,
@@ -99,7 +99,7 @@ namespace RentalCar.API.Controllers
                     PasswordHash = user.PasswordHash,
                     CreatedAt = user.CreatedAt,
                     Roles = roles,
-                    LicenseDto = user.License == null ? null : new LicenseDto()
+                    LicenseDto = user.License == null ? null : new LicenseViewDto()
                                         {
                                             Number = user.License.Number,
                                             Name = user.License.Name,
@@ -114,7 +114,7 @@ namespace RentalCar.API.Controllers
 
         [Route("lease")]
         [HttpGet]
-        public ActionResult<IEnumerable<UserProfile>> GetLease()
+        public ActionResult<IEnumerable<UserDto>> GetLease()
         {
             var role = _userService.GetRoleById(2);
             if(role == null) return NotFound();
@@ -145,7 +145,7 @@ namespace RentalCar.API.Controllers
                     PasswordHash = user.PasswordHash,
                     CreatedAt = user.CreatedAt,
                     Roles = roles,
-                    LicenseDto = user.License == null ? null : new LicenseDto()
+                    LicenseDto = user.License == null ? null : new LicenseViewDto()
                                         {
                                             Number = user.License.Number,
                                             Name = user.License.Name,
@@ -182,7 +182,7 @@ namespace RentalCar.API.Controllers
                 PasswordHash = user.PasswordHash,
                 CreatedAt = user.CreatedAt,
                 Roles = roles,
-                LicenseDto = user.License == null ? null : new LicenseDto()
+                LicenseDto = user.License == null ? null : new LicenseViewDto()
                                     {
                                         Number = user.License.Number,
                                         Name = user.License.Name,

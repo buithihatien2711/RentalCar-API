@@ -33,6 +33,6 @@ namespace RentalCar.API.Models
 
         public List<RoleDto> Roles {get; set; }
         
-        public LicenseDto LicenseDto { get; set; }
+        public LicenseViewDto? LicenseDto { get; set; }
     }
 }
