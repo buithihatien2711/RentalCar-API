@@ -304,5 +304,128 @@ namespace RentalCar.Data.Repositories
             }
 
         }
+        public District? GetDistrictById(int id)
+        {
+            return _context.Districts.FirstOrDefault(d => d.Id == id);
+        }
+        
+        public List<Car>? GetCarsFilterSort(SearchParam searchParam)
+        {
+            var cars =  _context.Cars.Include(p => p.Location).ThenInclude(l => l.Ward).ThenInclude(w => w.District)
+                        .Include(w => w.Transmission)
+                        .Include(w => w.Status)
+                        .Include(w => w.CarImages)
+                        .Include(u => u.CarModel)
+                        .ThenInclude(l => l.CarBrand)
+                        .Include(c => c.CarSchedules)
+                        .Where(c => c.StatusID == 3)
+                        .AsQueryable();
+
+            #region Filtering
+            // Get by District
+            if (searchParam.IdDistrict.HasValue)
+            {
+                if (GetDistrictById(searchParam.IdDistrict.Value) != null)
+                {
+                    cars = cars.Where(c => c.Location.Ward.DistrictID == searchParam.IdDistrict);
+                }
+            }
+            
+            // Get car by Ward
+            if (searchParam.IdWard.HasValue)
+            {
+                if(GetWardById(searchParam.IdWard.Value) != null)
+                {
+                    cars = cars.Where(c => c.Location.WardId == searchParam.IdWard);
+                }
+            }
+            var listCars = cars.ToList();
+            if (listCars != null)
+            {
+                // Get car by schedule
+                foreach (var car in listCars.ToList())
+                {
+                    if (car.CarSchedules != null)
+                    {
+                        var schedules = car.CarSchedules;
+                        foreach (var schedule in schedules)
+                        {
+                            // Check if two time period overlap
+                            //if (!(schedule.returnDate < startdate || schedule.rentDate > enddate))
+                            if ((schedule.rentDate <= searchParam.Start && schedule.returnDate >= searchParam.Start)
+                                || (schedule.rentDate <= searchParam.End && schedule.returnDate >= searchParam.End)
+                                || (schedule.rentDate >= searchParam.Start && schedule.returnDate <= searchParam.End))
+                            {
+                                listCars.Remove(car);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(listCars == null) return null;
+
+            cars = listCars.AsQueryable();
+
+            // Get car by brand
+            if (searchParam.IdCarBrand.HasValue)
+            {
+                cars = cars.Where(c => c.CarModel.CarBrandId == searchParam.IdCarBrand.Value);
+            }
+            
+            // Get car by transmission
+            if(searchParam.IdTransmission.HasValue)
+            {
+                cars = cars.Where(c => c.TransmissionID == searchParam.IdTransmission.Value);
+            }
+
+            // Get car by capacity
+            if(searchParam.Capacity.HasValue)
+            {
+                cars = cars.Where(c => c.Capacity == searchParam.Capacity.Value);
+            }
+
+            #endregion
+
+            #region Sort
+            if(string.IsNullOrEmpty(searchParam.SortBy))
+            {
+                switch (searchParam.SortBy)
+                {
+                    case ("price_asc"):
+                        cars = cars.OrderBy(c => c.Cost);
+                        break;
+                    case ("price_desc"):
+                        cars = cars.OrderByDescending(c => c.Cost);
+                        break;
+                    case ("rate_desc"):
+                        cars = cars.OrderByDescending(c => c.NumberStar);
+                        break;
+                }
+            }
+            #endregion
+
+            return cars.ToList();
+        }
+    }
+
+    public class SearchParam
+    {
+        public int? IdDistrict { get; set; }
+
+        public int? IdWard { get; set; }
+        
+        public DateTime Start { get; set; }
+        
+        public DateTime End { get; set; }
+        
+        public int? IdCarBrand { get; set; }
+        
+        public int? IdTransmission { get; set; }
+        
+        public int? Capacity { get; set; }
+        
+        public string? SortBy { get; set; }
     }
 }

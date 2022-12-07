@@ -19,7 +19,5 @@ namespace RentalCar.Model.Models
         public User User { get; set; }
  
         public List<Car> Car { get; set; }
-
-        public List<Booking>? Bookings { get; set; }
     }
 }

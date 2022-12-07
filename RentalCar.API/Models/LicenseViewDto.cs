@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RentalCar.API.Models
 {
-    public class LicenseDto
+    public class LicenseViewDto
     {
         public string Number { get; set; }
         
@@ -13,6 +13,6 @@ namespace RentalCar.API.Models
 
         public DateTime DateOfBirth { get; set; }
         
-        public IFormFile Image { get; set; }
+        public string Image { get; set; }
     }
 }

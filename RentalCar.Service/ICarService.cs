@@ -1,3 +1,4 @@
+using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 
 namespace RentalCar.Service
@@ -63,6 +64,6 @@ namespace RentalCar.Service
         void InsertImageRegister(int carid, int IdType,string path);
         void DeleteCarImageRgtbyId(int ImgId);
 
-
+        List<Car>? GetCarsFilterSort(SearchParam searchParam);
     }
 }

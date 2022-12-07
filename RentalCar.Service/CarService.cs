@@ -180,5 +180,9 @@ namespace RentalCar.Service
             _carRepository.DeleteCarImageRgtbyId(ImgId);
         }
         
+        public List<Car>? GetCarsFilterSort(SearchParam searchParam)
+        {
+            return _carRepository.GetCarsFilterSort(searchParam);
+        }
     }
 }
