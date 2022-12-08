@@ -70,5 +70,7 @@ namespace RentalCar.Model.Models
         public List<CarSchedule> CarSchedules { get; set; }
 
         public List<PriceByDate> PriceByDates { get; set; }
+        public List<Booking> Bookings { get; set; }
+
     }
 }

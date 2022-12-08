@@ -11,9 +11,9 @@ namespace RentalCar.Model.Models
         [Key]
         public int Id { get; set; }
         
-        public DateTime? rentDate { get; set; }
+        public DateTime rentDate { get; set; }
         
-        public DateTime? returnDate { get; set; }
+        public DateTime returnDate { get; set; }
         
         public int CarId { get; set; }
         

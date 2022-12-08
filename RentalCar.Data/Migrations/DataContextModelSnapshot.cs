@@ -22,6 +22,49 @@ namespace RentalCar.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("RentalCar.Model.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.Car", b =>
                 {
                     b.Property<int>("Id")
@@ -561,6 +604,33 @@ namespace RentalCar.Data.Migrations
                     b.ToTable("Wards");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.Booking", b =>
+                {
+                    b.HasOne("RentalCar.Model.Models.Car", "Car")
+                        .WithMany("Bookings")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalCar.Model.Models.Location", "Location")
+                        .WithMany("Bookings")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalCar.Model.Models.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.Car", b =>
                 {
                     b.HasOne("RentalCar.Model.Models.CarModel", "CarModel")
@@ -767,6 +837,8 @@ namespace RentalCar.Data.Migrations
 
             modelBuilder.Entity("RentalCar.Model.Models.Car", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("CarImages");
 
                     b.Navigation("CarRegisters");
@@ -800,6 +872,8 @@ namespace RentalCar.Data.Migrations
 
             modelBuilder.Entity("RentalCar.Model.Models.Location", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("Car");
                 });
 
@@ -820,6 +894,8 @@ namespace RentalCar.Data.Migrations
 
             modelBuilder.Entity("RentalCar.Model.Models.User", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("CarReviews");
 
                     b.Navigation("Cars");

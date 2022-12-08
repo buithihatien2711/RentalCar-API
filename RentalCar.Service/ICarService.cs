@@ -65,5 +65,6 @@ namespace RentalCar.Service
         void DeleteCarImageRgtbyId(int ImgId);
 
         List<Car>? GetCarsFilterSort(SearchParam searchParam);
+        bool CheckScheduleByDate(int idCar,DateTime date);
     }
 }

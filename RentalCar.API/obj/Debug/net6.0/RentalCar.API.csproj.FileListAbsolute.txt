@@ -696,3 +696,6 @@ D:\DUT\PBL6_merge\RentalCar-API\RentalCar.API\obj\Debug\net6.0\ref\RentalCar.API
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Auth.dll
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Storage.dll
 D:\Ki7\PBL6-CNPM-Rentalcar\Publish\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\DUT\PBL6\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Auth.dll
+D:\DUT\PBL6\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Firebase.Storage.dll
+D:\DUT\PBL6\RentalCar-API\RentalCar.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll

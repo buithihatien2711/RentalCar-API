@@ -184,5 +184,16 @@ namespace RentalCar.Service
         {
             return _carRepository.GetCarsFilterSort(searchParam);
         }
+
+        public bool CheckScheduleByDate(int idCar,DateTime date)
+        {
+            var car = GetCarById(idCar);
+            foreach(var schedule in car.CarSchedules){
+                for(var day= schedule.rentDate; day <= schedule.returnDate; day = day.AddDays(1)){
+                    if(date.Date == day.Date) return true;
+                }
+            }
+            return false;
+        }
     }
 }
