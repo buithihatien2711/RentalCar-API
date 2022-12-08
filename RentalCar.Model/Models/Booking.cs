@@ -2,6 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RentalCar.Model.Models
 {
+    public enum enumStatus
+    {
+        Confirm = 1,
+        WaitConFirm = 2,
+        Paid = 3
+
+    }
     public class Booking
     {
         [Key]
@@ -9,7 +16,7 @@ namespace RentalCar.Model.Models
         public DateTime RentDate { get; set; }
         public DateTime ReturnDate { get; set; }
         public decimal Total { get; set; }
-        public bool Status { get; set; }
+        public enumStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public int UserId { get; set; }

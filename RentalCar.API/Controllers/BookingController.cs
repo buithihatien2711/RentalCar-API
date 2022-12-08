@@ -55,6 +55,7 @@ namespace RentalCar.API.Controllers
                 price = (price != resultBefore) ? price : resultBefore + car.Cost;
             }
             var result = new BookingPrice{
+                Day = count,
                 PriceAverage = price/count,
                 Total = price,
                 Schedule =message
@@ -79,7 +80,7 @@ namespace RentalCar.API.Controllers
                 };
 
                 var value = _mapper.Map<BookingAddDto,Booking>(booking);
-                value.Status = false;
+                value.Status = enumStatus.WaitConFirm;
                 value.CreatedAt = DateTime.Now;
                 value.LocationId = _carService.GetLocationByAddress(booking.Address).Id;
                 value.UserId = userId;
