@@ -46,11 +46,18 @@ namespace RentalCar.Data
 
         public DbSet<CarSchedule> CarSchedules { get; set; }
 
+        public DbSet<UserReview> UserReviews { get; set; }
+        
+        public DbSet<UserReviewUser> UserReviewUsers { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RoleUser>()
                 .HasKey(ru => new { ru.UserId, ru.RoleId });
             
+            modelBuilder.Entity<UserReviewUser>()
+                .HasKey(uru => new { uru.UserId, uru.UserReviewId });
+
             // modelBuilder.Entity<CarRegister>()
             //     .HasKey(ru => new { ru.CarId, ru.CarTypeRgtId});
             
@@ -89,19 +96,19 @@ namespace RentalCar.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
-           //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
-           ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
-           //optionsBuilder
-           //    .UseMySql(connectionString, serverVersion)
-           //    .LogTo(Console.WriteLine, LogLevel.Information)
-           //    .EnableSensitiveDataLogging()
-           //    .EnableDetailedErrors();
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //   //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
+        //   //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+        //   ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
+        //   //optionsBuilder
+        //   //    .UseMySql(connectionString, serverVersion)
+        //   //    .LogTo(Console.WriteLine, LogLevel.Information)
+        //   //    .EnableSensitiveDataLogging()
+        //   //    .EnableDetailedErrors();
 
-           string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
-           optionsBuilder.UseSqlServer(connectionString);
-        }
+        //   string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
+        //   optionsBuilder.UseSqlServer(connectionString);
+        //}
     }
 }
