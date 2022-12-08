@@ -309,10 +309,10 @@ namespace RentalCar.Data.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("rentDate")
+                    b.Property<DateTime>("rentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("returnDate")
+                    b.Property<DateTime>("returnDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -581,6 +581,55 @@ namespace RentalCar.Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.UserReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RenterId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserReviews");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.UserReviewUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "UserReviewId");
+
+                    b.HasIndex("UserReviewId");
+
+                    b.ToTable("UserReviewUsers");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.Ward", b =>
                 {
                     b.Property<int>("Id")
@@ -824,6 +873,25 @@ namespace RentalCar.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RentalCar.Model.Models.UserReviewUser", b =>
+                {
+                    b.HasOne("RentalCar.Model.Models.User", "User")
+                        .WithMany("UserReviewUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentalCar.Model.Models.UserReview", "UserReview")
+                        .WithMany("UserReviewUsers")
+                        .HasForeignKey("UserReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserReview");
+                });
+
             modelBuilder.Entity("RentalCar.Model.Models.Ward", b =>
                 {
                     b.HasOne("RentalCar.Model.Models.District", "District")
@@ -905,6 +973,13 @@ namespace RentalCar.Data.Migrations
                     b.Navigation("Locations");
 
                     b.Navigation("RoleUsers");
+
+                    b.Navigation("UserReviewUsers");
+                });
+
+            modelBuilder.Entity("RentalCar.Model.Models.UserReview", b =>
+                {
+                    b.Navigation("UserReviewUsers");
                 });
 
             modelBuilder.Entity("RentalCar.Model.Models.Ward", b =>

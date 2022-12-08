@@ -53,5 +53,7 @@ namespace RentalCar.Model.Models
         public double Rating { get; set; }
         public List<Booking> Bookings { get; set; }
 
+        public List<UserReviewUser>? UserReviewUsers { get; set; }
+
     }
 }
