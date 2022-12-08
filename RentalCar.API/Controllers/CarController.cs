@@ -204,10 +204,12 @@ namespace RentalCar.API.Controllers
                 var Car = _carService.GetCarByPateNumber(car.Plate_number);
 
                 int CarId = Car.Id;
-                foreach(var image in car.Image){
-                    var linkImage = await _uploadImgService.UploadImage("car",username,image);
-                    _carService.InsertImage(CarId,linkImage);
-                    _carService.SaveChanges();
+                if(car.Image !=null){
+                    foreach(var image in car.Image){
+                        var linkImage = await _uploadImgService.UploadImage("car",username,image);
+                        _carService.InsertImage(CarId,linkImage);
+                        _carService.SaveChanges();
+                    }
                 }
                 var result = _carService.GetCarById(CarId);
                 var caradd = _mapper.Map<Car,CarViewDto>(result);
@@ -399,28 +401,47 @@ namespace RentalCar.API.Controllers
 
             return Ok(carInfoView);
         }
-        [HttpPut("CarInfor")]
-        public ActionResult<string> UpdateCarInfor(CarInfo_UpdateDto carInput)
+        [HttpPut("{id}/CarInfor")]
+        public ActionResult<string> UpdateCarInfor(int id,CarInfoView_UpdateDto carInput)
         {
             try{
-                var car = _carService.GetCarById(carInput.Id);
+                var carSer = _carService.GetCarById(id);
                 var ward = _carService.GetWardById(carInput.WardId);
-                if(car == null) {
+                if(carSer == null) {
                     return NotFound("Car doesn't exist");
                 }
                 if(ward == null) {
                     return NotFound("Ward doesn't exist");
                 }
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var user = _userService.GetUserByUsername(username);
+                var userId = _userService.GetUserByUsername(username).Id;
 
                 var location = new Location{
                         Address = carInput.Address,
                         WardId = carInput.WardId,
-                        UserId = user.Id
+                        UserId = userId
                     };
-                _carService.UpdateCarInfor(car.Id,location,carInput.FuelConsumption,carInput.Description,carInput.Cost);
-                return Ok(carInput);
+                _carService.UpdateCarInfor(id,location,carInput.FuelConsumption,carInput.Description,carInput.Cost);
+                var car = _carService.GetCarById(id);
+                if(car == null) return NotFound();
+                var carInfoView = new CarInfoView_UpdateDto(){
+                    Name = car.Name,
+                    Status =  _mapper.Map<Status, StatusDto>(car.Status),
+                    Cost = car.Cost,
+                    Plate_number = car.Plate_number,
+                    Address = _mapper.Map<Location,LocationDto>(car.Location).Address,
+                    WardId = _mapper.Map<Ward,WardDto>(car.Location.Ward).Id,
+                    DistrictId = car.Location.Ward.District.Id,
+                    Capacity = car.Capacity,
+                    Transmission = _mapper.Map<Transmission,TransmissionDto>(car.Transmission),
+                    FuelType = _mapper.Map<FuelType,FuelTypeDto>(car.FuelType),
+                    FuelConsumption = car.FuelConsumption,
+                    Description = car.Description,
+                    carImages = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id)),
+                };
+
+            return Ok(carInfoView);
+                return Ok(_mapper.Map<Car, CarViewDto>(_carService.GetCarById(id)));
             }
             catch(Exception ex){
                 return BadRequest(ex.Message);

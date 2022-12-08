@@ -42,7 +42,7 @@ namespace RentalCar.Data
         public DbSet<CarTypeRegister> CarTypeRegisters { get; set; }
         public DbSet<CarImgRegister> CarImgRegisters { get; set; }
 
-        // public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         public DbSet<CarSchedule> CarSchedules { get; set; }
 
@@ -74,28 +74,34 @@ namespace RentalCar.Data
                         .OnDelete(DeleteBehavior.ClientCascade);
 
 
-            // modelBuilder.Entity<Booking>()
-            //             .HasOne(r => r.Location)
-            //             .WithMany(u => u.Bookings)
-            //             .HasForeignKey(r => r.LocationId)
-            //             .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Booking>()
+                        .HasOne(r => r.Location)
+                        .WithMany(u => u.Bookings)
+                        .HasForeignKey(r => r.LocationId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+             modelBuilder.Entity<Booking>()
+                        .HasOne(r => r.User)
+                        .WithMany(u => u.Bookings)
+                        .HasForeignKey(r => r.UserId)
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
             base.OnModelCreating(modelBuilder);
         }
 
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //    //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
-        //    //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
-        //    ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
-        //    //optionsBuilder
-        //    //    .UseMySql(connectionString, serverVersion)
-        //    //    .LogTo(Console.WriteLine, LogLevel.Information)
-        //    //    .EnableSensitiveDataLogging()
-        //    //    .EnableDetailedErrors();
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+           //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
+           //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+           ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
+           //optionsBuilder
+           //    .UseMySql(connectionString, serverVersion)
+           //    .LogTo(Console.WriteLine, LogLevel.Information)
+           //    .EnableSensitiveDataLogging()
+           //    .EnableDetailedErrors();
 
-        //    string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
-        //    optionsBuilder.UseSqlServer(connectionString);
-        // }
+           string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
+           optionsBuilder.UseSqlServer(connectionString);
+        }
     }
 }

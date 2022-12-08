@@ -66,6 +66,9 @@ services.AddScoped<ICarReviewService, CarReviewService>();
 services.AddScoped<ICarStatusRepository, CarStatusRepository>();
 services.AddScoped<ICarStatusService, CarStatusService>();
 
+services.AddScoped<IBookingRepository, BookingRepository>();
+services.AddScoped<IBookingService, BookingService>();
+
 services.AddScoped<IUploadImgService, UploadImgService>();
 
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);

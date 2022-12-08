@@ -32,7 +32,10 @@ namespace RentalCar.Data.Repositories
                                 .Include(w => w.CarRegisters).ThenInclude(l => l.CarTypeRgt)
                                 .Include(w => w.CarRegisters).ThenInclude(l => l.CarImgRegisters)
                                 .Include(w => w.User)
+                                .Include(w => w.PriceByDates)
+                                .Include(w => w.CarSchedules)
                                 .FirstOrDefault(u => u.Id == id);
+                                
         }
 
         public List<Car> GetCars()
