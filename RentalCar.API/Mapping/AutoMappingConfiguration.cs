@@ -28,7 +28,8 @@ namespace RentalCar.API.Mapping
             CreateMap<PriceByDate, PriceByDateDto>();
             CreateMap<BookingAddDto,Booking>();
             CreateMap<CarSchedule, CarScheduleDto>();
-            CreateMap<UpdateAdminDto, User>();
+            CreateMap<UpdateUserDto, User>();
+            CreateMap<User, UpdateUserDto>();
             CreateMap<User, UserProfile>()
                 .ForMember(
                     dest => dest.LicenseDto,

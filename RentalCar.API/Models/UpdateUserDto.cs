@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RentalCar.API.Models
 {
-    public class UpdateAdminDto
+    public class UpdateUserDto
     {
         public string Fullname { get; set; }
 
