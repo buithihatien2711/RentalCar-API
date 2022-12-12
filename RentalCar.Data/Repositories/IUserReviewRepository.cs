@@ -4,7 +4,7 @@ namespace RentalCar.Data.Repositories
 {
     public interface IUserReviewRepository
     {
-        List<UserReview>? GetReviewsOfLease(int idUser);
+        List<UserReview>? GetReviewsOfLease(int idUser, int page = 1);
 
         UserReview? GetReviewById(int idReview);
 

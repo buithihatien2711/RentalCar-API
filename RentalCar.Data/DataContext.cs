@@ -96,8 +96,8 @@ namespace RentalCar.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
         //  //string connectionString = "Server=serverhaiyen.mysql.database.azure.com; Port=3306; Database=RentalCarDatabase; Uid=haiyen@serverhaiyen; Pwd=#Hthy01042001; SslMode=Preferred;";
         //  //var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
         //  ////var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
@@ -109,6 +109,6 @@ namespace RentalCar.Data
 
         //  string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
         //  optionsBuilder.UseSqlServer(connectionString);
-        //}
+        // }
     }
 }

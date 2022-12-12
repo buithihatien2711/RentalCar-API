@@ -6,6 +6,6 @@ namespace RentalCar.Service
     {
         void AddReview(UserReview userReview);
 
-        List<UserReview>? GetReviewsOfLease(int idUser);
+        List<UserReview>? GetReviewsOfLease(int idUser, int pageIndex);
     }
 }

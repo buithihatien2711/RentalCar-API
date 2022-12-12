@@ -31,11 +31,11 @@ namespace RentalCar.API.Controllers
         [HttpGet]
         public ActionResult<UserProfile> Get()
         {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             // var username = "nguyenvana";
-            var user = _userService.GetUserByUsername(username);
-            if (user == null) return NotFound();
+            if (username == null) return Unauthorized();
 
+            var user = _userService.GetUserByUsername(username.Value);
             var profile = _mapper.Map<User, UserProfile>(user);
             return Ok(profile);
         }
@@ -43,30 +43,30 @@ namespace RentalCar.API.Controllers
         [HttpPatch("/api/account")]
         public ActionResult<UserProfile> UpdateUserPatch(JsonPatchDocument userModel)
         {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             // var username = "nguyenvana";
 
-            if(string.IsNullOrEmpty(username)) return NotFound();
+            if(username == null) return Unauthorized();
 
-            _userService.UpdateUserPatch(username, userModel);
+            _userService.UpdateUserPatch(username.Value, userModel);
 
-            if(_userService.SaveChanges()) return Ok(_mapper.Map <User, UserProfile>(_userService.GetUserByUsername(username)));
+            if(_userService.SaveChanges()) return Ok(_mapper.Map <User, UserProfile>(_userService.GetUserByUsername(username.Value)));
             return BadRequest("Profile update failed");
         }
 
         [HttpPut("/api/account/avatar")]
         public async Task<ActionResult<UserProfile>> UpdateAvatar(IFormFile userAvatar)
         {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             // var username = "nguyenvana";
 
-            if(string.IsNullOrEmpty(username)) return NotFound();
+            if(username == null) return Unauthorized();
 
-            var userExist = _userService.GetUserByUsername(username);
+            var userExist = _userService.GetUserByUsername(username.Value);
 
-            userExist.ProfileImage = await _uploadImgService.UploadImage("avatar", username, userAvatar);
+            userExist.ProfileImage = await _uploadImgService.UploadImage("avatar", username.Value, userAvatar);
 
-            _userService.UpdateUser(username, userExist);
+            _userService.UpdateUser(username.Value, userExist);
 
             if (_userService.SaveChanges())
             {
@@ -80,11 +80,11 @@ namespace RentalCar.API.Controllers
         [HttpPut("/api/account/license")]
         public async Task<ActionResult<LicenseViewDto>> UpdateLicense([FromForm] LicenseDto licenseDto)
         {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var usernameClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
             // var username = "nguyenvana";
 
-            if(string.IsNullOrEmpty(username)) return NotFound();
-
+            if(usernameClaim == null) return Unauthorized();
+            string username = usernameClaim.Value;
             var userLicenseExist = _userService.GetUserByUsername(username).License;
 
             LicenseViewDto licenseViewDto = new LicenseViewDto()
@@ -101,11 +101,25 @@ namespace RentalCar.API.Controllers
 
             if (_userService.SaveChanges())
             {
-                var licenseView = _userService.GetLicenseByUser(username);
-                if(licenseView == null) return null;
-                return Ok(_mapper.Map<License, LicenseViewDto>(licenseView));
+                return NoContent();
             } 
             return BadRequest("License update failed");
+        }
+
+        [HttpGet("/api/account/license")]
+        public async Task<ActionResult<LicenseViewDto>> GetLicense()
+        {
+            var usernameClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if(usernameClaim == null) return Unauthorized();
+
+            string username = usernameClaim.Value;
+
+            var userLicenseExist = _userService.GetUserByUsername(username).License;
+
+            var license = _userService.GetLicenseByUser(username);
+            if(license == null) return null;
+            return Ok(_mapper.Map<License, LicenseViewDto>(license));
         }
     }
 }

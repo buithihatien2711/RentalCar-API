@@ -32,5 +32,9 @@ namespace RentalCar.Data.Repositories
         void UpdateLicense(License license, string username);
 
         License? GetLicenseByUser(string username);
+
+        List<QuantityStatistics> StatistUsersByMonth(int year);
+
+        List<QuantityStatistics> StatistUsersByDay(int month);
     }
 }

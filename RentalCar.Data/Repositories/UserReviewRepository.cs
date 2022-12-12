@@ -5,6 +5,8 @@ namespace RentalCar.Data.Repositories
 {
     public class UserReviewRepository : IUserReviewRepository
     {
+        public static int PAGE_SIZE { get; set; } = 4;
+
         private readonly DataContext _context;
 
         public UserReviewRepository(DataContext context)
@@ -50,13 +52,13 @@ namespace RentalCar.Data.Repositories
             return _context.UserReviews.FirstOrDefault(ur => ur.Id == idReview);
         }
 
-        public List<UserReview>? GetReviewsOfLease(int idUser)
+        public List<UserReview>? GetReviewsOfLease(int idUser, int page = 1)
         {
             // var reviews = _context.UserReviews.Include(ur => ur.UserReviewUsers)
             //                 .Where(r => r.LeaseId == idUser)
             //                 .Where(r => );
 
-            var reviewIds = _context.UserReviewUsers.Include(r => r.UserReview)
+            return _context.UserReviewUsers.Include(r => r.UserReview)
                                 // get UserReviewUsers by id lease
                                 .Where(r => r.UserId == idUser)
                                 .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Lease))
@@ -70,9 +72,7 @@ namespace RentalCar.Data.Repositories
                                     Content = uru.UserReview.Content,
                                     CreatedAt = uru.UserReview.CreatedAt,
                                     UpdatedAt = uru.UserReview.UpdatedAt
-                                });
-
-            return reviewIds.ToList();
+                                }).Skip((page - 1)*PAGE_SIZE).Take(PAGE_SIZE).ToList();
         }
     }
 }

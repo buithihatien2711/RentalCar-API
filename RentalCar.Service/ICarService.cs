@@ -66,5 +66,9 @@ namespace RentalCar.Service
 
         List<Car>? GetCarsFilterSort(SearchParam searchParam);
         bool CheckScheduleByDate(int idCar,DateTime date);
+
+        List<QuantityStatistics> StatistCarsByMonth(int year);
+
+        List<QuantityStatistics> StatistCarsByDay(int month);
     }
 }

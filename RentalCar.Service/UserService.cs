@@ -76,5 +76,15 @@ namespace RentalCar.Service
         {
             return _repository.GetLicenseByUser(username);
         }
+
+        public List<QuantityStatistics> StatistUsersByMonth(int year)
+        {
+            return _repository.StatistUsersByMonth(year);
+        }
+
+        public List<QuantityStatistics> StatistUsersByDay(int month)
+        {
+            return _repository.StatistUsersByDay(month);
+        }
     }
 }

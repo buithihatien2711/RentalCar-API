@@ -15,7 +15,7 @@ namespace RentalCar.Model.Models
         
         public UserReview UserReview { get; set; }
         
-        // Role của người dùng khi viết cmt
+        // Role của người dùng khi viết cmt 1 : lease, 2 : writer
         public int RoleId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.JsonPatch;
+using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 
 namespace RentalCar.Service
@@ -28,5 +29,9 @@ namespace RentalCar.Service
         void UpdateLicense(License license, string username);
 
         License? GetLicenseByUser(string username);
+        
+        List<QuantityStatistics> StatistUsersByMonth(int year);
+
+        List<QuantityStatistics> StatistUsersByDay(int month);
     }
 }

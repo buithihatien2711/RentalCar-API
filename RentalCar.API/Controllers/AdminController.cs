@@ -7,11 +7,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
+using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 using RentalCar.Service;
 
 namespace RentalCar.API.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -19,10 +21,12 @@ namespace RentalCar.API.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IUploadImgService _uploadImgService;
+        private readonly ICarService _carService;
 
-        public AdminController(IUserService userService, IMapper mapper, IUploadImgService uploadImgService)
+        public AdminController(IUserService userService, IMapper mapper, IUploadImgService uploadImgService, ICarService carService)
         {
             _uploadImgService = uploadImgService;
+            _carService = carService;
             _mapper = mapper;
             _userService = userService;
             
@@ -65,7 +69,6 @@ namespace RentalCar.API.Controllers
             return Ok(profile);
         }
 
-        [Authorize(Roles="admin")]
         [HttpPut("/api/admin/account/{username}")]
         public ActionResult<UpdateUserDto> UpdateUserProfile(UpdateUserDto userProfile, string username)
         {
@@ -86,7 +89,6 @@ namespace RentalCar.API.Controllers
             return BadRequest("Profile update failed");
         }
 
-        [Authorize(Roles="admin")]
         [HttpPut("/api/admin/account/license/{username}")]
         public async Task<ActionResult<LicenseViewDto>> UpdateLicense([FromForm] LicenseDto licenseDto, string username)
         {
@@ -114,5 +116,91 @@ namespace RentalCar.API.Controllers
             } 
             return BadRequest("License update failed");
         }
+
+        [Route("/api/admin/statist/month/{year}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, int[]>> StatistCarsByMonth(int year)
+        {
+            var numberCarRegister = _carService.StatistCarsByMonth(year);
+            var numberUserRegister = _userService.StatistUsersByMonth(year);
+            int[] numberCarRegisterArr = new int[12];
+            int[] numberUserRegisterArr = new int[12];
+
+            for (var i = 0; i < numberCarRegisterArr.Length; i++)
+            {
+                numberCarRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberCarRegister.Count ; i++)
+            {
+                numberCarRegisterArr[numberCarRegister[i].Time - 1] = numberCarRegister[i].Count;
+            }
+
+            for (var i = 0; i < numberUserRegisterArr.Length; i++)
+            {
+                numberUserRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberUserRegister.Count ; i++)
+            {
+                numberUserRegisterArr[numberUserRegister[i].Time - 1] = numberUserRegister[i].Count;
+            }
+
+            Dictionary<string, int[]> statist = new Dictionary<string, int[]>();
+            statist.Add("numberCars", numberCarRegisterArr);
+            statist.Add("numberUser", numberUserRegisterArr);
+
+            return Ok(statist);
+        }
+
+        [Route("/api/admin/statist/day/{month}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, List<QuantityStatistics>>> StatistCarsByDay(int month)
+        {
+            var numberCarRegister = _carService.StatistCarsByDay(month);
+            var numberUserRegister = _userService.StatistUsersByDay(month);
+
+            int days = DateTime.DaysInMonth(DateTime.Now.Year, month);
+
+            int[] numberCarRegisterArr = new int[days];
+            int[] numberUserRegisterArr = new int[days];
+
+            for (var i = 0; i < numberCarRegisterArr.Length; i++)
+            {
+                numberCarRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberCarRegister.Count ; i++)
+            {
+                numberCarRegisterArr[numberCarRegister[i].Time - 1] = numberCarRegister[i].Count;
+            }
+
+            for (var i = 0; i < numberUserRegisterArr.Length; i++)
+            {
+                numberUserRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberUserRegister.Count ; i++)
+            {
+                numberUserRegisterArr[numberUserRegister[i].Time - 1] = numberUserRegister[i].Count;
+            }
+
+            Dictionary<string, int[]> statist = new Dictionary<string, int[]>();
+            statist.Add("numberCars", numberCarRegisterArr);
+            statist.Add("numberUser", numberUserRegisterArr);
+
+            return Ok(statist);
+        }
+
+        //[Route("/month")]
+        //[HttpGet]
+        //public ActionResult<Dictionary<string, string>> GetMonth(int month)
+        //{
+        //    Dictionary<string, List<QuantityStatistics>> statist = new Dictionary<string, List<QuantityStatistics>>();
+        //    for (var i = 0; i < length; i++)
+        //    {
+                
+        //    }
+        //    statist.Add("numberCars", numberCarRegister);
+        //    statist.Add("numberUser", numberUserRegister);
+
+        //    return Ok(statist);
+        //}
     }
 }

@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
@@ -22,15 +22,16 @@ namespace RentalCar.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("/api/myreviews")]
-        public ActionResult<List<ReviewViewDto>> GetMyReview()
+        // Get my review
+        [HttpGet("/api/myComment/{pageIndex}")]
+        public ActionResult<List<ReviewViewDto>> GetMyReview(int pageIndex)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-            if(username == null) return NotFound("Please login");
+            if(username == null) return Unauthorized("Please login");
             var lease = _userService.GetUserByUsername(username.Value);
-            if(lease == null) return NotFound("Please login");
+            if(lease == null) return Unauthorized("Please login");
 
-            var reviews = _userReviewService.GetReviewsOfLease(lease.Id);
+            var reviews = _userReviewService.GetReviewsOfLease(lease.Id, pageIndex);
             if(reviews == null) return Ok(null);
             List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
             foreach (var review in reviews)
@@ -48,10 +49,11 @@ namespace RentalCar.API.Controllers
             return Ok(userReviewViewDtos);
         }
 
-        [HttpGet("/api/reviews/{id}")]
-        public ActionResult<List<ReviewViewDto>> GetMyReview(int id)
+        // Get review của 1 lease
+        [HttpGet("/api/leaseComments/{idLease}/{pageIndex}")]
+        public ActionResult<List<ReviewViewDto>> GetReviewByLease(int id, int pageIndex)
         {
-            var reviews = _userReviewService.GetReviewsOfLease(id);
+            var reviews = _userReviewService.GetReviewsOfLease(id, pageIndex);
             if(reviews == null) return Ok(null);
             List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
             foreach (var review in reviews)
@@ -69,14 +71,16 @@ namespace RentalCar.API.Controllers
             return Ok(userReviewViewDtos);
         }
 
-        [HttpPost("/api/userreviews/{idLease}")]
-        public ActionResult<ReviewViewDto> AddUserReview([FromBody] ReviewAddDto reviewAddDto, int idLease)
+        // Bình luận về một chủ xe
+        [HttpPost("/api/leaseComments/{usernameLease}")]
+        public ActionResult<ReviewViewDto> AddUserReview([FromBody] ReviewAddDto reviewAddDto, string usernameLease)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-            if(username == null) return NotFound("Please login");
+            if(username == null) return Unauthorized("Please login");
 
-            var lease = _userService.GetUserById(idLease);
+            var lease = _userService.GetUserByUsername(usernameLease);
             if(lease == null) return NotFound("User not exist");
+            
             var userReview = new UserReview()
             {
                 Rating = reviewAddDto.Rating,
