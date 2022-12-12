@@ -121,5 +121,31 @@ namespace RentalCar.Data.Repositories
             if(existUser == null) return null;
             return existUser.License;
         }
+
+        public List<QuantityStatistics> StatistUsersByMonth(int year)
+        {
+            var numberUserRegister =  _context.Users
+                        .Where(c => c.CreatedAt.Value.Year == year)
+                        .GroupBy(c => c.CreatedAt.Value.Month)
+                        .Select(group => new QuantityStatistics{
+                            Time = group.Key,
+                            Count = group.Count()
+                        });
+
+            return numberUserRegister.ToList();
+        }
+
+        public List<QuantityStatistics> StatistUsersByDay(int month)
+        {
+            var numberUserRegister =  _context.Users
+                        .Where(c => c.CreatedAt.Value.Month == month && c.CreatedAt.Value.Year == DateTime.Now.Year)
+                        .GroupBy(c => c.CreatedAt.Value.Day)
+                        .Select(group => new QuantityStatistics{
+                            Time = group.Key,
+                            Count = group.Count()
+                        });
+
+            return numberUserRegister.ToList();
+        }
     }
 }

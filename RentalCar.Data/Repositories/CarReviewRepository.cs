@@ -18,5 +18,17 @@ namespace RentalCar.Data.Repositories
             return _context.CarReviews.Include(r => r.User).Where(r => r.CarId == idCar)
                     .Skip((page - 1)*PAGE_SIZE).Take(PAGE_SIZE).ToList();
         }
+
+        public void AddCarReview(CarReview carReview)
+        {
+            _context.Add(carReview);
+            _context.SaveChanges();
+
+            var car = _context.Cars.FirstOrDefault(r => r.Id == carReview.CarId);
+            if(car == null) return;
+            var carRatings = _context.CarReviews.Where(r => r.CarId == car.Id).Select(r => r.Rating);
+            car.NumberStar = Convert.ToDecimal(carRatings.Average());
+            _context.SaveChanges();
+        }
     }
 }

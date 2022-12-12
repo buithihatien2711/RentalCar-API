@@ -32,7 +32,7 @@ namespace RentalCar.API.Mapping
             CreateMap<User, UpdateUserDto>();
             CreateMap<User, UserProfile>()
                 .ForMember(
-                    dest => dest.LicenseDto,
+                    dest => dest.Number,
                     opt => opt.MapFrom(src => src.License == null ? null : src.License.Number)
                 );
             CreateMap<Car, CarDetailDto>()

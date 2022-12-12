@@ -74,5 +74,9 @@ namespace RentalCar.Data.Repositories
         List<Car>? GetCarsFilterSort(SearchParam searchParam);
     
         District? GetDistrictById(int id);
+
+        List<QuantityStatistics> StatistCarsByMonth(int year);
+
+        List<QuantityStatistics> StatistCarsByDay(int month);
     }
 }

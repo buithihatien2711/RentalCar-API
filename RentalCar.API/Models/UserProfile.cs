@@ -16,7 +16,7 @@ namespace RentalCar.API.Models
 
         public string Email { get; set; }
 
-        public string LicenseDto { get; set; }
+        public string Number { get; set; }
         
         
     }

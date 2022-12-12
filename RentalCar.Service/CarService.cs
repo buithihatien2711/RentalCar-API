@@ -195,5 +195,15 @@ namespace RentalCar.Service
             }
             return false;
         }
+
+        public List<QuantityStatistics> StatistCarsByMonth(int year)
+        {
+            return _carRepository.StatistCarsByMonth(year);
+        }
+
+        public List<QuantityStatistics> StatistCarsByDay(int month)
+        {
+            return _carRepository.StatistCarsByDay(month);
+        }
     }
 }

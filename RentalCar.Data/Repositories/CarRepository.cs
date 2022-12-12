@@ -411,6 +411,33 @@ namespace RentalCar.Data.Repositories
 
             return cars.ToList();
         }
+
+        public List<QuantityStatistics> StatistCarsByMonth(int year)
+        {
+            var numberCarRegister =  _context.Cars
+                        .Where(c => c.CreatedAt.Value.Year == year)
+                        .GroupBy(c => c.CreatedAt.Value.Month)
+                        .Select(group => new QuantityStatistics{
+                            Time = group.Key,
+                            Count = group.Count()
+                        });
+
+            return numberCarRegister.ToList();
+        }
+
+        public List<QuantityStatistics> StatistCarsByDay(int month)
+        {
+            // Chỉ thống kê các ngày của tháng trong năm hiện tại
+            var numberCarRegister =  _context.Cars
+                        .Where(c => c.CreatedAt.Value.Month == month && c.CreatedAt.Value.Year == DateTime.Now.Year)
+                        .GroupBy(c => c.CreatedAt.Value.Day)
+                        .Select(group => new QuantityStatistics{
+                            Time = group.Key,
+                            Count = group.Count()
+                        });
+
+            return numberCarRegister.ToList();
+        }
     }
 
     public class SearchParam
@@ -430,5 +457,12 @@ namespace RentalCar.Data.Repositories
         public int? Capacity { get; set; }
         
         public string? SortBy { get; set; }
+    }
+
+    public class QuantityStatistics
+    {
+        public int Time { get; set; }
+        
+        public int Count { get; set; }
     }
 }

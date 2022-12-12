@@ -12,6 +12,11 @@ namespace RentalCar.Service
             _carRepository = carRepository;
         }
 
+        public void AddCarReview(CarReview carReview)
+        {
+            _carRepository.AddCarReview(carReview);
+        }
+
         public List<CarReview>? GetReviewByCar(int idCar, int pageIndex)
         {
             return _carRepository.GetReviewByCar(idCar, pageIndex);

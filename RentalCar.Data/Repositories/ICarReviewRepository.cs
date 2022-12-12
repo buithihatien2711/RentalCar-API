@@ -6,6 +6,6 @@ namespace RentalCar.Data.Repositories
     {
         List<CarReview>? GetReviewByCar(int idCar, int page = 1);
         
-        
+        void AddCarReview(CarReview carReview);
     }
 }
