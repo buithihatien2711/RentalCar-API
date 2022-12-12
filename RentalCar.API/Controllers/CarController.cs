@@ -243,7 +243,7 @@ namespace RentalCar.API.Controllers
             // message.Add("Message", "admin update status car successful");
             // return Ok(message);
         }
-        [HttpGet("{Id}")]
+        [HttpGet("{id}")]
         public ActionResult<CarDetailDto> Get(int id)
         {
             var car = _carService.GetCarById(id);

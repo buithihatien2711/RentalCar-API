@@ -51,9 +51,9 @@ namespace RentalCar.API.Controllers
 
         // Get review của 1 lease
         [HttpGet("/api/leaseComments/{idLease}/{pageIndex}")]
-        public ActionResult<List<ReviewViewDto>> GetReviewByLease(int id, int pageIndex)
+        public ActionResult<List<ReviewViewDto>> GetReviewByLease(int idLease, int pageIndex)
         {
-            var reviews = _userReviewService.GetReviewsOfLease(id, pageIndex);
+            var reviews = _userReviewService.GetReviewsOfLease(idLease, pageIndex);
             if(reviews == null) return Ok(null);
             List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
             foreach (var review in reviews)
