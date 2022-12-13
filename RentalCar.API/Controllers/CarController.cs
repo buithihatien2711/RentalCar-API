@@ -401,6 +401,8 @@ namespace RentalCar.API.Controllers
 
             return Ok(carInfoView);
         }
+
+        [Authorize(Roles="lease")]
         [HttpPut("{id}/CarInfor")]
         public ActionResult<string> UpdateCarInfor(int id,CarInfoView_UpdateDto carInput)
         {
@@ -494,27 +496,27 @@ namespace RentalCar.API.Controllers
                 return BadRequest();
         }
 
-        [HttpGet("{id}/CarImageRegister")]
-        public ActionResult<string> ViewCarImgRegister(int id)
-        {
-            if (_carService.GetCarById(id) == null){
-                Dictionary<string, string> message = new Dictionary<string, string>();
-                message.Add("Message", "Delete Image successfull");
-                return NotFound("Car doesn't exist");
-            } 
-            var CarTypeRegisters = _carService.GetCarTypeRegister();
-            List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
-            foreach(var carType in CarTypeRegisters){
-                CarRegister.Add(new CarRegisterDto{
-                    IdType = carType.Id,
-                    NameType = carType.Name,
-                    listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
-                                (_carService.GetCarImgRegistersByCarIdAndTypeId(id,1) == null 
-                                ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
-                    });
-            }
-            return Ok(CarRegister);
-        }
+        // [HttpGet("{id}/CarImageRegister")]
+        // public ActionResult<string> ViewCarImgRegister(int id)
+        // {
+        //     if (_carService.GetCarById(id) == null){
+        //         Dictionary<string, string> message = new Dictionary<string, string>();
+        //         message.Add("Message", "Delete Image successfull");
+        //         return NotFound("Car doesn't exist");
+        //     } 
+        //     var CarTypeRegisters = _carService.GetCarTypeRegister();
+        //     List<CarRegisterDto> CarRegister = new List<CarRegisterDto>();
+        //     foreach(var carType in CarTypeRegisters){
+        //         CarRegister.Add(new CarRegisterDto{
+        //             IdType = carType.Id,
+        //             NameType = carType.Name,
+        //             listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
+        //                         (_carService.GetCarImgRegistersByCarIdAndTypeId(id,1) == null 
+        //                         ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,carType.Id))
+        //             });
+        //     }
+        //     return Ok(CarRegister);
+        // }
 
         // [HttpPost("{id}/CarImageRegister")]
         // public async Task<ActionResult<string>> AddCarImgRegister(int id,[FromForm]List<ImageTypeRegister> imageTypes)
@@ -555,6 +557,17 @@ namespace RentalCar.API.Controllers
         //     }
         // }
 
+        [Authorize(Roles="lease")]
+        [HttpGet("{id}/CarImageType/{idType}")]
+        public ActionResult<string> ViewCarImgRegister(int id,int idType)
+        {
+            var listImage = _mapper.Map<List<CarImgRegister>,List<CarImageDtos>>
+                                (_carService.GetCarImgRegistersByCarIdAndTypeId(id,idType) == null 
+                                ? null : _carService.GetCarImgRegistersByCarIdAndTypeId(id,idType));
+            return Ok(listImage);
+        }
+
+        [Authorize(Roles="lease")]
         [HttpPost("{id}/CarImageType/{idType}")]
         public async Task<ActionResult<string>> AddCarImgRegister(int id,int idType,[FromForm]List<IFormFile> images)
         {
@@ -579,6 +592,7 @@ namespace RentalCar.API.Controllers
             }
         }
        
+       [Authorize(Roles="lease")]
        [HttpDelete("CarImageRegister/{ImgId}")]
         public ActionResult<string> DeleteCarImageRegister(int ImgId)
         {
