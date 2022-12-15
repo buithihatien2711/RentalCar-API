@@ -85,7 +85,7 @@ namespace RentalCar.API.Mapping
                     })))
                 );
 
-                        CreateMap<Car, CarOverview>()
+            CreateMap<Car, MyCarOverview>()
                 .ForMember(
                     dest => dest.LocationDto,
                     opt => opt.MapFrom(src => src.Location == null ? null : new LocationDto()
@@ -113,6 +113,35 @@ namespace RentalCar.API.Mapping
                 .ForMember(
                     dest => dest.Image,
                     opt => opt.MapFrom(src => src.CarImages == null ? null : src.CarImages[0].Path));
+
+            CreateMap<Car, CarFindDto>()
+                .ForMember(
+                    dest => dest.LocationDto,
+                    opt => opt.MapFrom(src => src.Location == null ? null : new LocationDto()
+                    {
+                        Id = src.LocationId,
+                        Address = src.Location.Address
+                    }))
+                .ForMember(
+                    dest => dest.WardDto,
+                    opt => opt.MapFrom(src => src.Location == null ? null : (src.Location.Ward == null ? null : new WardDto()
+                    {
+                        Id = src.Location.WardId,
+                        Name = src.Location.Ward.Name
+                    })))
+                .ForMember(
+                    dest => dest.DistrictDto,
+                    opt => opt.MapFrom(src => src.Location == null ? null : (src.Location.Ward == null ? null : (src.Location.Ward.District == null ? null : new DistrictDto()
+                    {
+                        Id = src.Location.Ward.DistrictID,
+                        Name = src.Location.Ward.District.Name
+                    }))))
+                .ForMember(
+                    dest => dest.Image,
+                    opt => opt.MapFrom(src => src.CarImages == null ? null : src.CarImages[0]))
+                .ForMember(
+                    dest => dest.Transmission,
+                    opt => opt.MapFrom(src => src.Transmission));
 
             CreateMap<User, AccountDto>();
 

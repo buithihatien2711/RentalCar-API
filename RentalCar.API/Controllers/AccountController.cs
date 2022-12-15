@@ -115,7 +115,7 @@ namespace RentalCar.API.Controllers
 
             string username = usernameClaim.Value;
 
-            var userLicenseExist = _userService.GetUserByUsername(username).License;
+            // var userLicenseExist = _userService.GetUserByUsername(username).License;
 
             var license = _userService.GetLicenseByUser(username);
             if(license == null) return null;

@@ -74,5 +74,56 @@ namespace RentalCar.Data.Repositories
                                     UpdatedAt = uru.UserReview.UpdatedAt
                                 }).Skip((page - 1)*PAGE_SIZE).Take(PAGE_SIZE).ToList();
         }
+
+        public List<UserReview>? GetReviewsOfRenter(int idRenter, int pageIndex = 1)
+        {
+            return _context.UserReviewUsers.Include(r => r.UserReview)
+                                // get UserReviewUsers by id renter
+                                .Where(r => r.UserId == idRenter)
+                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Renter))
+                                .Select(uru => new UserReview()
+                                {
+                                    Id = uru.UserReviewId,
+                                    Rating = uru.UserReview.Rating,
+                                    // id lease = uru.UserReview.idUser
+                                    LeaseId = uru.UserReview.LeaseId,
+                                    RenterId = idRenter,
+                                    Content = uru.UserReview.Content,
+                                    CreatedAt = uru.UserReview.CreatedAt,
+                                    UpdatedAt = uru.UserReview.UpdatedAt
+                                }).Skip((pageIndex - 1)*PAGE_SIZE).Take(PAGE_SIZE).ToList();
+        }
+
+        public void AddReviewRenter(UserReview userReview)
+        {
+            _context.UserReviews.Add(userReview);
+            _context.SaveChanges();
+ 
+            _context.UserReviewUsers.Add
+            (
+                new UserReviewUser()
+                {
+                    UserId = userReview.LeaseId,
+                    UserReviewId = userReview.Id,
+                    RoleId = ((int)EnumClass.RoleUserInComment.Writer)
+                }
+            );
+
+            _context.UserReviewUsers.Add
+            (
+                new UserReviewUser()
+                {
+                    UserId = userReview.RenterId,
+                    UserReviewId = userReview.Id,
+                    RoleId = ((int)EnumClass.RoleUserInComment.Renter)
+                }
+            );
+
+            // 2 cái rating khác nhau. thêm vô entity 1 cái rating nữa
+            var user = _context.Users.FirstOrDefault(u => u.Id == userReview.RenterId);
+            var ratings = _context.UserReviews.Where(r => r.RenterId == user.Id).Select(r => r.Rating);
+            user.Rating = ratings.Average();
+            _context.SaveChanges();
+        }
     }
 }
