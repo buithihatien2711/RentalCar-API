@@ -21,9 +21,19 @@ namespace RentalCar.Service
             _userReviewRepository.AddReview(userReview);
         }
 
+        public void AddReviewRenter(UserReview userReview)
+        {
+            _userReviewRepository.AddReviewRenter(userReview);
+        }
+
         public List<UserReview>? GetReviewsOfLease(int idUser, int pageIndex)
         {
             return _userReviewRepository.GetReviewsOfLease(idUser, pageIndex);
+        }
+
+        public List<UserReview>? GetReviewsOfRenter(int idRenter, int pageIndex)
+        {
+            return _userReviewRepository.GetReviewsOfRenter(idRenter, pageIndex);
         }
     }
 }

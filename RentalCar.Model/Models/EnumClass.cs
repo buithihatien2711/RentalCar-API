@@ -11,7 +11,9 @@ namespace RentalCar.Model.Models
         {
             Lease = 1,
 
-            Writer = 2
+            Writer = 2,
+
+            Renter = 3
         }
         
         public enum Gender

@@ -22,32 +22,32 @@ namespace RentalCar.API.Controllers
             _mapper = mapper;
         }
 
-        // Get my review
-        [HttpGet("/api/myComment/{pageIndex}")]
-        public ActionResult<List<ReviewViewDto>> GetMyReview(int pageIndex)
-        {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-            if(username == null) return Unauthorized("Please login");
-            var lease = _userService.GetUserByUsername(username.Value);
-            if(lease == null) return Unauthorized("Please login");
+        // // Get my review
+        // [HttpGet("/api/myComment/{pageIndex}")]
+        // public ActionResult<List<ReviewViewDto>> GetMyReview(int pageIndex)
+        // {
+        //     var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+        //     if(username == null) return Unauthorized("Please login");
+        //     var lease = _userService.GetUserByUsername(username.Value);
+        //     if(lease == null) return Unauthorized("Please login");
 
-            var reviews = _userReviewService.GetReviewsOfLease(lease.Id, pageIndex);
-            if(reviews == null) return Ok(null);
-            List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
-            foreach (var review in reviews)
-            {
-                userReviewViewDtos.Add(new ReviewViewDto()
-                {
-                    Id = review.Id,
-                    Rating = review.Rating,
-                    Content = review.Content,
-                    CreatedAt = review.CreatedAt,
-                    UpdatedAt = review.UpdatedAt,
-                    Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.RenterId))
-                });
-            }
-            return Ok(userReviewViewDtos);
-        }
+        //     var reviews = _userReviewService.GetReviewsOfLease(lease.Id, pageIndex);
+        //     if(reviews == null) return Ok(null);
+        //     List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
+        //     foreach (var review in reviews)
+        //     {
+        //         userReviewViewDtos.Add(new ReviewViewDto()
+        //         {
+        //             Id = review.Id,
+        //             Rating = review.Rating,
+        //             Content = review.Content,
+        //             CreatedAt = review.CreatedAt,
+        //             UpdatedAt = review.UpdatedAt,
+        //             Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.RenterId))
+        //         });
+        //     }
+        //     return Ok(userReviewViewDtos);
+        // }
 
         // Get review của 1 lease
         [HttpGet("/api/leaseComments/{idLease}/{pageIndex}")]
@@ -72,13 +72,13 @@ namespace RentalCar.API.Controllers
         }
 
         // Bình luận về một chủ xe
-        [HttpPost("/api/leaseComments/{usernameLease}")]
-        public ActionResult<ReviewViewDto> AddUserReview([FromBody] ReviewAddDto reviewAddDto, string usernameLease)
+        [HttpPost("/api/leaseComments/{idLease}")]
+        public ActionResult<ReviewViewDto> AddUserReview([FromBody] ReviewAddDto reviewAddDto, int idLease)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             if(username == null) return Unauthorized("Please login");
 
-            var lease = _userService.GetUserByUsername(usernameLease);
+            var lease = _userService.GetUserById(idLease);
             if(lease == null) return NotFound("User not exist");
             
             var userReview = new UserReview()
@@ -90,15 +90,75 @@ namespace RentalCar.API.Controllers
                 CreatedAt = DateTime.Now
             };
             _userReviewService.AddReview(userReview);
-            return Ok(new ReviewViewDto()
+
+            return NoContent();
+            // return Ok(new ReviewViewDto()
+            // {
+            //     Id = userReview.Id,
+            //     Rating = userReview.Rating,
+            //     Content = userReview.Content,
+            //     CreatedAt = userReview.CreatedAt,
+            //     UpdatedAt = userReview.UpdatedAt,
+            //     Account = _mapper.Map<User, AccountDto>(lease)
+            // });
+        }
+
+        // Bình luận về một người thuê xe
+        [HttpPost("/api/renterComments/{idRenter}")]
+        public ActionResult<ReviewViewDto> AddRenterReview([FromBody] ReviewAddDto reviewAddDto, int idRenter)
+        {
+            // Người viết cmt đang là chủ xe
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            if(username == null) return Unauthorized("Please login");
+            
+            var renter = _userService.GetUserById(idRenter);
+            if(renter == null) return NotFound("User not exist");
+            
+            var userReview = new UserReview()
             {
-                Id = userReview.Id,
-                Rating = userReview.Rating,
-                Content = userReview.Content,
-                CreatedAt = userReview.CreatedAt,
-                UpdatedAt = userReview.UpdatedAt,
-                Account = _mapper.Map<User, AccountDto>(lease)
-            });
+                Rating = reviewAddDto.Rating,
+                // Lease là người viết cmt
+                LeaseId = _userService.GetUserByUsername(username.Value).Id,
+                RenterId = renter.Id,
+                Content = reviewAddDto.Content,
+                CreatedAt = DateTime.Now
+            };
+            _userReviewService.AddReviewRenter(userReview);
+
+            // return Ok(new ReviewViewDto()
+            // {
+            //     Id = userReview.Id,
+            //     Rating = userReview.Rating,
+            //     Content = userReview.Content,
+            //     CreatedAt = userReview.CreatedAt,
+            //     UpdatedAt = userReview.UpdatedAt,
+            //     Account = _mapper.Map<User, AccountDto>(renter)
+            // });
+            
+            return NoContent();
+        }
+
+        // Get review của 1 renter
+        [HttpGet("/api/renterComments/{idRenter}/{pageIndex}")]
+        public ActionResult<List<ReviewViewDto>> GetReviewByRenter(int idRenter, int pageIndex)
+        {
+            var reviews = _userReviewService.GetReviewsOfRenter(idRenter, pageIndex);
+            if(reviews == null) return Ok(null);
+            List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
+
+            foreach (var review in reviews)
+            {
+                userReviewViewDtos.Add(new ReviewViewDto()
+                {
+                    Id = review.Id,
+                    Rating = review.Rating,
+                    Content = review.Content,
+                    CreatedAt = review.CreatedAt,
+                    UpdatedAt = review.UpdatedAt,
+                    Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.LeaseId))
+                });
+            }
+            return Ok(userReviewViewDtos);
         }
     }
 }

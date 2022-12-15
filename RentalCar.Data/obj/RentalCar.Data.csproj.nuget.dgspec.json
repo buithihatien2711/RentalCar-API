@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {}
+    "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {}
   },
   "projects": {
-    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
+    "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
+        "projectUniqueName": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
         "projectName": "RentalCar.Data",
-        "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Data\\obj\\",
+        "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Data\\RentalCar.Data.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,14 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "http://itdut-s7.ddns.net:8081/repository/nuget-hosted/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
-                "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
+              "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+                "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj"
               }
             }
           }
@@ -101,21 +106,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
+    "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+        "projectUniqueName": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
         "projectName": "RentalCar.Model",
-        "projectPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\DUT\\PBL6_merge\\RentalCar-API\\RentalCar.Model\\obj\\",
+        "projectPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\RentalCar.Model.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "D:\\Ki7\\PBL6-CNPM-Rentalcar\\Publish\\RentalCar-API\\RentalCar.Model\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -123,6 +132,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "http://itdut-s7.ddns.net:8081/repository/nuget-hosted/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -192,7 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -2,6 +2,8 @@ namespace RentalCar.API.Models
 {
     public class UserProfile
     {
+        public int Id { get; set; }
+        
         public string Fullname { get; set; }
 
         public string Contact { get; set; }
@@ -17,8 +19,6 @@ namespace RentalCar.API.Models
         public string Email { get; set; }
 
         public string Number { get; set; }
-        
-        
     }
 }
 

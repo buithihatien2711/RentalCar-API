@@ -321,7 +321,7 @@ namespace RentalCar.Data.Repositories
                         .Include(u => u.CarModel)
                         .ThenInclude(l => l.CarBrand)
                         .Include(c => c.CarSchedules)
-                        .Where(c => c.StatusID == 3)
+                        .Where(c => c.StatusID == 3 || c.StatusID == 4)
                         .AsQueryable();
 
             #region Filtering
@@ -392,7 +392,7 @@ namespace RentalCar.Data.Repositories
             #endregion
 
             #region Sort
-            if(string.IsNullOrEmpty(searchParam.SortBy))
+            if(!string.IsNullOrEmpty(searchParam.SortBy))
             {
                 switch (searchParam.SortBy)
                 {

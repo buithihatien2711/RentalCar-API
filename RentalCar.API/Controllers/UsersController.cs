@@ -192,5 +192,17 @@ namespace RentalCar.API.Controllers
             };
             return Ok(userDetail);
        }
+
+        [Route("profile/{id}")]
+        [HttpGet]
+        public ActionResult<UserProfile> GetUserDetail(int id)
+        {
+            var user = _userService.GetUserById(id);
+            if(user == null) return NotFound("user not exist");
+            var profile = _mapper.Map<User, UserProfile>(user);
+            return Ok(profile);
+        }
+
+        
     }
 }

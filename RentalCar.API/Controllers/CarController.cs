@@ -333,7 +333,7 @@ namespace RentalCar.API.Controllers
 
         [Authorize(Roles="lease")]
         [HttpGet("mycar/{idStatus}")]
-        public ActionResult<List<CarOverview>> GetMyCar(int idStatus)
+        public ActionResult<List<MyCarOverview>> GetMyCar(int idStatus)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -344,11 +344,11 @@ namespace RentalCar.API.Controllers
             var cars = _carService.GetCarsByUserAndStatus(idUser, idStatus);
             if(cars == null) return Ok(null);
 
-            var carOverviews = new List<CarOverview>();
+            var carOverviews = new List<MyCarOverview>();
 
             foreach (var car in cars)
             {
-                carOverviews.Add(new CarOverview()
+                carOverviews.Add(new MyCarOverview()
                 {
                     Id = car.Id,
                     Name = car.Name,
@@ -656,23 +656,23 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpGet("find")]
-        public ActionResult<List<CarOverview>> ViewCarImgRegister([FromQuery]SearchParam searchParam)
+        public ActionResult<List<CarFindDto>> ViewCarImgRegister([FromQuery]SearchParam searchParam)
         {
             List<Car>? cars = _carService.GetCarsFilterSort(searchParam);
             if (cars == null) return Ok(null);
-            return Ok(_mapper.Map<List<Car>, List<CarOverview>>(cars));
+            return Ok(_mapper.Map<List<Car>, List<CarFindDto>>(cars));
         }
 
         [HttpGet("/api/Car/sortby")]
-        public ActionResult<Dictionary<string, string>> GetSortByParam()
+        public ActionResult<Dictionary<string, SortByDto[]>> GetSortByParam()
         {
-            Dictionary<string, List<string>> sortBy= new Dictionary<string, List<string>>();
-            var sorts = new List<string>();
-            sorts.Add("price_asc");
-            sorts.Add("price_desc");
-            sorts.Add("rate_desc");
+            
+            SortByDto price_asc = new SortByDto(){Id = 1, Nickname = "price_asc", Name = "Giá tăng dần"};
+            SortByDto price_desc = new SortByDto(){Id = 2, Nickname = "price_desc", Name = "Giá giảm dần" };
+            SortByDto rate_desc = new SortByDto(){Id = 3, Nickname = "rate_desc", Name = "Đánh giá" };
 
-            sortBy.Add("sortby", sorts);
+            Dictionary<string, SortByDto[]> sortBy = new Dictionary<string, SortByDto[]>();
+            sortBy.Add("sortby", new SortByDto[]{price_asc, price_desc, rate_desc});
 
             return Ok(sortBy);
         }
