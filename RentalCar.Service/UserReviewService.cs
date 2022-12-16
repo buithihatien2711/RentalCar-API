@@ -16,9 +16,9 @@ namespace RentalCar.Service
             _userReviewRepository = userReviewRepository;
         }
 
-        public void AddReview(UserReview userReview)
+        public void AddReviewLease(UserReview userReview)
         {
-            _userReviewRepository.AddReview(userReview);
+            _userReviewRepository.AddReviewLease(userReview);
         }
 
         public void AddReviewRenter(UserReview userReview)
@@ -34,6 +34,16 @@ namespace RentalCar.Service
         public List<UserReview>? GetReviewsOfRenter(int idRenter, int pageIndex)
         {
             return _userReviewRepository.GetReviewsOfRenter(idRenter, pageIndex);
+        }
+
+        public ReviewOverview GetRatingAndNumberReviewOfLease(int idLease)
+        {
+            return _userReviewRepository.GetRatingAndNumberReviewOfLease(idLease);
+        }
+
+        public ReviewOverview GetRatingAndNumberReviewOfRenter(int idRenter)
+        {
+            return _userReviewRepository.GetRatingAndNumberReviewOfRenter(idRenter);
         }
     }
 }

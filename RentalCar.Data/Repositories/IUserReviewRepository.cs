@@ -8,10 +8,15 @@ namespace RentalCar.Data.Repositories
 
         UserReview? GetReviewById(int idReview);
 
-        void AddReview(UserReview userReview);
+        void AddReviewLease(UserReview userReview);
 
         List<UserReview>? GetReviewsOfRenter(int idRenter, int pageIndex = 1);
 
         void AddReviewRenter(UserReview userReview);
+
+        // Trả về rating và số lượng review
+        ReviewOverview GetRatingAndNumberReviewOfLease(int idLease);
+
+        ReviewOverview GetRatingAndNumberReviewOfRenter(int idRenter);
     }
 }

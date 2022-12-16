@@ -147,5 +147,11 @@ namespace RentalCar.Data.Repositories
 
             return numberUserRegister.ToList();
         }
+
+        public int GetNumberTripOfUser(int idUser)
+        {
+            var cars = _context.Cars.Where(c => c.UserId == idUser);
+            return _context.Cars.Where(c => c.UserId == idUser).Select(c => c.NumberTrip).Sum();
+        }
     }
 }

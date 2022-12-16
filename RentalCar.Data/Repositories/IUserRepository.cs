@@ -36,5 +36,7 @@ namespace RentalCar.Data.Repositories
         List<QuantityStatistics> StatistUsersByMonth(int year);
 
         List<QuantityStatistics> StatistUsersByDay(int month);
+
+        int GetNumberTripOfUser(int idUser);
     }
 }

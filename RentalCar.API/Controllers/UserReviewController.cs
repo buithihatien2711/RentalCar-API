@@ -22,36 +22,9 @@ namespace RentalCar.API.Controllers
             _mapper = mapper;
         }
 
-        // // Get my review
-        // [HttpGet("/api/myComment/{pageIndex}")]
-        // public ActionResult<List<ReviewViewDto>> GetMyReview(int pageIndex)
-        // {
-        //     var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-        //     if(username == null) return Unauthorized("Please login");
-        //     var lease = _userService.GetUserByUsername(username.Value);
-        //     if(lease == null) return Unauthorized("Please login");
-
-        //     var reviews = _userReviewService.GetReviewsOfLease(lease.Id, pageIndex);
-        //     if(reviews == null) return Ok(null);
-        //     List<ReviewViewDto> userReviewViewDtos = new List<ReviewViewDto>();
-        //     foreach (var review in reviews)
-        //     {
-        //         userReviewViewDtos.Add(new ReviewViewDto()
-        //         {
-        //             Id = review.Id,
-        //             Rating = review.Rating,
-        //             Content = review.Content,
-        //             CreatedAt = review.CreatedAt,
-        //             UpdatedAt = review.UpdatedAt,
-        //             Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.RenterId))
-        //         });
-        //     }
-        //     return Ok(userReviewViewDtos);
-        // }
-
-        // Get review của 1 lease
+        // Get review của 1 chủ xe
         [HttpGet("/api/leaseComments/{idLease}/{pageIndex}")]
-        public ActionResult<List<ReviewViewDto>> GetReviewByLease(int idLease, int pageIndex)
+        public ActionResult<ReviewDto> GetReviewByLease(int idLease, int pageIndex)
         {
             var reviews = _userReviewService.GetReviewsOfLease(idLease, pageIndex);
             if(reviews == null) return Ok(null);
@@ -68,7 +41,17 @@ namespace RentalCar.API.Controllers
                     Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.RenterId))
                 });
             }
-            return Ok(userReviewViewDtos);
+
+            var ratingNumberTrip = _userReviewService.GetRatingAndNumberReviewOfLease(idLease);
+
+            var reviewDto = new ReviewDto()
+            {
+                Rating = ratingNumberTrip.Rating,
+                NumberReview = ratingNumberTrip.NumberTrip,
+                ReviewViews = userReviewViewDtos
+            };
+
+            return Ok(reviewDto);
         }
 
         // Bình luận về một chủ xe
@@ -89,18 +72,9 @@ namespace RentalCar.API.Controllers
                 Content = reviewAddDto.Content,
                 CreatedAt = DateTime.Now
             };
-            _userReviewService.AddReview(userReview);
+            _userReviewService.AddReviewLease(userReview);
 
             return NoContent();
-            // return Ok(new ReviewViewDto()
-            // {
-            //     Id = userReview.Id,
-            //     Rating = userReview.Rating,
-            //     Content = userReview.Content,
-            //     CreatedAt = userReview.CreatedAt,
-            //     UpdatedAt = userReview.UpdatedAt,
-            //     Account = _mapper.Map<User, AccountDto>(lease)
-            // });
         }
 
         // Bình luận về một người thuê xe
@@ -140,7 +114,7 @@ namespace RentalCar.API.Controllers
 
         // Get review của 1 renter
         [HttpGet("/api/renterComments/{idRenter}/{pageIndex}")]
-        public ActionResult<List<ReviewViewDto>> GetReviewByRenter(int idRenter, int pageIndex)
+        public ActionResult<ReviewDto> GetReviewByRenter(int idRenter, int pageIndex)
         {
             var reviews = _userReviewService.GetReviewsOfRenter(idRenter, pageIndex);
             if(reviews == null) return Ok(null);
@@ -158,7 +132,17 @@ namespace RentalCar.API.Controllers
                     Account = _mapper.Map<User, AccountDto>(_userService.GetUserById(review.LeaseId))
                 });
             }
-            return Ok(userReviewViewDtos);
+
+            var ratingNumberTrip = _userReviewService.GetRatingAndNumberReviewOfRenter(idRenter);
+
+            var reviewDto = new ReviewDto()
+            {
+                Rating = ratingNumberTrip.Rating,
+                NumberReview = ratingNumberTrip.NumberTrip,
+                ReviewViews = userReviewViewDtos
+            };
+
+            return Ok(reviewDto);
         }
     }
 }

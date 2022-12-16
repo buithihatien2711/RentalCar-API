@@ -86,5 +86,10 @@ namespace RentalCar.Service
         {
             return _repository.StatistUsersByDay(month);
         }
+
+        public int GetNumberTripOfUser(int idUser)
+        {
+            return _repository.GetNumberTripOfUser(idUser);
+        }
     }
 }
