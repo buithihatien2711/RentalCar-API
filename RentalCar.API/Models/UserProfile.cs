@@ -19,6 +19,8 @@ namespace RentalCar.API.Models
         public string Email { get; set; }
 
         public string Number { get; set; }
+
+        public int NumberTrip { get; set; }
     }
 }
 

@@ -15,7 +15,7 @@ namespace RentalCar.Data.Repositories
         }
 
         // Renter add review (Writer)
-        public void AddReview(UserReview userReview)
+        public void AddReviewLease(UserReview userReview)
         {
             _context.UserReviews.Add(userReview);
             _context.SaveChanges();
@@ -42,7 +42,7 @@ namespace RentalCar.Data.Repositories
 
             var user = _context.Users.FirstOrDefault(u => u.Id == userReview.LeaseId);
             var ratings = _context.UserReviews.Where(r => r.LeaseId == user.Id).Select(r => r.Rating);
-            user.Rating = ratings.Average();
+            user.RatingLease = ratings.Average();
             _context.SaveChanges();
         }
 
@@ -122,8 +122,45 @@ namespace RentalCar.Data.Repositories
             // 2 cái rating khác nhau. thêm vô entity 1 cái rating nữa
             var user = _context.Users.FirstOrDefault(u => u.Id == userReview.RenterId);
             var ratings = _context.UserReviews.Where(r => r.RenterId == user.Id).Select(r => r.Rating);
-            user.Rating = ratings.Average();
+            user.RatingRent = ratings.Average();
             _context.SaveChanges();
         }
+    public ReviewOverview GetRatingAndNumberReviewOfLease(int idLease)
+        {
+            var userReview = _context.UserReviewUsers.Include(r => r.UserReview)
+                                // get UserReviewUsers by id renter
+                                .Where(r => r.UserId == idLease)
+                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Lease))
+                                .Select(r => r.UserReview);
+
+            return new ReviewOverview
+            {
+                Rating = userReview.Where(r => r.LeaseId == idLease).Select(r => r.Rating).Average(),
+                NumberTrip = userReview.Where(r => r.LeaseId == idLease).Count()
+            };
+            
+        }
+
+        public ReviewOverview GetRatingAndNumberReviewOfRenter(int idRenter)
+        {
+            var userReview = _context.UserReviewUsers.Include(r => r.UserReview)
+                                // get UserReviewUsers by id renter
+                                .Where(r => r.UserId == idRenter)
+                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Renter))
+                                .Select(r => r.UserReview);
+
+            return new ReviewOverview
+            {
+                Rating = userReview.Where(r => r.RenterId == idRenter).Select(r => r.Rating).Average(),
+                NumberTrip = userReview.Where(r => r.RenterId == idRenter).Count()
+            };
+        }
+    }
+
+    public class ReviewOverview
+    {
+        public double Rating { get; set; }
+        
+        public int NumberTrip { get; set; }
     }
 }

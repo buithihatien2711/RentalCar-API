@@ -50,7 +50,10 @@ namespace RentalCar.Model.Models
 
         public List<CarReview>? CarReviews { get; set; }
 
-        public double Rating { get; set; }
+        public double RatingLease { get; set; }
+
+        public double RatingRent { get; set; }
+
         public List<Booking> Bookings { get; set; }
 
         public List<UserReviewUser>? UserReviewUsers { get; set; }

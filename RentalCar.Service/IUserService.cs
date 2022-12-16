@@ -33,5 +33,7 @@ namespace RentalCar.Service
         List<QuantityStatistics> StatistUsersByMonth(int year);
 
         List<QuantityStatistics> StatistUsersByDay(int month);
+
+        int GetNumberTripOfUser(int idUser);
     }
 }
