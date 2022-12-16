@@ -6,5 +6,9 @@ namespace RentalCar.Data.Repositoriess
     {
         public void CreateBooking(Booking booking);
         bool SaveChanges();
+
+        List<Booking> GetAllBooking ();
+        
+        
     }
 }
