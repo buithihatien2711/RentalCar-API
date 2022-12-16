@@ -16,6 +16,11 @@ namespace RentalCar.Service
             _bookingRepository.CreateBooking(booking);
         }
 
+        public List<Booking> GetAllBooking()
+        {
+            return _bookingRepository.GetAllBooking();
+        }
+
         public bool SaveChanges()
         {
             return _bookingRepository.SaveChanges();

@@ -22,11 +22,13 @@ namespace RentalCar.API.Controllers
         private readonly IMapper _mapper;
         private readonly IUploadImgService _uploadImgService;
         private readonly ICarService _carService;
+        private readonly IBookingService _bookingService;
 
-        public AdminController(IUserService userService, IMapper mapper, IUploadImgService uploadImgService, ICarService carService)
+        public AdminController(IUserService userService, IMapper mapper, IUploadImgService uploadImgService, ICarService carService, IBookingService bookingService)
         {
             _uploadImgService = uploadImgService;
             _carService = carService;
+            _bookingService = bookingService;
             _mapper = mapper;
             _userService = userService;
             
@@ -189,7 +191,7 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpGet("/api/admin/car/{id}")]
-        public ActionResult<CarDetailAdminDto> Get(int id)
+        public ActionResult<CarDetailAdminDto> GetCarById(int id)
         {
             var car = _carService.GetCarById(id);
             if(car == null) return NotFound("Car doesn't exist");
@@ -240,6 +242,45 @@ namespace RentalCar.API.Controllers
                 Account = _mapper.Map<User, AccountDto>(car.User)
                 // CarReviewDtos = carReviewDtos
             });
+        }
+
+        [HttpGet("/api/admin/bookings")]
+        public ActionResult<BookingViewAdminDto> GetAllBooking()
+        {
+            var bookings = _bookingService.GetAllBooking();
+            if(bookings == null) return Ok(null);
+
+            var bookingDtos = new List<BookingViewAdminDto>();
+            foreach (var booking in bookings)
+            {
+                bookingDtos.Add
+                (
+                    new BookingViewAdminDto()
+                    {
+                        Id = booking.Id,
+                        RentDate = booking.RentDate,
+                        ReturnDate = booking.ReturnDate,
+                        Total = booking.Total,
+                        Status = booking.Status,
+                        CreatedAt = booking.CreatedAt,
+                        User = new UserBooking()
+                        {
+                            Username = booking.User.Username,
+                            Fullname = booking.User.Fullname
+                        },
+                        Car = new CarBooking()
+                        {
+                            Id = booking.CarId,
+                            Name = booking.Car.Name
+                        },
+                        Location = _mapper.Map<Location, LocationDto>(booking.Location),
+                        Ward = _mapper.Map<Ward, WardDto>(booking.Location.Ward),
+                        District = _mapper.Map<District, DistrictDto>(booking.Location.Ward.District)
+                    }
+                );
+            }
+
+            return Ok(bookingDtos);
         }
     }
 }

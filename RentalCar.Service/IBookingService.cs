@@ -6,5 +6,7 @@ namespace RentalCar.Service
     {
         public void CreateBooking(Booking booking);
         bool SaveChanges();
+
+        List<Booking> GetAllBooking ();
     }
 }
