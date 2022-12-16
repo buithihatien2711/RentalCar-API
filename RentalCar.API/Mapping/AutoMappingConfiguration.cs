@@ -14,6 +14,7 @@ namespace RentalCar.API.Mapping
             CreateMap<Location, LocationDto>();
             CreateMap<CarModel,CarModelDto>();
             CreateMap<CarImage,CarImageDtos>();
+            CreateMap<AdvertisingPhoto,CarImageDtos>();
             CreateMap<CarImgRegister,CarImageDtos>();
             CreateMap<Transmission, TransmissionDto>();
             CreateMap<FuelType, FuelTypeDto>();

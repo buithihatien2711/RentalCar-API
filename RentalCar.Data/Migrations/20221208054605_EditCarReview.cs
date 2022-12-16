@@ -9,15 +9,15 @@ namespace RentalCar.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "UpdateAt",
-                table: "CarReviews");
+            // migrationBuilder.DropColumn(
+            //     name: "UpdateAt",
+            //     table: "CarReviews");
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "UpdatedAt",
-                table: "CarReviews",
-                type: "datetime2",
-                nullable: true);
+            // migrationBuilder.AddColumn<DateTime>(
+            //     name: "UpdatedAt",
+            //     table: "CarReviews",
+            //     type: "datetime2",
+            //     nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

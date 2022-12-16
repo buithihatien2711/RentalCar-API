@@ -152,7 +152,7 @@ namespace RentalCar.API.Controllers
         }
 
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpPost("CarAdd")]
         public async Task<ActionResult<string>> AddCar([FromForm] CarAddInfo car)
         {
@@ -331,7 +331,7 @@ namespace RentalCar.API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpGet("mycar/{idStatus}")]
         public ActionResult<List<MyCarOverview>> GetMyCar(int idStatus)
         {
@@ -384,6 +384,7 @@ namespace RentalCar.API.Controllers
             if(car == null) return NotFound();
 
             var carInfoView = new CarInfoView_UpdateDto(){
+                Id = car.Id,
                 Name = car.Name,
                 Status =  _mapper.Map<Status, StatusDto>(car.Status),
                 Cost = car.Cost,
@@ -402,7 +403,7 @@ namespace RentalCar.API.Controllers
             return Ok(carInfoView);
         }
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpPut("{id}/CarInfor")]
         public ActionResult<string> UpdateCarInfor(int id,CarInfoView_UpdateDto carInput)
         {
@@ -463,7 +464,7 @@ namespace RentalCar.API.Controllers
             return Ok(CarImage);
         }
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpPost("{id}/CarImage")]
         public async Task<ActionResult<string>> AddCarImage(List<IFormFile> listImage,int id)
         {
@@ -557,7 +558,7 @@ namespace RentalCar.API.Controllers
         //     }
         // }
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpGet("{id}/CarImageType/{idType}")]
         public ActionResult<string> ViewCarImgRegister(int id,int idType)
         {
@@ -567,7 +568,7 @@ namespace RentalCar.API.Controllers
             return Ok(listImage);
         }
 
-        [Authorize(Roles="lease")]
+        [Authorize(Roles="lease, admin")]
         [HttpPost("{id}/CarImageType/{idType}")]
         public async Task<ActionResult<string>> AddCarImgRegister(int id,int idType,[FromForm]List<IFormFile> images)
         {
@@ -592,7 +593,7 @@ namespace RentalCar.API.Controllers
             }
         }
        
-       [Authorize(Roles="lease")]
+       [Authorize(Roles="lease, admin")]
        [HttpDelete("CarImageRegister/{ImgId}")]
         public ActionResult<string> DeleteCarImageRegister(int ImgId)
         {
