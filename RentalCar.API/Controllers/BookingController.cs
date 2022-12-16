@@ -85,6 +85,17 @@ namespace RentalCar.API.Controllers
                 value.LocationId = _carService.GetLocationByAddress(booking.Address).Id;
                 value.UserId = userId;
                 value.CarId = id;
+                //Total
+                 var car = _carService.GetCarById(id);
+                decimal price = 0;
+                for(var day = booking.RentDate ; day <= booking.ReturnDate ; day = day.AddDays(1)){
+                    var resultBefore = price;
+                    foreach(var priceDate in car.PriceByDates){
+                        if(priceDate.Date.Date == day.Date) price += priceDate.Cost;
+                    }
+                    price = (price != resultBefore) ? price : resultBefore + car.Cost;
+                }
+                value.Total = price;
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
