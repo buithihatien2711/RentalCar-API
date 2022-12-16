@@ -72,6 +72,9 @@ services.AddScoped<IBookingService, BookingService>();
 services.AddScoped<IUserReviewRepository, UserReviewRepository>();
 services.AddScoped<IUserReviewService, UserReviewService>();
 
+services.AddScoped<IAdvertPhotoRepository, AdvertPhotoRepository>();
+services.AddScoped<IAdvertPhotoService, AdvertPhotoService>();
+
 services.AddScoped<IUploadImgService, UploadImgService>();
 
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);

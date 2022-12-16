@@ -9,29 +9,29 @@ namespace RentalCar.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "UpdateAt",
-                table: "CarReviews",
-                type: "datetime2",
-                nullable: true,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2");
+            // migrationBuilder.AlterColumn<DateTime>(
+            //     name: "UpdateAt",
+            //     table: "CarReviews",
+            //     type: "datetime2",
+            //     nullable: true,
+            //     oldClrType: typeof(DateTime),
+            //     oldType: "datetime2");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Content",
-                table: "CarReviews",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            // migrationBuilder.AlterColumn<string>(
+            //     name: "Content",
+            //     table: "CarReviews",
+            //     type: "nvarchar(max)",
+            //     nullable: true,
+            //     oldClrType: typeof(string),
+            //     oldType: "nvarchar(max)");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Status",
-                table: "Bookings",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "bit");
+            // migrationBuilder.AlterColumn<int>(
+            //     name: "Status",
+            //     table: "Bookings",
+            //     type: "int",
+            //     nullable: false,
+            //     oldClrType: typeof(bool),
+            //     oldType: "bit");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

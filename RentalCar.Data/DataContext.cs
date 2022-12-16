@@ -49,6 +49,7 @@ namespace RentalCar.Data
         public DbSet<UserReview> UserReviews { get; set; }
         
         public DbSet<UserReviewUser> UserReviewUsers { get; set; }
+        public DbSet<AdvertisingPhoto> AdvertisingPhotos { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -107,7 +108,7 @@ namespace RentalCar.Data
         //  //    .EnableSensitiveDataLogging()
         //  //    .EnableDetailedErrors();
 
-        //  string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=123456";
+        //  string connectionString = "Server=localhost; Database=RentalCar;Trusted_Connection=True;User ID=sa; Password=01042001";
         //  optionsBuilder.UseSqlServer(connectionString);
         // }
     }

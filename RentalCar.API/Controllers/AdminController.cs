@@ -188,19 +188,58 @@ namespace RentalCar.API.Controllers
             return Ok(statist);
         }
 
-        //[Route("/month")]
-        //[HttpGet]
-        //public ActionResult<Dictionary<string, string>> GetMonth(int month)
-        //{
-        //    Dictionary<string, List<QuantityStatistics>> statist = new Dictionary<string, List<QuantityStatistics>>();
-        //    for (var i = 0; i < length; i++)
-        //    {
-                
-        //    }
-        //    statist.Add("numberCars", numberCarRegister);
-        //    statist.Add("numberUser", numberUserRegister);
+        [HttpGet("/api/admin/car/{id}")]
+        public ActionResult<CarDetailAdminDto> Get(int id)
+        {
+            var car = _carService.GetCarById(id);
+            if(car == null) return NotFound("Car doesn't exist");
 
-        //    return Ok(statist);
-        //}
+            var carImages = _carService.GetImageByCarId(id);
+            return Ok(new CarDetailAdminDto()
+            {
+                Id = car.Id,
+                Name = car.Name,
+                Plate_number = car.Plate_number,
+                Description = car.Description,
+                Capacity = car.Capacity,
+                Cost = car.Cost,
+                CarBrand = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
+                CarModel = _mapper.Map<CarModel,CarModelDto>(car.CarModel),
+                TransmissionDto = new TransmissionDto()
+                {
+                    Id = car.TransmissionID,
+                    Name = car.Transmission.Name
+                },
+                FuelTypeDto = new FuelTypeDto()
+                {
+                    Id = car.FuelType.Id,
+                    Name = car.FuelType.Name
+                },
+                FuelConsumption = car.FuelConsumption,
+
+                LocationDto = car.Location == null ? null : new LocationDto()
+                {
+                    Id = car.LocationId,
+                    Address = car.Location.Address
+                },
+                WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
+                {
+                    Id = car.Location.WardId,
+                    Name = car.Location.Ward.Name
+                }),
+
+                DistrictDto = car.Location == null ? null : (car.Location.Ward == null ? null : (car.Location.Ward.District == null ? null : new DistrictDto()
+                {
+                    Id = car.Location.Ward.DistrictID,
+                    Name = car.Location.Ward.District.Name
+                })),
+
+                Rule = car.Rule,
+                NumberStar = car.NumberStar,
+                CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
+                Account = _mapper.Map<User, AccountDto>(car.User)
+                // CarReviewDtos = carReviewDtos
+            });
+        }
     }
 }
