@@ -78,5 +78,7 @@ namespace RentalCar.Data.Repositories
         List<QuantityStatistics> StatistCarsByMonth(int year);
 
         List<QuantityStatistics> StatistCarsByDay(int month);
+
+        List<Car> GetCarsByUser(int idUser);
     }
 }

@@ -205,5 +205,10 @@ namespace RentalCar.Service
         {
             return _carRepository.StatistCarsByDay(month);
         }
+
+        public List<Car> GetCarsByUser(int idUser)
+        {
+            return _carRepository.GetCarsByUser(idUser);
+        }
     }
 }
