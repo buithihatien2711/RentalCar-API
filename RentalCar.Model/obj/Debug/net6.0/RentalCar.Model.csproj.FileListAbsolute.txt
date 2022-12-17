@@ -208,3 +208,17 @@ D:\DUT\PBL6_merge\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\refint\RentalCa
 D:\DUT\PBL6_merge\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.pdb
 D:\DUT\PBL6_merge\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.genruntimeconfig.cache
 D:\DUT\PBL6_merge\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\ref\RentalCar.Model.dll
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\bin\Debug\net6.0\RentalCar.Model.deps.json
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\bin\Debug\net6.0\RentalCar.Model.runtimeconfig.json
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\bin\Debug\net6.0\RentalCar.Model.dll
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\bin\Debug\net6.0\RentalCar.Model.pdb
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.csproj.AssemblyReference.cache
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.AssemblyInfoInputs.cache
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.AssemblyInfo.cs
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.csproj.CoreCompileInputs.cache
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.dll
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\refint\RentalCar.Model.dll
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.pdb
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\RentalCar.Model.genruntimeconfig.cache
+D:\DUT\_PBL6\RentalCar-API\RentalCar.Model\obj\Debug\net6.0\ref\RentalCar.Model.dll

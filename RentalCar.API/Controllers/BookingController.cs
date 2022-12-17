@@ -39,13 +39,13 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpGet("/api/Car/{id}/PriceAverage")]
-        public ActionResult<string> Get(int id, DateTime rentDate, DateTime returnDate)
+        public ActionResult<string> Get(int id, DateTime RentDate, DateTime ReturnDate)
         {
             var car = _carService.GetCarById(id);
             string message = "Thời gian đặt xe hợp lệ";
             decimal price = 0;
             int count = 0;
-            for(var day = rentDate ; day <= returnDate ; day = day.AddDays(1)){
+            for(var day = RentDate ; day <= ReturnDate ; day = day.AddDays(1)){
                 count++;
                 if(_carService.CheckScheduleByDate(id,day) == true) message = "Xe bận trong khoảng thời gian trên. Vui lòng đặt xe khác hoặc thay đổi lịch trình thích hợp.";
                 var resultBefore = price;
