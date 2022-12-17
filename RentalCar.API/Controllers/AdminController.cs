@@ -263,10 +263,15 @@ namespace RentalCar.API.Controllers
                         Total = booking.Total,
                         Status = booking.Status,
                         CreatedAt = booking.CreatedAt,
-                        User = new UserBooking()
+                        Renter = new UserBooking()
                         {
                             Username = booking.User.Username,
                             Fullname = booking.User.Fullname
+                        },
+                        Lease = new UserBooking()
+                        {
+                            Username = booking.Car.User.Username,
+                            Fullname = booking.Car.User.Fullname
                         },
                         Car = new CarBooking()
                         {
@@ -281,6 +286,24 @@ namespace RentalCar.API.Controllers
             }
 
             return Ok(bookingDtos);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/bookings/statuses")]
+        public ActionResult<List<StatusBookingDto>> GetAllStatusBooking()
+        {
+            // Dictionary<int, string> statuses = new Dictionary<int, string>();
+            List<StatusBookingDto> statusBookings = new List<StatusBookingDto>();
+
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.WaitDeposit), Name = "Đang chờ đặt cọc"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.WaitConfirm), Name = "Đang chờ chủ xe chấp nhận"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.Deposited), Name = "Đã đặt cọc"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CanceledBySystem), Name = "Bị hủy bởi hệ thống"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CanceledByRenter), Name = "Bị hủy bởi khách thuê"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CanceledByLease), Name = "Bị hủy bởi người cho thuê"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.Completed), Name = "Hoàn thành"});
+
+            return Ok(statusBookings);
         }
     }
 }

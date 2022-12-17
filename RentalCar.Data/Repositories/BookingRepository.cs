@@ -69,6 +69,7 @@ namespace RentalCar.Data.Repositories
         {
             return _context.Bookings
                             .Include(b => b.Car)
+                            .ThenInclude(c => c.User)
                             .Include(b => b.User)
                             .Include(b => b.Location)
                             .ThenInclude(l => l.Ward)
