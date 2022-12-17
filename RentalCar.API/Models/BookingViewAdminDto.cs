@@ -34,7 +34,9 @@ namespace RentalCar.API.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public UserBooking User { get; set; }
+        public UserBooking Renter { get; set; }
+
+        public UserBooking Lease { get; set; }
 
         public CarBooking Car { get; set; }
 
