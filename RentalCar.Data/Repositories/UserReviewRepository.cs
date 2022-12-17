@@ -133,6 +133,8 @@ namespace RentalCar.Data.Repositories
                                 .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Lease))
                                 .Select(r => r.UserReview);
 
+            if(!userReview.Any()) return new ReviewOverview(){Rating = 0, NumberTrip = 0};
+
             return new ReviewOverview
             {
                 Rating = userReview.Where(r => r.LeaseId == idLease).Select(r => r.Rating).Average(),
@@ -148,6 +150,8 @@ namespace RentalCar.Data.Repositories
                                 .Where(r => r.UserId == idRenter)
                                 .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Renter))
                                 .Select(r => r.UserReview);
+
+            if(!userReview.Any()) return new ReviewOverview(){Rating = 0, NumberTrip = 0};  
 
             return new ReviewOverview
             {

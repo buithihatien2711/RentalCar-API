@@ -80,7 +80,7 @@ namespace RentalCar.API.Controllers
                 };
 
                 var value = _mapper.Map<BookingAddDto,Booking>(booking);
-                value.Status = enumStatus.WaitConFirm;
+                value.Status = enumStatus.WaitConfirm;
                 value.CreatedAt = DateTime.Now;
                 value.LocationId = _carService.GetLocationByAddress(booking.Address).Id;
                 value.UserId = userId;
@@ -108,6 +108,54 @@ namespace RentalCar.API.Controllers
             catch(Exception ex){
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPut("/api/booking/confirm/{idBooking}")]
+        public ActionResult ConfirmBooking(int idBooking)
+        {
+            _bookingService.ConfirmBooking(idBooking);
+
+            if(_bookingService.SaveChanges())
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("/api/booking/cancelBySystem/{idBooking}")]
+        public ActionResult CancelBookingBySystem(int idBooking)
+        {
+            _bookingService.CancelBySystem(idBooking);
+
+            if(_bookingService.SaveChanges())
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("/api/booking/cancelBookingByLease/{idBooking}")]
+        public ActionResult CancelBookingByLease(int idBooking)
+        {
+            _bookingService.CancelByLease(idBooking);
+
+            if(_bookingService.SaveChanges())
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("/api/booking/cancelBookingByRenter/{idBooking}")]
+        public ActionResult CancelBookingByRenter(int idBooking)
+        {
+            _bookingService.CancelByRenter(idBooking);
+
+            if(_bookingService.SaveChanges())
+            {
+                return NoContent();
+            }
+            return BadRequest();
         }
     }
 }
