@@ -9,6 +9,14 @@ namespace RentalCar.Data.Repositoriess
 
         List<Booking> GetAllBooking ();
         
-        
+        void ConfirmBooking(Booking booking);
+
+        Booking? GetBookingById(int idBooking);
+
+        void CancelBySystem(Booking booking);
+
+        void CancelByLease(Booking booking);
+
+        void CancelByRenter(Booking booking);
     }
 }

@@ -19,7 +19,50 @@ namespace RentalCar.Data.Repositories
             _context.Bookings.Add(booking);
         }
 
+        /// Hệ thống hủy chuyến (chưa đặt cọc)
+        public void CancelBySystem(Booking booking)
+        {
+            if(booking == null) return;
+            // Hệ thống chỉ hủy booking khi xe đang ở trạng thái chờ xác nhận
+            if(booking.Status == enumStatus.WaitConfirm)
+            {
+                booking.Status = enumStatus.CanceledBySystem;
+            }
+        }
+
+        // Chủ xe hủy chuyến (Chưa đặt cọc)
+        public void CancelByLease(Booking booking)
+        {
+            if(booking == null) return;
+            
+            if(booking.Status == enumStatus.WaitConfirm)
+            {
+                booking.Status = enumStatus.CanceledByLease;
+            }
+        }
+
+        // Khách thuê xe hủy chuyến (Chưa đặt cọc)
+        public void CancelByRenter(Booking booking)
+        {
+            if(booking == null) return;
+            
+            if(booking.Status == enumStatus.WaitConfirm)
+            {
+                booking.Status = enumStatus.CanceledByRenter;
+            }
+        }
+
         // Chủ xe xác nhận
+        public void ConfirmBooking(Booking booking)
+        {
+            // var existBooking = _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
+            if(booking == null) return;
+            // Chỉ được xác nhận khi xe đang ở trạng thái chờ xác nhận
+            if(booking.Status == enumStatus.WaitConfirm)
+            {
+                booking.Status = enumStatus.WaitDeposit;
+            }
+        }
         
 
         public List<Booking> GetAllBooking()
@@ -30,6 +73,11 @@ namespace RentalCar.Data.Repositories
                             .Include(b => b.Location)
                             .ThenInclude(l => l.Ward)
                             .ThenInclude(w=> w.District).ToList();
+        }
+
+        public Booking? GetBookingById(int idBooking)
+        {
+            return _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
         }
 
         public bool SaveChanges()

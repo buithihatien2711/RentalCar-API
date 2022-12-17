@@ -11,6 +11,35 @@ namespace RentalCar.Service
         {
             _bookingRepository = bookingRepository;
         }
+
+        public void CancelByLease(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.CancelByLease(booking);
+        }
+
+        public void CancelByRenter(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.CancelByRenter(booking);
+        }
+
+        public void CancelBySystem(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.CancelBySystem(booking);
+        }
+
+        public void ConfirmBooking(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.ConfirmBooking(booking);
+        }
+
         public void CreateBooking(Booking booking)
         {
             _bookingRepository.CreateBooking(booking);
@@ -19,6 +48,11 @@ namespace RentalCar.Service
         public List<Booking> GetAllBooking()
         {
             return _bookingRepository.GetAllBooking();
+        }
+
+        public Booking? GetBookingById(int idBooking)
+        {
+            return _bookingRepository.GetBookingById(idBooking);
         }
 
         public bool SaveChanges()

@@ -4,10 +4,23 @@ namespace RentalCar.Model.Models
 {
     public enum enumStatus
     {
-        Confirm = 1,
-        WaitConFirm = 2,
-        Paid = 3
+        // Chủ xe đã xác nhận và đang chờ đặt cọc
+        WaitDeposit = 1,
 
+        // Chờ xác nhận
+        WaitConfirm = 2,
+
+        // Đã đặt cọc
+        Deposited = 3,
+
+        // Bị hủy bởi hệ thống
+        CanceledBySystem = 4,
+
+        // Bị hủy bởi người thuê
+        CanceledByRenter = 5,
+        
+        // Bị hủy bởi người cho thuê
+        CanceledByLease = 6
     }
     public class Booking
     {
