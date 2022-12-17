@@ -19,12 +19,12 @@ namespace RentalCar.Data.Repositories
             _context.Bookings.Add(booking);
         }
 
-        /// Hệ thống hủy chuyến (chưa đặt cọc)
+        /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận hoặc quá giờ mà khách chưa đặt cọc)
         public void CancelBySystem(Booking booking)
         {
             if(booking == null) return;
-            // Hệ thống chỉ hủy booking khi xe đang ở trạng thái chờ xác nhận
-            if(booking.Status == enumStatus.WaitConfirm)
+            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận hoặc chờ đặt cọc
+            if(booking.Status == enumStatus.WaitConfirm || booking.Status == enumStatus.WaitDeposit)
             {
                 booking.Status = enumStatus.CanceledBySystem;
             }

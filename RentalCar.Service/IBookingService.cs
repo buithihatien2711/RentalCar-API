@@ -19,5 +19,7 @@ namespace RentalCar.Service
         void CancelByLease(int idBooking);
 
         void CancelByRenter(int idBooking);
+
+        void Deposit(int idBooking);
     }
 }

@@ -677,5 +677,42 @@ namespace RentalCar.API.Controllers
 
             return Ok(sortBy);
         }
+
+        [HttpGet("user/{idUser}")]
+        public ActionResult<string> GetCarByUser(int idUser)
+        {
+            if(_userService.GetUserById(idUser) == null) return NotFound();
+            var cars = _carService.GetCarsByUser(idUser);
+            List<CarViewDto> listCarView = new List<CarViewDto>();
+
+            if(cars == null) return Ok(null);
+
+            foreach(var car in cars){
+                listCarView.Add(new CarViewDto{
+                    Id = car.Id,
+                    ImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(car.Id)),
+                    Name = car.Name,
+                    Plate_number = car.Plate_number,
+                    // CarBrandDtos = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
+                    CarModelDtos = _mapper.Map<CarModel,CarModelDto>(car.CarModel),
+                    Color = car.Color,
+                    Capacity = car.Capacity,
+                    YearManufacture = car.YearManufacture,
+                    TransmissionDtos = _mapper.Map<Transmission,TransmissionDto>(car.Transmission),
+                    FuelTypeDtos = _mapper.Map<FuelType,FuelTypeDto>(car.FuelType),
+                    FuelConsumption = car.FuelConsumption,
+                    Description = car.Description,
+                    Cost = car.Cost,
+                    numberStar = car.NumberStar,
+                    Rule = car.Rule,
+                    Status = _mapper.Map<Status,StatusDto>(car.Status),
+                    LocationDto = _mapper.Map<Location,LocationDto>(car.Location),
+                    Ward = _mapper.Map<Ward,WardDto>(car.Location.Ward),
+                    District = _mapper.Map<District,DistrictDto>(car.Location.Ward.District),
+                    Username = car.User.Username
+                });
+            }
+            return Ok(listCarView);
+        }
     }
 }

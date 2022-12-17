@@ -8,15 +8,17 @@ namespace RentalCar.Data.Repositoriess
         bool SaveChanges();
 
         List<Booking> GetAllBooking ();
-        
-        void ConfirmBooking(Booking booking);
 
         Booking? GetBookingById(int idBooking);
+
+        void ConfirmBooking(Booking booking);
 
         void CancelBySystem(Booking booking);
 
         void CancelByLease(Booking booking);
 
         void CancelByRenter(Booking booking);
+
+        
     }
 }

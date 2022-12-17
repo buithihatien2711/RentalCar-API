@@ -20,7 +20,10 @@ namespace RentalCar.Model.Models
         CanceledByRenter = 5,
         
         // Bị hủy bởi người cho thuê
-        CanceledByLease = 6
+        CanceledByLease = 6,
+
+        // Đã hoàn thành đặt xe
+        Completed = 7
     }
     public class Booking
     {

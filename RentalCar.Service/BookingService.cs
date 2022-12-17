@@ -45,6 +45,11 @@ namespace RentalCar.Service
             _bookingRepository.CreateBooking(booking);
         }
 
+        public void Deposit(int idBooking)
+        {
+            
+        }
+
         public List<Booking> GetAllBooking()
         {
             return _bookingRepository.GetAllBooking();
