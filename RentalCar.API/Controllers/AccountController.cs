@@ -71,7 +71,7 @@ namespace RentalCar.API.Controllers
             if (_userService.SaveChanges())
             {
                 Dictionary<string, string> response = new Dictionary<string, string>();
-                response.Add("avatar", userExist.ProfileImage);
+                response.Add("profileImage", userExist.ProfileImage);
                 return Ok(response);
             } 
             return BadRequest("Avatar update failed");

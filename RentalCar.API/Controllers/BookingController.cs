@@ -99,10 +99,12 @@ namespace RentalCar.API.Controllers
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
-                    return Ok("Success");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Success");
+                    return Ok(message);
                 }
                 else{
-                    return Ok("Fail");
+                    return BadRequest();
                 }
             }
             catch(Exception ex){

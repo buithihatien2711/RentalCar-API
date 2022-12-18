@@ -19,6 +19,6 @@ namespace RentalCar.Data.Repositoriess
 
         void CancelByRenter(Booking booking);
 
-        
+        void PayDeposit(Booking booking);
     }
 }

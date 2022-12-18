@@ -86,5 +86,9 @@ namespace RentalCar.Data.Repositories
             return (_context.SaveChanges() > 0);
         }
 
+        public void PayDeposit(Booking booking)
+        {
+            
+        }
     }
 }
