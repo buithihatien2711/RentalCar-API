@@ -99,10 +99,14 @@ namespace RentalCar.API.Controllers
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
-                    return Ok("Success");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Đã gửi yêu cầu đặt xe thành công");
+                    return Ok(message);
                 }
                 else{
-                    return Ok("Fail");
+                    Dictionary<string, string> message = new Dictionary<string, string>();
+                    message.Add("Message", "Gửi yêu cầu đặt xe thất bại");
+                    return BadRequest(message);
                 }
             }
             catch(Exception ex){
