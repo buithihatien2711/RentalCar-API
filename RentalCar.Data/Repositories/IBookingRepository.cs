@@ -13,7 +13,9 @@ namespace RentalCar.Data.Repositoriess
 
         void ConfirmBooking(Booking booking);
 
-        void CancelBySystem(Booking booking);
+        void CancelBySystemWaitConfirm(Booking booking);
+
+        void CancelBySystemWaitDeposit(Booking booking);
 
         void CancelByLease(Booking booking);
 
