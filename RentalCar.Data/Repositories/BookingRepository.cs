@@ -19,14 +19,25 @@ namespace RentalCar.Data.Repositories
             _context.Bookings.Add(booking);
         }
 
-        /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận hoặc quá giờ mà khách chưa đặt cọc)
-        public void CancelBySystem(Booking booking)
+        /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận)
+        public void CancelBySystemWaitConfirm(Booking booking)
         {
             if(booking == null) return;
-            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận hoặc chờ đặt cọc
-            if(booking.Status == enumStatus.WaitConfirm || booking.Status == enumStatus.WaitDeposit)
+            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
+            if(booking.Status == enumStatus.WaitConfirm)
             {
-                booking.Status = enumStatus.CanceledBySystem;
+                booking.Status = enumStatus.CancelBySystemWaitConfirm;
+            }
+        }
+
+        /// Hệ thống hủy chuyến (nếu quá thời gian mà khách thuê chưa đặt cọc)
+        public void CancelBySystemWaitDeposit(Booking booking)
+        {
+            if(booking == null) return;
+            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
+            if(booking.Status == enumStatus.WaitDeposit)
+            {
+                booking.Status = enumStatus.CancelBySystemDeposit;
             }
         }
 
@@ -78,7 +89,12 @@ namespace RentalCar.Data.Repositories
 
         public Booking? GetBookingById(int idBooking)
         {
-            return _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District).FirstOrDefault(b => b.Id == idBooking);
         }
 
         public bool SaveChanges()

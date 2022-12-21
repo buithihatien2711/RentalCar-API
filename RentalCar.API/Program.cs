@@ -77,6 +77,8 @@ services.AddScoped<IAdvertPhotoService, AdvertPhotoService>();
 
 services.AddScoped<IUploadImgService, UploadImgService>();
 
+services.AddScoped<IPaymentService, PaymentService>();
+
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
