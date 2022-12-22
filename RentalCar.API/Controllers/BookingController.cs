@@ -298,6 +298,7 @@ namespace RentalCar.API.Controllers
 
             BookingViewDto bookingView = new BookingViewDto()
             {
+                Id = booking.Id,
                 CarId = booking.CarId,
                 CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                 CarName = booking.Car.Name,
@@ -338,6 +339,32 @@ namespace RentalCar.API.Controllers
             };
 
             return Ok(bookingView);
+        }
+
+        [HttpGet("/api/booking")]
+        public ActionResult<List<BookingOverviewDto>> GetAllCar()
+        {
+            var bookings = _bookingService.GetAllBooking();
+            var bookingDtos = new List<BookingOverviewDto>();
+            foreach (var booking in bookings)
+            {
+                bookingDtos.Add(new BookingOverviewDto()
+                {
+                    Id = booking.Id,
+                    CarId = booking.CarId,
+                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+                    CarName = booking.Car.Name,
+                    RentDate = booking.RentDate,
+                    ReturnDate = booking.ReturnDate,
+                    Total = booking.Total,
+                    Status = new StatusDto()
+                    {
+                        Id = ((int)booking.Status),
+                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+                    }
+                });
+            }
+            return Ok(bookingDtos);
         }
     }
 }
