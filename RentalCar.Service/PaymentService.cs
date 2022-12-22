@@ -30,7 +30,7 @@ namespace RentalCar.Service
             pay.AddRequestData("vnp_Version", _configuration["Vnpay:Version"]); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.1.0
             pay.AddRequestData("vnp_Command", _configuration["Vnpay:Command"]); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", _configuration["Vnpay:TmnCode"]); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-            pay.AddRequestData("vnp_Amount", ((int)model.Amount * 100).ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+            pay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
             pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
             pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
@@ -56,7 +56,8 @@ namespace RentalCar.Service
             PaymentInformationModel paymentInfor = new PaymentInformationModel()
             {
                 BookingInfor = String.Format("phone : {0} deposit", booking.User.Contact),
-                Amount = ((double)booking.Total)*0.3,
+                // Do trong db giá đã đc bỏ 3 số 0 nên phải nhân thêm 10000 mới thanh toán
+                Amount = Math.Floor(booking.Total*1000*(decimal)0.3),
                 RentDate = booking.RentDate,
                 ReturnDate = booking.ReturnDate
             };
