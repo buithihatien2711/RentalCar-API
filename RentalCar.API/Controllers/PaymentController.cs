@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
 using RentalCar.Service;
@@ -20,8 +21,9 @@ namespace RentalCar.API.Controllers
             _paymentService = paymentService;
         }
 
+        [Authorize]
         // Create url payment
-        [HttpPost]
+        [HttpPost("/{idBooking}")]
         public async Task<ActionResult> Post(int idBooking)
         {   
             var url = await _paymentService.DepositBooking(idBooking, HttpContext);
