@@ -101,5 +101,26 @@ namespace RentalCar.Data.Repositories
             return (_context.SaveChanges() > 0);
         }
 
+        public List<Booking> GetBookedTrip(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.UserId == idUser).ToList();
+        }
+
+        public List<Booking> GetReservations(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.Car.UserId == idUser).ToList();
+        }
     }
 }

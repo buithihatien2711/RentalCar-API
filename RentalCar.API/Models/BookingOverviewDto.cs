@@ -7,7 +7,7 @@ namespace RentalCar.API.Models
 {
     public class BookingOverviewDto
     {
-        public int Id { get; set; }
+        public int BookingId { get; set; }
         
         public int CarId { get; set; }
 

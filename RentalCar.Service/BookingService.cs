@@ -57,6 +57,11 @@ namespace RentalCar.Service
             return _bookingRepository.GetAllBooking();
         }
 
+        public List<Booking> GetBookedTrip(int idUser)
+        {
+            return _bookingRepository.GetBookedTrip(idUser);
+        }
+
         public Booking? GetBookingById(int idBooking)
         {
             return _bookingRepository.GetBookingById(idBooking);
@@ -100,33 +105,38 @@ namespace RentalCar.Service
         {
             switch (idStatus)
             {
-                case ((int)enumStatus.WaitConfirm):
+                case ((int)enumStatus.WaitConfirm):    //2
                     return "Đang chờ chủ xe chấp nhận";
 
-                case ((int)enumStatus.WaitDeposit):
+                case ((int)enumStatus.WaitDeposit):     //1
                     return "Đang chờ đặt cọc";
 
-                case ((int)enumStatus.Deposited):
+                case ((int)enumStatus.Deposited):       //3
                     return "Đã đặt cọc";
 
-                case ((int)enumStatus.CanceledByRenter):
+                case ((int)enumStatus.CanceledByRenter):    //6
                     return "Bị hủy bởi khách thuê";
 
-                case ((int)enumStatus.CanceledByLease):
+                case ((int)enumStatus.CanceledByLease):     //7
                     return "Bị hủy bởi chủ xe";
 
-                case ((int)enumStatus.Completed):
+                case ((int)enumStatus.Completed):       //8
                     return "Hoàn thành";
                     
-                case ((int)enumStatus.CancelBySystemWaitConfirm):
-                    return "Bị hủy bởi hệ thống do chủ xe không chấp nhận";
+                case ((int)enumStatus.CancelBySystemWaitConfirm):   //4
+                    return "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu";
 
-                case ((int)enumStatus.CancelBySystemDeposit):
+                case ((int)enumStatus.CancelBySystemDeposit):   //5
                     return "Bị hủy bởi hệ thống do khách thuê không đặt cọc";
                 
                 default:
                     return "";
             }
+        }
+
+        public List<Booking> GetReservations(int idUser)
+        {
+            return _bookingRepository.GetReservations(idUser);
         }
 
         public bool SaveChanges()
