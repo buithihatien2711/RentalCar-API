@@ -23,7 +23,7 @@ namespace RentalCar.API.Controllers
 
         [Authorize]
         // Create url payment
-        [HttpPost("/{idBooking}")]
+        [HttpPost("{idBooking}")]
         public async Task<ActionResult> Post(int idBooking)
         {   
             var url = await _paymentService.DepositBooking(idBooking, HttpContext);
