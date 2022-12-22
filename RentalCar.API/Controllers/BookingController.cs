@@ -128,7 +128,7 @@ namespace RentalCar.API.Controllers
                 var booking = _bookingService.GetBookingById(idBooking);
                 var bookingDto = new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -160,7 +160,7 @@ namespace RentalCar.API.Controllers
                 var booking = _bookingService.GetBookingById(idBooking);
                 var bookingDto = new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -191,7 +191,7 @@ namespace RentalCar.API.Controllers
                 var booking = _bookingService.GetBookingById(idBooking);
                 var bookingDto = new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -222,7 +222,7 @@ namespace RentalCar.API.Controllers
                 var booking = _bookingService.GetBookingById(idBooking);
                 var bookingDto = new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -253,7 +253,7 @@ namespace RentalCar.API.Controllers
                 var booking = _bookingService.GetBookingById(idBooking);
                 var bookingDto = new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -285,7 +285,7 @@ namespace RentalCar.API.Controllers
             statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CanceledByRenter), Name = "Bị hủy bởi khách thuê"});
             statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CanceledByLease), Name = "Bị hủy bởi chủ xe"});
             statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.Completed), Name = "Hoàn thành"});
-            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CancelBySystemDeposit), Name = "Bị hủy bởi hệ thống do chủ xe không chấp nhận"});
+            statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CancelBySystemDeposit), Name = "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu"});
             statusBookings.Add(new StatusBookingDto(){Id = ((int)enumStatus.CancelBySystemWaitConfirm), Name = "Bị hủy bởi hệ thống do khách thuê không đặt cọc"});
 
             return Ok(statusBookings);
@@ -298,7 +298,7 @@ namespace RentalCar.API.Controllers
 
             BookingViewDto bookingView = new BookingViewDto()
             {
-                Id = booking.Id,
+                BookingId = booking.Id,
                 CarId = booking.CarId,
                 CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                 CarName = booking.Car.Name,
@@ -350,7 +350,7 @@ namespace RentalCar.API.Controllers
             {
                 bookingDtos.Add(new BookingOverviewDto()
                 {
-                    Id = booking.Id,
+                    BookingId = booking.Id,
                     CarId = booking.CarId,
                     CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
                     CarName = booking.Car.Name,
@@ -366,5 +366,68 @@ namespace RentalCar.API.Controllers
             }
             return Ok(bookingDtos);
         }
+    
+        [HttpGet("/api/booking/mybooking")]
+        public ActionResult<List<BookingOverviewDto>> GetBookedTrip()
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            if(username == null) return Unauthorized("Please login");
+            var user = _userService.GetUserByUsername(username.Value);
+            if(user == null) return Unauthorized("Please login");
+
+            var bookings = _bookingService.GetBookedTrip(user.Id);
+            var bookingDtos = new List<BookingOverviewDto>();
+            foreach (var booking in bookings)
+            {
+                bookingDtos.Add(new BookingOverviewDto()
+                {
+                    BookingId = booking.Id,
+                    CarId = booking.CarId,
+                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+                    CarName = booking.Car.Name,
+                    RentDate = booking.RentDate,
+                    ReturnDate = booking.ReturnDate,
+                    Total = booking.Total,
+                    Status = new StatusDto()
+                    {
+                        Id = ((int)booking.Status),
+                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+                    }
+                });
+            }
+            return Ok(bookingDtos);
+        }
+            
+        [HttpGet("/api/booking/myreservation")]
+        public ActionResult<List<BookingOverviewDto>> GetReservation()
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            if(username == null) return Unauthorized("Please login");
+            var user = _userService.GetUserByUsername(username.Value);
+            if(user == null) return Unauthorized("Please login");
+
+            var bookings = _bookingService.GetReservations(user.Id);
+            var bookingDtos = new List<BookingOverviewDto>();
+            foreach (var booking in bookings)
+            {
+                bookingDtos.Add(new BookingOverviewDto()
+                {
+                    BookingId = booking.Id,
+                    CarId = booking.CarId,
+                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+                    CarName = booking.Car.Name,
+                    RentDate = booking.RentDate,
+                    ReturnDate = booking.ReturnDate,
+                    Total = booking.Total,
+                    Status = new StatusDto()
+                    {
+                        Id = ((int)booking.Status),
+                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+                    }
+                });
+            }
+            return Ok(bookingDtos);
+        }
+         
     }
 }

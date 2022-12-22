@@ -21,6 +21,10 @@ namespace RentalCar.Data.Repositoriess
 
         void CancelByRenter(Booking booking);
 
-        
+        // Lấy ra những booking người dùng đã đặt
+        List<Booking> GetBookedTrip (int idUser);
+
+        // Lấy ra những yêu cầu đã đặt
+        List<Booking> GetReservations (int idUser);
     }
 }

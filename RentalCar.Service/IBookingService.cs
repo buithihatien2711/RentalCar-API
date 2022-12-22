@@ -25,5 +25,9 @@ namespace RentalCar.Service
         string GetMeasageByStatus(enumStatus status);
 
         string GetNameStatusBookingById(int idStatus);
+
+        List<Booking> GetBookedTrip(int idUser);
+
+        List<Booking> GetReservations (int idUser);
     }
 }
