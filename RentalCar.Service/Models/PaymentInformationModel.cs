@@ -9,7 +9,7 @@ namespace RentalCar.Service.Models
     {
         public string BookingInfor { get; set; }
         
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public DateTime RentDate { get; set; }
 
