@@ -21,7 +21,7 @@ namespace RentalCar.API.Controllers
             _paymentService = paymentService;
         }
 
-        // [Authorize]
+        [Authorize]
         // Create url payment
         [HttpPost("{idBooking}")]
         public async Task<ActionResult> Post(int idBooking)
@@ -79,7 +79,11 @@ namespace RentalCar.API.Controllers
             // string[] words = url.Split(delimiterChars);
             var response = await _paymentService.PaymentExecute(paymentResponseDto);
 
-            return Ok(response);
+            if(response)
+            {
+                return Ok("success");
+            }
+            return Ok("fail");
         }
     }
 }
