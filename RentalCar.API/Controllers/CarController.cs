@@ -301,7 +301,7 @@ namespace RentalCar.API.Controllers
                 },
                 WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
                 {
-                    Id = car.Location.WardId,
+                    Id = car.Location.WardId.Value,
                     Name = car.Location.Ward.Name
                 }),
 
@@ -360,7 +360,7 @@ namespace RentalCar.API.Controllers
                     },
                     WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
                     {
-                        Id = car.Location.WardId,
+                        Id = car.Location.WardId.Value,
                         Name = car.Location.Ward.Name
                     }),
 

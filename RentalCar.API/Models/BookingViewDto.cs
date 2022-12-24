@@ -25,7 +25,7 @@ namespace RentalCar.API.Models
 
         public string? CarImage { get; set; }
         
-        public string CarName { get; set; }
+        public string? CarName { get; set; }
         
         public decimal NumberStar { get; set; }
         
@@ -33,21 +33,27 @@ namespace RentalCar.API.Models
 
         public DateTime ReturnDate { get; set; }
 
-        public LocationDto Location { get; set; }
+        public int NumberDay { get; set; }
 
-        public WardDto Ward { get; set; }
+        public LocationDto? Location { get; set; }
+
+        public WardDto? Ward { get; set; }
         
-        public DistrictDto District { get; set; }
+        public DistrictDto? District { get; set; }
         
         public string? Rule { get; set; }
+
+        public decimal Cost { get; set; }
+        
+        public decimal Total { get; set; }
 
         public decimal Deposit { get; set; }
         
         public decimal RestFee { get; set; }
 
-        public LeaseAccountDto LeaseAccount { get; set; }
+        public LeaseAccountDto? LeaseAccount { get; set; }
 
-        public StatusDto Status { get; set; }
+        public StatusDto? Status { get; set; }
         
         public string? Message { get; set; }
     }

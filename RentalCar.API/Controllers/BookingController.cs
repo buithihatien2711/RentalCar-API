@@ -101,20 +101,29 @@ namespace RentalCar.API.Controllers
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
-                    Dictionary<string, string> message = new Dictionary<string, string>();
-                    message.Add("Message", "Đã gửi yêu cầu đặt xe thành công");
-                    return Ok(message);
+                    MessageReturn success = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Success,
+                        Message = "Đã gửi yêu cầu đặt xe thành công"
+                    };
+                    return Ok(success);
                 }
                 else{
-                    Dictionary<string, string> message = new Dictionary<string, string>();
-                    message.Add("Message", "Gửi yêu cầu đặt xe thất bại");
-                    return BadRequest(message);
+                    MessageReturn error = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Gửi yêu cầu đặt xe thất bại"
+                    };
+                    return Ok(error);
                 }
             }
             catch(Exception ex){
-                Dictionary<string, string> message = new Dictionary<string, string>();
-                message.Add("Message", ex.Message);
-                return BadRequest(message);
+                MessageReturn exception = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = ex.Message
+                    };
+                return Ok(exception);
             }
         }
 
@@ -146,7 +155,7 @@ namespace RentalCar.API.Controllers
             
             Dictionary<string, string> error = new Dictionary<string, string>();
             error.Add("error", "Chấp nhận yêu cầu đặt xe không thành công");
-            return BadRequest(error);
+            return Ok(error);
         }
 
         [Authorize]
@@ -177,7 +186,7 @@ namespace RentalCar.API.Controllers
             }
             Dictionary<string, string> error = new Dictionary<string, string>();
             error.Add("error", "Hủy đặt xe không thành công");
-            return BadRequest(error);
+            return Ok(error);
         }
         
         [Authorize]
@@ -208,14 +217,18 @@ namespace RentalCar.API.Controllers
             }
             Dictionary<string, string> error = new Dictionary<string, string>();
             error.Add("error", "Hủy đặt xe không thành công");
-            return BadRequest(error);
+            return Ok(error);
         }
 
         [Authorize]
-        [HttpPut("/api/booking/cancelBookingByLease/{idBooking}")]
-        public ActionResult CancelBookingByLease(int idBooking)
+        [HttpPut("/api/booking/cancelBookingByUser/{idBooking}")]
+        public ActionResult CancelBookingByUser(int idBooking)
         {
-            _bookingService.CancelByLease(idBooking);
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+            if(username == null) return Unauthorized("Please login");
+
+            // _bookingService.CancelByLease(idBooking);
+            _bookingService.CancelByUser(idBooking, _userService.GetUserByUsername(username.Value).Id);
 
             if(_bookingService.SaveChanges())
             {
@@ -239,39 +252,39 @@ namespace RentalCar.API.Controllers
             }
             Dictionary<string, string> error = new Dictionary<string, string>();
             error.Add("error", "Hủy đặt xe không thành công");
-            return BadRequest(error);
+            return Ok(error);
         }
 
-        [Authorize]
-        [HttpPut("/api/booking/cancelBookingByRenter/{idBooking}")]
-        public ActionResult CancelBookingByRenter(int idBooking)
-        {
-            _bookingService.CancelByRenter(idBooking);
+        // [Authorize]
+        // [HttpPut("/api/booking/cancelBookingByRenter/{idBooking}")]
+        // public ActionResult CancelBookingByRenter(int idBooking)
+        // {
+        //     _bookingService.CancelByRenter(idBooking);
 
-            if(_bookingService.SaveChanges())
-            {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
-                {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
-                };
-                return Ok(bookingDto);
-            }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Hủy đặt xe không thành công");
-            return BadRequest(error);
-        }
+        //     if(_bookingService.SaveChanges())
+        //     {
+        //         var booking = _bookingService.GetBookingById(idBooking);
+        //         var bookingDto = new BookingOverviewDto()
+        //         {
+        //             BookingId = booking.Id,
+        //             CarId = booking.CarId,
+        //             CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+        //             CarName = booking.Car.Name,
+        //             RentDate = booking.RentDate,
+        //             ReturnDate = booking.ReturnDate,
+        //             Total = booking.Total,
+        //             Status = new StatusDto()
+        //             {
+        //                 Id = ((int)booking.Status),
+        //                 Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+        //             }
+        //         };
+        //         return Ok(bookingDto);
+        //     }
+        //     Dictionary<string, string> error = new Dictionary<string, string>();
+        //     error.Add("error", "Hủy đặt xe không thành công");
+        //     return BadRequest(error);
+        // }
 
         [HttpGet("/bookings/statuses")]
         public ActionResult<List<StatusBookingDto>> GetAllStatusBooking()
@@ -305,14 +318,15 @@ namespace RentalCar.API.Controllers
                 NumberStar = booking.Car.NumberStar,
                 RentDate = booking.RentDate,
                 ReturnDate = booking.ReturnDate,
+                // NumberDay = ((int)(booking.ReturnDate - booking.RentDate).TotalDays),
                 Location = new LocationDto()
                 {
                     Id = booking.LocationId,
                     Address = booking.Location.Address
                 },
-                Ward = new WardDto()
+                Ward = booking.Location.Ward == null ? null : new WardDto()
                 {
-                    Id = booking.Location.WardId,
+                    Id = booking.Location.WardId.Value,
                     Name = booking.Location.Ward.Name
                 },
                 District = new DistrictDto()
@@ -321,6 +335,8 @@ namespace RentalCar.API.Controllers
                     Name = booking.Location.Ward.District.Name
                 },
                 Rule = booking.Car.Rule,
+                // Total = booking.Total,
+                // Cost = booking.Car.Cost,
                 Deposit = booking.Total*(decimal)0.3,
                 RestFee = booking.Total - booking.Total*(decimal)0.3,
                 LeaseAccount = new LeaseAccountDto()
@@ -342,7 +358,7 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpGet("/api/booking")]
-        public ActionResult<List<BookingOverviewDto>> GetAllCar()
+        public ActionResult<List<BookingOverviewDto>> GetAllBooking()
         {
             var bookings = _bookingService.GetAllBooking();
             var bookingDtos = new List<BookingOverviewDto>();
@@ -401,32 +417,44 @@ namespace RentalCar.API.Controllers
         [HttpGet("/api/booking/myreservation")]
         public ActionResult<List<BookingOverviewDto>> GetReservation()
         {
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-            if(username == null) return Unauthorized("Please login");
-            var user = _userService.GetUserByUsername(username.Value);
-            if(user == null) return Unauthorized("Please login");
-
-            var bookings = _bookingService.GetReservations(user.Id);
-            var bookingDtos = new List<BookingOverviewDto>();
-            foreach (var booking in bookings)
+            try
             {
-                bookingDtos.Add(new BookingOverviewDto()
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
+                if(username == null) return Unauthorized("Please login");
+                var user = _userService.GetUserByUsername(username.Value);
+                if(user == null) return Unauthorized("Please login");
+
+                var bookings = _bookingService.GetReservations(user.Id);
+                var bookingDtos = new List<BookingOverviewDto>();
+                foreach (var booking in bookings)
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
+                    bookingDtos.Add(new BookingOverviewDto()
                     {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
-                });
+                        BookingId = booking.Id,
+                        CarId = booking.CarId,
+                        CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+                        CarName = booking.Car.Name,
+                        RentDate = booking.RentDate,
+                        ReturnDate = booking.ReturnDate,
+                        Total = booking.Total,
+                        Status = new StatusDto()
+                        {
+                            Id = ((int)booking.Status),
+                            Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+                        }
+                    });
+                }
+                return Ok(bookingDtos);
             }
-            return Ok(bookingDtos);
+            catch (System.Exception ex)
+            {
+                MessageReturn exception = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = ex.Message
+                    };
+                return Ok(exception);
+            }
         }
          
     }

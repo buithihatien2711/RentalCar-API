@@ -55,7 +55,7 @@ namespace RentalCar.Service
             if(booking.Status != enumStatus.WaitDeposit) return "";
             PaymentInformationModel paymentInfor = new PaymentInformationModel()
             {
-                BookingInfor = String.Format("phone : {0} deposit", booking.User.Contact),
+                BookingInfor = String.Format("{0}-phone : {1} deposit", idBooking, booking.User.Contact),
                 // Do trong db giá đã đc bỏ 3 số 0 nên phải nhân thêm 10000 mới thanh toán
                 Amount = Math.Floor(booking.Total*1000*(decimal)0.3),
                 RentDate = booking.RentDate,
@@ -66,12 +66,28 @@ namespace RentalCar.Service
         }
 
         // Lấy ra thông tin sau khi giao dịch tại VnPay
-        public async Task<PaymentResponseModel> PaymentExecute(IQueryCollection collections)
+        public async Task<bool> PaymentExecute(PaymentResponseDto paymentResponseDto)
         {
             var pay = new VnPayLibrary();
-            var response = pay.GetFullResponseData(collections, _configuration["Vnpay:HashSecret"]);
-
-            return response;
+            var response = pay.GetFullResponseData(paymentResponseDto, _configuration["Vnpay:HashSecret"]);
+            try
+            {
+                var bookingId = Int32.Parse(paymentResponseDto.vnp_OrderInfo.Split("-")[0]);
+                if(response.Success)
+                {
+                    _bookingService.DepositBooking(bookingId);
+                    if(_bookingService.SaveChanges())
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
         } 
     }
 }

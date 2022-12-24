@@ -17,9 +17,13 @@ namespace RentalCar.Data.Repositoriess
 
         void CancelBySystemWaitDeposit(Booking booking);
 
-        void CancelByLease(Booking booking);
+        void DepositBooking(Booking booking);
 
-        void CancelByRenter(Booking booking);
+        // void CancelByLease(Booking booking);
+
+        // void CancelByRenter(Booking booking);
+
+        void CancelByUser(Booking booking, int idUser);
 
         // Lấy ra những booking người dùng đã đặt
         List<Booking> GetBookedTrip (int idUser);

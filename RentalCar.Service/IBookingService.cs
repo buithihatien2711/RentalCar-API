@@ -18,9 +18,13 @@ namespace RentalCar.Service
 
         void CancelBySystemWaitDeposit(int idBooking);
 
-        void CancelByLease(int idBooking);
+        // void CancelByLease(int idBooking);
 
-        void CancelByRenter(int idBooking);
+        // void CancelByRenter(int idBooking);
+
+        void CancelByUser(int idBooking, int idUser);
+
+        void DepositBooking(int idBooking);
 
         string GetMeasageByStatus(enumStatus status);
 

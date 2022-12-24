@@ -17,7 +17,8 @@ namespace RentalCar.Service
         // Kiểm tra thông tin giao dịch và sẽ lưu lại thông tin đó sau khi thanh toán thành công
         // Parameter: IQueryCollection : thông tin trên URL mà VnPay trả về trong các parameter 
         //           sau khi thanh toán thành công hoặc lỗi
-        Task<PaymentResponseModel> PaymentExecute(IQueryCollection collections); 
+        // Task<PaymentResponseModel> PaymentExecute(IQueryCollection collection); 
+        Task<bool> PaymentExecute(PaymentResponseDto collection); 
 
         Task<string> DepositBooking(int idBooking, HttpContext context);
     }

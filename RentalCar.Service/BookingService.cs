@@ -12,18 +12,25 @@ namespace RentalCar.Service
             _bookingRepository = bookingRepository;
         }
 
-        public void CancelByLease(int idBooking)
-        {
-            var booking = GetBookingById(idBooking);
-            if(booking == null) return;
-            _bookingRepository.CancelByLease(booking);
-        }
+        // public void CancelByLease(int idBooking)
+        // {
+        //     var booking = GetBookingById(idBooking);
+        //     if(booking == null) return;
+        //     _bookingRepository.CancelByLease(booking);
+        // }
 
-        public void CancelByRenter(int idBooking)
+        // public void CancelByRenter(int idBooking)
+        // {
+        //     var booking = GetBookingById(idBooking);
+        //     if(booking == null) return;
+        //     _bookingRepository.CancelByRenter(booking);
+        // }
+
+        public void CancelByUser(int idBooking, int idUser)
         {
             var booking = GetBookingById(idBooking);
             if(booking == null) return;
-            _bookingRepository.CancelByRenter(booking);
+            _bookingRepository.CancelByUser(booking, idUser);
         }
 
         public void CancelBySystemWaitConfirm(int idBooking)
@@ -142,6 +149,13 @@ namespace RentalCar.Service
         public bool SaveChanges()
         {
             return _bookingRepository.SaveChanges();
+        }
+
+        public void DepositBooking(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.DepositBooking(booking);
         }
     }
 }

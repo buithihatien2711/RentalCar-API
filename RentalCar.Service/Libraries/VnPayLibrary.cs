@@ -15,44 +15,81 @@ public class VnPayLibrary
     private readonly SortedList<string, string> _requestData = new SortedList<string, string>(new VnPayCompare());
     private readonly SortedList<string, string> _responseData = new SortedList<string, string>(new VnPayCompare());
 
-    public PaymentResponseModel GetFullResponseData(IQueryCollection collection, string hashSecret)
+    PaymentResponseDto paymentResponseDto;
+
+    public PaymentResponseModel GetFullResponseData(PaymentResponseDto paymentResponseDto, string hashSecret)
     {
         var vnPay = new VnPayLibrary();
 
-        foreach (var (key, value) in collection)
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_Amount.ToString()))
         {
-            if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
-            {
-                vnPay.AddResponseData(key, value);
-            }
+            vnPay.AddResponseData("vnp_Amount", paymentResponseDto.vnp_Amount.ToString());
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_BankCode))
+        {
+            vnPay.AddResponseData("vnp_BankCode", paymentResponseDto.vnp_BankCode);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_BankTranNo))
+        {
+            vnPay.AddResponseData("vnp_BankTranNo", paymentResponseDto.vnp_BankTranNo);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_CardType))
+        {
+            vnPay.AddResponseData("vnp_CardType", paymentResponseDto.vnp_CardType);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_OrderInfo))
+        {
+            vnPay.AddResponseData("vnp_OrderInfo", paymentResponseDto.vnp_OrderInfo);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_PayDate))
+        {
+            vnPay.AddResponseData("vnp_PayDate", paymentResponseDto.vnp_PayDate);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_ResponseCode))
+        {
+            vnPay.AddResponseData("vnp_ResponseCode", paymentResponseDto.vnp_ResponseCode);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_TmnCode))
+        {
+            vnPay.AddResponseData("vnp_TmnCode", paymentResponseDto.vnp_TmnCode);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_TransactionNo))
+        {
+            vnPay.AddResponseData("vnp_TransactionNo", paymentResponseDto.vnp_TransactionNo);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_TransactionStatus))
+        {
+            vnPay.AddResponseData("vnp_TransactionStatus", paymentResponseDto.vnp_TransactionStatus);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_TxnRef))
+        {
+            vnPay.AddResponseData("vnp_TxnRef", paymentResponseDto.vnp_TxnRef);
+        }
+        if (!string.IsNullOrEmpty(paymentResponseDto.vnp_SecureHash))
+        {
+            vnPay.AddResponseData("vnp_SecureHash", paymentResponseDto.vnp_SecureHash);
         }
 
-        var orderId = Convert.ToInt64(vnPay.GetResponseData("vnp_TxnRef"));
-        var vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
-        var vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
-        var vnpSecureHash =
-            collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
-        var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
-
         var checkSignature =
-            vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
+            vnPay.ValidateSignature(paymentResponseDto.vnp_SecureHash, hashSecret); //check Signature
 
         if (!checkSignature)
+        {
             return new PaymentResponseModel()
             {
                 Success = false
             };
-
+        }
         return new PaymentResponseModel()
         {
             Success = true,
             PaymentMethod = "VnPay",
-            OrderDescription = orderInfo,
-            OrderId = orderId.ToString(),
-            PaymentId = vnPayTranId.ToString(),
-            TransactionId = vnPayTranId.ToString(),
-            Token = vnpSecureHash,
-            VnPayResponseCode = vnpResponseCode
+            OrderDescription = paymentResponseDto.vnp_OrderInfo,
+            OrderId =paymentResponseDto.vnp_TxnRef, // orderId.ToString(),
+            PaymentId = paymentResponseDto.vnp_TransactionNo, // vnPayTranId.ToString(),
+            TransactionId = paymentResponseDto.vnp_TransactionNo, // vnPayTranId.ToString(),
+            Token = paymentResponseDto.vnp_SecureHash,
+            VnPayResponseCode = paymentResponseDto.vnp_ResponseCode
         };
     }
     public string GetIpAddress(HttpContext context)
@@ -131,7 +168,8 @@ public class VnPayLibrary
     {
         var rspRaw = GetResponseData();
         var myChecksum = HmacSha512(secretKey, rspRaw);
-        return myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);
+        var validate = myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);
+        return validate;
     }
 
     private string HmacSha512(string key, string inputData)

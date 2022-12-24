@@ -8,8 +8,8 @@ namespace RentalCar.Model.Models
         public int Id { get; set; }
         
         [MaxLength(256)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         
-        List<CarModel> CarModels { get; set; }
+        List<CarModel>? CarModels { get; set; }
     }
 }

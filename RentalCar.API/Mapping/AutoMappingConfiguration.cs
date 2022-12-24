@@ -73,7 +73,7 @@ namespace RentalCar.API.Mapping
                     dest => dest.WardDto,
                     opt => opt.MapFrom(src => src.Location == null ? null : (src.Location.Ward == null ? null : new WardDto()
                     {
-                        Id = src.Location.WardId,
+                        Id = src.Location.WardId.Value,
                         Name = src.Location.Ward.Name
                     }))
                 )
@@ -98,7 +98,7 @@ namespace RentalCar.API.Mapping
                     dest => dest.WardDto,
                     opt => opt.MapFrom(src => src.Location == null ? null : (src.Location.Ward == null ? null : new WardDto()
                     {
-                        Id = src.Location.WardId,
+                        Id = src.Location.WardId.Value,
                         Name = src.Location.Ward.Name
                     })))
                 .ForMember(
@@ -127,7 +127,7 @@ namespace RentalCar.API.Mapping
                     dest => dest.WardDto,
                     opt => opt.MapFrom(src => src.Location == null ? null : (src.Location.Ward == null ? null : new WardDto()
                     {
-                        Id = src.Location.WardId,
+                        Id = src.Location.WardId.Value,
                         Name = src.Location.Ward.Name
                     })))
                 .ForMember(

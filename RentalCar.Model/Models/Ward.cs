@@ -8,12 +8,12 @@ namespace RentalCar.Model.Models
         public int Id { get; set; }
         
         [MaxLength(256)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public int DistrictID  { get; set; }
         
-        public District District { get; set; }
+        public District? District { get; set; }
 
-        public List<Location> Locations { get; set; }
+        public List<Location>? Locations { get; set; }
     }
 }
