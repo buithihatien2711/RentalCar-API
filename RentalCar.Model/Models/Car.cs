@@ -8,7 +8,7 @@ namespace RentalCar.Model.Models
         public int Id { get; set; }
         
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public string? Description { get; set; }
         
@@ -19,7 +19,7 @@ namespace RentalCar.Model.Models
         
         [Required]
         [MaxLength(20)]
-        public string Plate_number { get; set; }
+        public string? Plate_number { get; set; }
         
         public decimal Cost { get; set; }
         
@@ -29,15 +29,15 @@ namespace RentalCar.Model.Models
         
         public int CarModelId { get; set; }
         
-        public CarModel CarModel { get; set; }
+        public CarModel? CarModel { get; set; }
         
         public int StatusID  { get; set; }
         
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
 
         public int UserId { get; set; }
         
-        public User User { get; set; }
+        public User? User { get; set; }
 
         //Năm sản xuất
         public int? YearManufacture { get; set; }
@@ -50,27 +50,27 @@ namespace RentalCar.Model.Models
 
         public int NumberTrip { get; set; }
 
-        public List<CarImage> CarImages { get; set; }
+        public List<CarImage>? CarImages { get; set; }
         
-        public List<CarReview>  CarReviews { get; set; }
+        public List<CarReview>?  CarReviews { get; set; }
 
         //Truyền động
         public int TransmissionID  { get; set; }
-        public Transmission Transmission { get; set; }
+        public Transmission? Transmission { get; set; }
         //Loại nhiên liệu
         public int FuelTypeID  { get; set; }
-        public FuelType FuelType { get; set; }
+        public FuelType? FuelType { get; set; }
 
         public int LocationId { get; set; }
 
-        public Location Location { get; set; }
+        public Location? Location { get; set; }
 
-        public List<CarRegister> CarRegisters { get; set; }
+        public List<CarRegister>? CarRegisters { get; set; }
         
-        public List<CarSchedule> CarSchedules { get; set; }
+        public List<CarSchedule>? CarSchedules { get; set; }
 
-        public List<PriceByDate> PriceByDates { get; set; }
-        public List<Booking> Bookings { get; set; }
+        public List<PriceByDate>? PriceByDates { get; set; }
+        public List<Booking>? Bookings { get; set; }
 
     }
 }

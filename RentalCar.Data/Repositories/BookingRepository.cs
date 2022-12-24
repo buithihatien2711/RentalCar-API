@@ -41,29 +41,30 @@ namespace RentalCar.Data.Repositories
             }
         }
 
-        // Chủ xe hủy chuyến (Chưa đặt cọc)
-        public void CancelByLease(Booking booking)
-        {
-            if(booking == null) return;
+        // // Chủ xe hủy chuyến (Chưa đặt cọc)
+        // public void CancelByLease(Booking booking)
+        // {
+        //     if(booking == null) return;
             
-            if(booking.Status == enumStatus.WaitConfirm)
-            {
-                booking.Status = enumStatus.CanceledByLease;
-            }
-        }
+        //     if(booking.Status == enumStatus.WaitConfirm)
+        //     {
+        //         booking.Status = enumStatus.CanceledByLease;
+        //     }
+        // }
 
-        // Khách thuê xe hủy chuyến (Chưa đặt cọc)
-        public void CancelByRenter(Booking booking)
-        {
-            if(booking == null) return;
+        // // Khách thuê xe hủy chuyến (Chưa đặt cọc)
+        // public void CancelByRenter(Booking booking)
+        // {
+        //     if(booking == null) return;
             
-            if(booking.Status == enumStatus.WaitConfirm)
-            {
-                booking.Status = enumStatus.CanceledByRenter;
-            }
-        }
+        //     if(booking.Status == enumStatus.WaitConfirm)
+        //     {
+        //         booking.Status = enumStatus.CanceledByRenter;
+        //     }
+        // }
 
         // Chủ xe xác nhận
+        
         public void ConfirmBooking(Booking booking)
         {
             // var existBooking = _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
@@ -121,6 +122,45 @@ namespace RentalCar.Data.Repositories
                                     .ThenInclude(l => l.Ward)
                                     .ThenInclude(w=> w.District)
                                     .Where(b => b.Car.UserId == idUser).ToList();
+        }
+
+        public void CancelByUser(Booking booking, int idUser)
+        {
+            if(booking == null) return;
+
+            // Renter
+            if(booking.UserId == idUser)
+            {
+                // Người thuê được hủy trong các trường hợp: chờ đặt cọc, chờ xác nhận, đã đặt cọc
+                if(booking.Status == enumStatus.WaitDeposit || 
+                    booking.Status == enumStatus.WaitConfirm ||
+                    booking.Status == enumStatus.Deposited)
+                {
+                    booking.Status = enumStatus.CanceledByRenter;
+                }
+            }
+
+            if(booking.Car.UserId == idUser)
+            {
+                // Chủ xe được hủy trong các trường hợp: chờ đặt cọc, chờ xác nhận, đã đặt cọc
+                if(booking.Status == enumStatus.WaitDeposit || 
+                    booking.Status == enumStatus.WaitConfirm ||
+                    booking.Status == enumStatus.Deposited)
+                {
+                    booking.Status = enumStatus.CanceledByLease;
+                }
+            }
+        }
+
+        public void DepositBooking(Booking booking)
+        {
+            // var existBooking = _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
+            if(booking == null) return;
+            // Chỉ được xác nhận khi xe đang ở trạng thái chờ đặt cọc
+            if(booking.Status == enumStatus.WaitDeposit)
+            {
+                booking.Status = enumStatus.Deposited;
+            }
         }
     }
 }

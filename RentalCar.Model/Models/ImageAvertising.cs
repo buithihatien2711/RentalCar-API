@@ -9,6 +9,6 @@ namespace DUT.PBL6.RentalCar_API.RentalCar.Model.Models
     {
         public int Id { get; set; }
         public bool Type { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
     }
 }

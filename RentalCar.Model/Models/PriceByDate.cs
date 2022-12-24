@@ -9,7 +9,7 @@ namespace RentalCar.Model.Models
         public DateTime Date { get; set; }
         public decimal Cost { get; set; }
         public int CarId { get; set; }
-        public Car Car { get; set; }
+        public Car? Car { get; set; }
         public DateTime CreatedAt { get; set; }
   
     }

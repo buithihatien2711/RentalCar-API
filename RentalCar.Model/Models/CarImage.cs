@@ -8,10 +8,10 @@ namespace RentalCar.Model.Models
         public int Id { get; set; }
 
         [MaxLength(512)]
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         public int CarId { get; set; }
         
-        public Car Car { get; set; }
+        public Car? Car { get; set; }
     }
 }
