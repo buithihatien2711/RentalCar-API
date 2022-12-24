@@ -33,5 +33,7 @@ namespace RentalCar.Service
         List<Booking> GetBookedTrip(int idUser);
 
         List<Booking> GetReservations (int idUser);
+        
+        List<Booking> GetBookingsByStatus(int idStatus);
     }
 }

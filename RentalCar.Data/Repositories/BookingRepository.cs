@@ -162,5 +162,16 @@ namespace RentalCar.Data.Repositories
                 booking.Status = enumStatus.Deposited;
             }
         }
+
+        public List<Booking> GetBookingsByStatus(int idStatus)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => ((int)b.Status) == idStatus).ToList();
+        }
     }
 }

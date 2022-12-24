@@ -30,5 +30,7 @@ namespace RentalCar.Data.Repositoriess
 
         // Lấy ra những yêu cầu đã đặt
         List<Booking> GetReservations (int idUser);
+        
+        List<Booking> GetBookingsByStatus(int idStatus);
     }
 }

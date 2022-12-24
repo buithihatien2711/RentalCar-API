@@ -287,5 +287,50 @@ namespace RentalCar.API.Controllers
 
             return Ok(bookingDtos);
         }
+    
+        [AllowAnonymous]
+        [HttpGet("/api/admin/bookings/{idStatus}")]
+        public ActionResult<BookingViewAdminDto> GetBookingsByStatus(int idStatus)
+        {
+            var bookings = _bookingService.GetBookingsByStatus(idStatus);
+            if(bookings == null) return Ok(null);
+
+            var bookingDtos = new List<BookingViewAdminDto>();
+            foreach (var booking in bookings)
+            {
+                bookingDtos.Add
+                (
+                    new BookingViewAdminDto()
+                    {
+                        Id = booking.Id,
+                        RentDate = booking.RentDate,
+                        ReturnDate = booking.ReturnDate,
+                        Total = booking.Total,
+                        Status = booking.Status,
+                        CreatedAt = booking.CreatedAt,
+                        Renter = new UserBooking()
+                        {
+                            Username = booking.User.Username,
+                            Fullname = booking.User.Fullname
+                        },
+                        Lease = new UserBooking()
+                        {
+                            Username = booking.Car.User.Username,
+                            Fullname = booking.Car.User.Fullname
+                        },
+                        Car = new CarBooking()
+                        {
+                            Id = booking.CarId,
+                            Name = booking.Car.Name
+                        },
+                        Location = _mapper.Map<Location, LocationDto>(booking.Location),
+                        Ward = _mapper.Map<Ward, WardDto>(booking.Location.Ward),
+                        District = _mapper.Map<District, DistrictDto>(booking.Location.Ward.District)
+                    }
+                );
+            }
+
+            return Ok(bookingDtos);
+        }
     }
 }

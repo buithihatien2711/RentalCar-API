@@ -157,5 +157,10 @@ namespace RentalCar.Service
             if(booking == null) return;
             _bookingRepository.DepositBooking(booking);
         }
+
+        public List<Booking> GetBookingsByStatus(int idStatus)
+        {
+            return _bookingRepository.GetBookingsByStatus(idStatus);
+        }
     }
 }
