@@ -7,6 +7,7 @@ using RentalCar.API.Models;
 using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 using RentalCar.Service;
+using RentalCar_API.RentalCar.Service;
 
 namespace RentalCar.API.Controllers
 {
@@ -19,9 +20,12 @@ namespace RentalCar.API.Controllers
         private readonly IUserService _userService;
         private readonly IUploadImgService _uploadImgService;
         private readonly IMapper _mapper;
-        public CarController(ICarService carService,ICarModelService carmodelService,IUserService userService, IUploadImgService uploadImgService,IMapper mapper)
+        private readonly INotificationService _notifiService;
+
+        public CarController(ICarService carService,ICarModelService carmodelService,IUserService userService, IUploadImgService uploadImgService,IMapper mapper,INotificationService notifiService)
         {
             _mapper = mapper;
+            _notifiService = notifiService;
             _carService = carService;
             _carmodelService = carmodelService;
             _uploadImgService = uploadImgService;
@@ -222,6 +226,14 @@ namespace RentalCar.API.Controllers
                 caradd.Ward = _mapper.Map<Ward,WardDto>(result.Location.Ward);
                 caradd.Username = username;
 
+                var admin = _userService.GetUserByUsername("admin");
+                _notifiService.CreateINotifi(new Notification{
+                    FromUserId = user.Id,
+                    ToUserId = admin.Id,
+                    CreateAt = DateTime.Now,
+                    Status = false,
+                    Message = caradd.Name + " đang chờ phê duyệt"
+                });
                 return Ok(caradd);
                 }
             catch (Exception ex)
@@ -236,8 +248,20 @@ namespace RentalCar.API.Controllers
         [Authorize(Roles="admin")]
         [HttpPut("/admin/car/{CarID}/approval/{StatusID}")]
         public ActionResult<string> AddCar(int CarId, int StatusID){
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userService.GetUserByUsername(username);
             _carService.UpdateStatusOfCar(CarId,StatusID);
-            _carService.SaveChanges();
+            var car = _carService.GetCarById(CarId);
+            if(_carService.SaveChanges()){
+                _notifiService.CreateINotifi(new Notification{
+                        FromUserId = user.Id,
+                        ToUserId = car.User.Id,
+                        CreateAt = DateTime.Now,
+                        Status = false,
+                        Title = "Kiểm duyệt xe",
+                        Message = "Yêu cầu đăng kí xe " + car.Name + "-" + car.Status
+                    });
+            }
             return Ok("admin update status car successful");
             // Dictionary<string, string> message = new Dictionary<string, string>();
             // message.Add("Message", "admin update status car successful");

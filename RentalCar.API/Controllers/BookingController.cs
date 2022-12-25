@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
 using RentalCar.Model.Models;
 using RentalCar.Service;
+using RentalCar_API.RentalCar.Service;
 
 namespace RentalCar.API.Controllers
 {
@@ -16,13 +17,15 @@ namespace RentalCar.API.Controllers
         private readonly IUserService _userService;
         private readonly IUploadImgService _uploadImgService;
         private readonly IBookingService _bookingService;
+        private readonly INotificationService _notifiService;
         private readonly IMapper _mapper;
-        public BookingController(ICarService carService,IUserService userService,IBookingService bookingService,IMapper mapper)
+        public BookingController(ICarService carService,IUserService userService,IBookingService bookingService,INotificationService notifiService,IMapper mapper)
         {
             _mapper = mapper;
             _carService = carService;
             _userService = userService;
             _bookingService = bookingService;
+            _notifiService = notifiService;
         }
 
 
@@ -72,11 +75,11 @@ namespace RentalCar.API.Controllers
         {
             try{
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userId = _userService.GetUserByUsername(username).Id;
+                var user = _userService.GetUserByUsername(username);
                 var location = new Location{
                     Address = booking.Address,
                     WardId = booking.WardId,
-                    UserId = userId
+                    UserId = user.Id
                 };
 
                 if(_carService.CreateLocation(location) == true){
@@ -87,7 +90,7 @@ namespace RentalCar.API.Controllers
                 value.Status = enumStatus.WaitConfirm;
                 value.CreatedAt = DateTime.Now;
                 value.LocationId = _carService.GetLocationByAddress(booking.Address).Id;
-                value.UserId = userId;
+                value.UserId = user.Id;
                 value.CarId = id;
                 //Total
                  var car = _carService.GetCarById(id);
@@ -103,11 +106,20 @@ namespace RentalCar.API.Controllers
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
+                    _notifiService.CreateINotifi(new Notification{
+                        FromUserId = user.Id,
+                        ToUserId = car.User.Id,
+                        CreateAt = DateTime.Now,
+                        Status = false,
+                        Title = "Đặt xe",
+                        Message = user.Username + " gửi yêu cầu đặt xe"
+                    });
                     MessageReturn success = new MessageReturn()
                     {
                         StatusCode = enumMessage.Success,
                         Message = "Đã gửi yêu cầu đặt xe thành công"
                     };
+                    
                     return Ok(success);
                 }
                 else{

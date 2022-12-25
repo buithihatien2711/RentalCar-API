@@ -9,6 +9,7 @@ using RentalCar.Data.Repositories;
 using RentalCar.Data.Repositoriess;
 using RentalCar.Data.Seed;
 using RentalCar.Service;
+using RentalCar_API.RentalCar.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -74,6 +75,9 @@ services.AddScoped<IUserReviewService, UserReviewService>();
 
 services.AddScoped<IAdvertPhotoRepository, AdvertPhotoRepository>();
 services.AddScoped<IAdvertPhotoService, AdvertPhotoService>();
+
+services.AddScoped<INotificationRepository, NotificationRepository>();
+services.AddScoped<INotificationService, NotificationService>();
 
 services.AddScoped<IUploadImgService, UploadImgService>();
 
