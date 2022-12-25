@@ -91,5 +91,10 @@ namespace RentalCar.Service
         {
             return _repository.GetNumberTripOfUser(idUser);
         }
+
+        public bool IsAdminAccount(int idUser)
+        {
+            return _repository.IsAdminAccount(idUser);
+        }
     }
 }

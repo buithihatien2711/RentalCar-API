@@ -38,5 +38,7 @@ namespace RentalCar.Data.Repositories
         List<QuantityStatistics> StatistUsersByDay(int month);
 
         int GetNumberTripOfUser(int idUser);
+
+        bool IsAdminAccount(int idUser);
     }
 }
