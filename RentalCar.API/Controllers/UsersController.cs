@@ -10,18 +10,21 @@ namespace RentalCar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Roles = "admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        private readonly IUploadImgService _uploadImgService;
+
+        public UsersController(IUserService userService, IMapper mapper, IUploadImgService uploadImgService)
         {
+            _uploadImgService = uploadImgService;
             _mapper = mapper;
             _userService = userService;
         }
         
+        // Get all user (admin)
         [HttpGet]
         public ActionResult<IEnumerable<UserProfile>> Get()
         {
@@ -62,7 +65,7 @@ namespace RentalCar.API.Controllers
             return Ok(userDetails);
         }
 
-
+        // Get all renter (admin)
         [Route("renter")]
         [HttpGet]
         public ActionResult<IEnumerable<UserProfile>> GetRenter()
@@ -112,6 +115,7 @@ namespace RentalCar.API.Controllers
             return Ok(userDetails);
         }
 
+        // Get all lease (admin)
         [Route("lease")]
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetLease()
@@ -158,6 +162,7 @@ namespace RentalCar.API.Controllers
             return Ok(userDetails);
         }
 
+        // Get user by username (admin)
         [HttpGet("{username}")]
         public ActionResult<UserDetailDto> Get(string username)
         {
@@ -193,6 +198,7 @@ namespace RentalCar.API.Controllers
             return Ok(userDetail);
        }
 
+        // Get user by id (user xem profile user khác)
         [Route("profile/{idUser}")]
         [HttpGet]
         public ActionResult<UserProfile> GetUserDetail(int idUser)
@@ -202,6 +208,35 @@ namespace RentalCar.API.Controllers
             var profile = _mapper.Map<User, UserProfile>(user);
             profile.NumberTrip = _userService.GetNumberTripOfUser(idUser);
             return Ok(profile);
+        }
+
+        // Admin update user license
+        [HttpPut("/api/admin/account/license/{username}")]
+        public async Task<ActionResult<LicenseViewDto>> UpdateLicense([FromForm] LicenseDto licenseDto, string username)
+        {
+            if(string.IsNullOrEmpty(username)) return NotFound();
+
+            var userLicenseExist = _userService.GetUserByUsername(username).License;
+
+            LicenseViewDto licenseViewDto = new LicenseViewDto()
+            {
+                Number = licenseDto.Number,
+                Name = licenseDto.Name,
+                DateOfBirth = licenseDto.DateOfBirth,
+                Image = await _uploadImgService.UploadImage("license", username, licenseDto.Image)
+            };
+
+            var license = _mapper.Map<LicenseViewDto, License>(licenseViewDto);
+
+            _userService.UpdateLicense(license, username);
+
+            if (_userService.SaveChanges())
+            {
+                var licenseView = _userService.GetLicenseByUser(username);
+                if(licenseView == null) return null;
+                return Ok(_mapper.Map<License, LicenseViewDto>(licenseView));
+            } 
+            return BadRequest("License update failed");
         }
 
         

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RentalCar.API.Models
+namespace RentalCar.Service.Models
 {
     public class BookingPrice
     {

@@ -11,7 +11,8 @@ namespace RentalCar.Model.Models
         CancelBySystemDeposit = 5,       // Bị hủy bởi hệ thống do khách không đặt cọc
         CanceledByRenter = 6,   // Bị hủy bởi người thuê
         CanceledByLease = 7,    // Bị hủy bởi người cho thuê
-        Completed = 8,  // Đã hoàn thành đặt xe
+        ReceivedCar = 8,  // Đã hoàn thành đặt xe
+        CompletedTrip = 9   // Đã hoàn thành chuyến và đã trả xe cho chủ
     }
     public class Booking
     {

@@ -11,6 +11,10 @@ namespace RentalCar.API.Models
         public string Username { get; set; }
         
         public string Fullname { get; set; }
+
+        public string Contact { get; set; }
+        
+        
     }
 
     public class CarBooking
@@ -28,9 +32,13 @@ namespace RentalCar.API.Models
 
         public DateTime ReturnDate { get; set; }
 
+        public int NumberDays { get; set; }
+        
+        public decimal Cost { get; set; }
+
         public decimal Total { get; set; }
 
-        public enumStatus Status { get; set; }
+        public StatusDto Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
