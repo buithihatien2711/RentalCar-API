@@ -23,5 +23,7 @@ namespace RentalCar.API.Models
         
         public StatusDto Status { get; set; }
         
+        // Role của user: lease = 1, renter = 2
+        public int RoleId { get; set; }
     }
 }

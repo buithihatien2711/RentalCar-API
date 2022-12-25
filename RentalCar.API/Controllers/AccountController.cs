@@ -121,5 +121,67 @@ namespace RentalCar.API.Controllers
             if(license == null) return null;
             return Ok(_mapper.Map<License, LicenseViewDto>(license));
         }
+    
+        // Update profile admin
+        [Authorize]
+        [HttpPut("/api/admin/account")]
+        public ActionResult<UpdateUserDto> Put(UpdateUserDto userProfile)
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var username = "nguyenvana";
+
+            if(string.IsNullOrEmpty(username)) return NotFound();
+
+            var userExist = _userService.GetUserByUsername(username);
+
+            _mapper.Map<UpdateUserDto, User>(userProfile, userExist);
+
+            _userService.UpdateUser(username, userExist);
+
+            if (_userService.SaveChanges())
+            {
+                var admin = _userService.GetUserByUsername(username);
+                if(admin == null) return null;
+                return Ok(_mapper.Map<User, AdminProfileDto>(admin));
+            } 
+            return BadRequest("Profile update failed");
+        }
+
+        // Profile admin
+        [Route("/api/admin/profile/me")]
+        [HttpGet]
+        public ActionResult<AdminProfileDto> GetProfileAdmin()
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var username = "nguyenvana";
+            var user = _userService.GetUserByUsername(username);
+            if (user == null) return NotFound();
+
+            var profile = _mapper.Map<User, AdminProfileDto>(user);
+            return Ok(profile);
+        }
+
+        // Admin update user profile
+        [HttpPut("/api/admin/account/{username}")]
+        public ActionResult<UpdateUserDto> UpdateUserProfile(UpdateUserDto userProfile, string username)
+        {
+            if(string.IsNullOrEmpty(username)) return NotFound();
+
+            var userExist = _userService.GetUserByUsername(username);
+
+            _mapper.Map<UpdateUserDto, User>(userProfile, userExist);
+
+            _userService.UpdateUser(username, userExist);
+
+            if (_userService.SaveChanges())
+            {
+                var admin = _userService.GetUserByUsername(username);
+                if(admin == null) return null;
+                return Ok(_mapper.Map<User, UpdateUserDto>(admin));
+            } 
+            return BadRequest("Profile update failed");
+        }
+
+        
     }
 }

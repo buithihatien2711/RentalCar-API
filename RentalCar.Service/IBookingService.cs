@@ -1,4 +1,5 @@
 using RentalCar.Model.Models;
+using RentalCar.Service.Models;
 
 namespace RentalCar.Service
 {
@@ -26,7 +27,13 @@ namespace RentalCar.Service
 
         void DepositBooking(int idBooking);
 
-        string GetMeasageByStatus(enumStatus status);
+        // Xác nhận đã nhận xe
+        void ConfirmReceivedCar(int idBooking);
+
+        // Xác nhận đã hoàn thành chuyến
+        void ConfirmCompleteTrip(int idBooking);
+
+        string GetMessageByStatus(enumStatus status);
 
         string GetNameStatusBookingById(int idStatus);
 
@@ -35,5 +42,15 @@ namespace RentalCar.Service
         List<Booking> GetReservations (int idUser);
         
         List<Booking> GetBookingsByStatus(int idStatus);
+
+        List<Booking> GetHistoryBookings(int idUser);
+
+        List<Booking> GetCurrentBookings(int idUser);
+
+        List<Booking> GetHistoryReservations(int idUser);
+
+        List<Booking> GetCurrentReservations(int idUser);
+
+        BookingPrice CalculatePriceAverage(int id, DateTime RentDate, DateTime ReturnDate);
     }
 }

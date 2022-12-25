@@ -714,5 +714,136 @@ namespace RentalCar.API.Controllers
             }
             return Ok(listCarView);
         }
+
+        // Admin statist car by month in year
+        [Route("/api/admin/statist/month/{year}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, int[]>> StatistCarsByMonth(int year)
+        {
+            var numberCarRegister = _carService.StatistCarsByMonth(year);
+            var numberUserRegister = _userService.StatistUsersByMonth(year);
+            int[] numberCarRegisterArr = new int[12];
+            int[] numberUserRegisterArr = new int[12];
+
+            for (var i = 0; i < numberCarRegisterArr.Length; i++)
+            {
+                numberCarRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberCarRegister.Count ; i++)
+            {
+                numberCarRegisterArr[numberCarRegister[i].Time - 1] = numberCarRegister[i].Count;
+            }
+
+            for (var i = 0; i < numberUserRegisterArr.Length; i++)
+            {
+                numberUserRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberUserRegister.Count ; i++)
+            {
+                numberUserRegisterArr[numberUserRegister[i].Time - 1] = numberUserRegister[i].Count;
+            }
+
+            Dictionary<string, int[]> statist = new Dictionary<string, int[]>();
+            statist.Add("numberCars", numberCarRegisterArr);
+            statist.Add("numberUser", numberUserRegisterArr);
+
+            return Ok(statist);
+        }
+
+        // Admin statist car by day in month
+        [Route("/api/admin/statist/day/{month}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, List<QuantityStatistics>>> StatistCarsByDay(int month)
+        {
+            var numberCarRegister = _carService.StatistCarsByDay(month);
+            var numberUserRegister = _userService.StatistUsersByDay(month);
+
+            int days = DateTime.DaysInMonth(DateTime.Now.Year, month);
+
+            int[] numberCarRegisterArr = new int[days];
+            int[] numberUserRegisterArr = new int[days];
+
+            for (var i = 0; i < numberCarRegisterArr.Length; i++)
+            {
+                numberCarRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberCarRegister.Count ; i++)
+            {
+                numberCarRegisterArr[numberCarRegister[i].Time - 1] = numberCarRegister[i].Count;
+            }
+
+            for (var i = 0; i < numberUserRegisterArr.Length; i++)
+            {
+                numberUserRegisterArr[i] = 0;
+            }
+            for (var i = 0; i < numberUserRegister.Count ; i++)
+            {
+                numberUserRegisterArr[numberUserRegister[i].Time - 1] = numberUserRegister[i].Count;
+            }
+
+            Dictionary<string, int[]> statist = new Dictionary<string, int[]>();
+            statist.Add("numberCars", numberCarRegisterArr);
+            statist.Add("numberUser", numberUserRegisterArr);
+
+            return Ok(statist);
+        }
+
+        // Admin get car detail
+        [HttpGet("/api/admin/car/{id}")]
+        public ActionResult<CarDetailAdminDto> GetCarById(int id)
+        {
+            var car = _carService.GetCarById(id);
+            if(car == null) return NotFound("Car doesn't exist");
+
+            var carImages = _carService.GetImageByCarId(id);
+            return Ok(new CarDetailAdminDto()
+            {
+                Id = car.Id,
+                Name = car.Name,
+                Plate_number = car.Plate_number,
+                Description = car.Description,
+                Capacity = car.Capacity,
+                Cost = car.Cost,
+                CarBrand = _mapper.Map<CarBrand,CarBrandDto>(car.CarModel.CarBrand),
+                CarModel = _mapper.Map<CarModel,CarModelDto>(car.CarModel),
+                TransmissionDto = new TransmissionDto()
+                {
+                    Id = car.TransmissionID,
+                    Name = car.Transmission.Name
+                },
+                FuelTypeDto = new FuelTypeDto()
+                {
+                    Id = car.FuelType.Id,
+                    Name = car.FuelType.Name
+                },
+                FuelConsumption = car.FuelConsumption,
+
+                LocationDto = car.Location == null ? null : new LocationDto()
+                {
+                    Id = car.LocationId,
+                    Address = car.Location.Address
+                },
+                WardDto = car.Location == null ? null : (car.Location.Ward == null ? null : new WardDto()
+                {
+                    Id = car.Location.WardId.Value,
+                    Name = car.Location.Ward.Name
+                }),
+
+                DistrictDto = car.Location == null ? null : (car.Location.Ward == null ? null : (car.Location.Ward.District == null ? null : new DistrictDto()
+                {
+                    Id = car.Location.Ward.DistrictID,
+                    Name = car.Location.Ward.District.Name
+                })),
+
+                Rule = car.Rule,
+                NumberStar = car.NumberStar,
+                CarImageDtos = _mapper.Map<List<CarImage>,List<CarImageDtos>>(carImages),
+                Account = _mapper.Map<User, AccountDto>(car.User)
+                // CarReviewDtos = carReviewDtos
+            });
+        }
+
+        
+    
     }
 }

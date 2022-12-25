@@ -1,15 +1,18 @@
 using RentalCar.Data.Repositoriess;
 using RentalCar.Model.Models;
+using RentalCar.Service.Models;
 
 namespace RentalCar.Service
 {
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly ICarService _carService;
 
-        public BookingService(IBookingRepository bookingRepository)
+        public BookingService(IBookingRepository bookingRepository, ICarService carService)
         {
             _bookingRepository = bookingRepository;
+            _carService = carService;
         }
 
         // public void CancelByLease(int idBooking)
@@ -54,6 +57,20 @@ namespace RentalCar.Service
             _bookingRepository.ConfirmBooking(booking);
         }
 
+        public void ConfirmReceivedCar(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.ConfirmReceivedCar(booking);
+        }
+
+        public void ConfirmCompleteTrip(int idBooking)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return;
+            _bookingRepository.ConfirmCompleteTrip(booking);
+        }
+
         public void CreateBooking(Booking booking)
         {
             _bookingRepository.CreateBooking(booking);
@@ -74,7 +91,7 @@ namespace RentalCar.Service
             return _bookingRepository.GetBookingById(idBooking);
         }
 
-        public string GetMeasageByStatus(enumStatus status)
+        public string GetMessageByStatus(enumStatus status)
         {
             switch (status)
             {
@@ -93,7 +110,7 @@ namespace RentalCar.Service
                 case enumStatus.CanceledByLease:
                     return "Chuyến đã bị hủy. Lý do: bị hủy bởi chủ xe";
 
-                case enumStatus.Completed:
+                case enumStatus.CompletedTrip:
                     return "Chuyến đã hoàn thành";
                     
                 case enumStatus.CancelBySystemWaitConfirm:
@@ -102,6 +119,9 @@ namespace RentalCar.Service
                 case enumStatus.CancelBySystemDeposit:
                     return "Chuyến đã bị hủy. Lý do: Hệ thống đã hủy chuyến do quá hạn đặt cọc";
                 
+                case enumStatus.ReceivedCar:
+                    return "Khách thuê đã nhận xe";
+
                 default:
                     return "";
             }
@@ -127,14 +147,17 @@ namespace RentalCar.Service
                 case ((int)enumStatus.CanceledByLease):     //7
                     return "Bị hủy bởi chủ xe";
 
-                case ((int)enumStatus.Completed):       //8
-                    return "Hoàn thành";
+                case ((int)enumStatus.CompletedTrip):       //8
+                    return "Hoàn thành chuyến đi";
                     
                 case ((int)enumStatus.CancelBySystemWaitConfirm):   //4
                     return "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu";
 
                 case ((int)enumStatus.CancelBySystemDeposit):   //5
                     return "Bị hủy bởi hệ thống do khách thuê không đặt cọc";
+
+                case ((int)enumStatus.ReceivedCar):   //5
+                    return "Đã nhận xe";
                 
                 default:
                     return "";
@@ -161,6 +184,49 @@ namespace RentalCar.Service
         public List<Booking> GetBookingsByStatus(int idStatus)
         {
             return _bookingRepository.GetBookingsByStatus(idStatus);
+        }
+
+        public List<Booking> GetHistoryBookings(int idUser)
+        {
+            return _bookingRepository.GetHistoryBookings(idUser);
+        }
+
+        public List<Booking> GetCurrentBookings(int idUser)
+        {
+            return _bookingRepository.GetCurrentBookings(idUser);
+        }
+
+        public List<Booking> GetHistoryReservations(int idUser)
+        {
+            return _bookingRepository.GetHistoryReservations(idUser);
+        }
+
+        public List<Booking> GetCurrentReservations(int idUser)
+        {
+            return _bookingRepository.GetCurrentReservations(idUser);
+        }
+
+        public BookingPrice CalculatePriceAverage(int id, DateTime RentDate, DateTime ReturnDate)
+        {
+            var car = _carService.GetCarById(id);
+            string message = "Thời gian đặt xe hợp lệ";
+            decimal price = 0;
+            int count = 0;
+            for(var day = RentDate ; day <= ReturnDate ; day = day.AddDays(1)){
+                count++;
+                if(_carService.CheckScheduleByDate(id,day) == true) message = "Xe bận trong khoảng thời gian trên. Vui lòng đặt xe khác hoặc thay đổi lịch trình thích hợp.";
+                var resultBefore = price;
+                foreach(var priceDate in car.PriceByDates){
+                    if(priceDate.Date.Date == day.Date) price += priceDate.Cost;
+                }
+                price = (price != resultBefore) ? price : resultBefore + car.Cost;
+            }
+            return new BookingPrice{
+                Day = count,
+                PriceAverage = price/count,
+                Total = price,
+                Schedule =message
+            };
         }
     }
 }

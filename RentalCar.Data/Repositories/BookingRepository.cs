@@ -22,7 +22,6 @@ namespace RentalCar.Data.Repositories
         /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận)
         public void CancelBySystemWaitConfirm(Booking booking)
         {
-            if(booking == null) return;
             // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
             if(booking.Status == enumStatus.WaitConfirm)
             {
@@ -33,7 +32,6 @@ namespace RentalCar.Data.Repositories
         /// Hệ thống hủy chuyến (nếu quá thời gian mà khách thuê chưa đặt cọc)
         public void CancelBySystemWaitDeposit(Booking booking)
         {
-            if(booking == null) return;
             // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
             if(booking.Status == enumStatus.WaitDeposit)
             {
@@ -67,15 +65,30 @@ namespace RentalCar.Data.Repositories
         
         public void ConfirmBooking(Booking booking)
         {
-            // var existBooking = _context.Bookings.FirstOrDefault(b => b.Id == idBooking);
-            if(booking == null) return;
             // Chỉ được xác nhận khi xe đang ở trạng thái chờ xác nhận
             if(booking.Status == enumStatus.WaitConfirm)
             {
                 booking.Status = enumStatus.WaitDeposit;
             }
         }
-        
+         
+        public void ConfirmReceivedCar(Booking booking)
+        {
+            // Chỉ được xác nhận đã nhận xe khi đã đặt cọc
+            if(booking.Status == enumStatus.Deposited)
+            {
+                booking.Status = enumStatus.ReceivedCar;
+            }
+        }
+
+        public void ConfirmCompleteTrip(Booking booking)
+        {
+            // Chỉ được xác nhận đã hoàn thành chuyến khi nhận xe
+            if(booking.Status == enumStatus.ReceivedCar)
+            {
+                booking.Status = enumStatus.CompletedTrip;
+            }
+        }
 
         public List<Booking> GetAllBooking()
         {
@@ -142,10 +155,10 @@ namespace RentalCar.Data.Repositories
 
             if(booking.Car.UserId == idUser)
             {
-                // Chủ xe được hủy trong các trường hợp: chờ đặt cọc, chờ xác nhận, đã đặt cọc
+                // Chủ xe được hủy trong các trường hợp: chờ đặt cọc, chờ xác nhận, đã đặt cọc(tạm thời chưa cho hủy)
                 if(booking.Status == enumStatus.WaitDeposit || 
-                    booking.Status == enumStatus.WaitConfirm ||
-                    booking.Status == enumStatus.Deposited)
+                    booking.Status == enumStatus.WaitConfirm)
+                   // || booking.Status == enumStatus.Deposited)
                 {
                     booking.Status = enumStatus.CanceledByLease;
                 }
@@ -172,6 +185,68 @@ namespace RentalCar.Data.Repositories
                                     .ThenInclude(l => l.Ward)
                                     .ThenInclude(w=> w.District)
                                     .Where(b => ((int)b.Status) == idStatus).ToList();
+        }
+
+        public List<Booking> GetHistoryBookings(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.Status == enumStatus.CancelBySystemDeposit 
+                                                || b.Status == enumStatus.CancelBySystemWaitConfirm 
+                                                || b.Status == enumStatus.CanceledByLease 
+                                                || b.Status == enumStatus.CanceledByRenter
+                                                || b.Status == enumStatus.CompletedTrip)
+                                    .Where(b => b.UserId == idUser).ToList();
+        }
+
+        public List<Booking> GetCurrentBookings(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.Status == enumStatus.WaitDeposit 
+                                                || b.Status == enumStatus.WaitConfirm 
+                                                || b.Status == enumStatus.Deposited 
+                                                || b.Status == enumStatus.ReceivedCar)
+                                    .Where(b => b.UserId == idUser).ToList();
+        }
+
+        public List<Booking> GetHistoryReservations(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.Status == enumStatus.CancelBySystemDeposit 
+                                                || b.Status == enumStatus.CancelBySystemWaitConfirm 
+                                                || b.Status == enumStatus.CanceledByLease 
+                                                || b.Status == enumStatus.CanceledByRenter
+                                                || b.Status == enumStatus.CompletedTrip)
+                                    .Where(b => b.Car.UserId == idUser).ToList();            
+        }
+
+        public List<Booking> GetCurrentReservations(int idUser)
+        {
+            return _context.Bookings.Include(b => b.Car).ThenInclude(b => b.User)
+                                    .Include(b => b.Car).ThenInclude(b => b.CarImages)
+                                    .Include(b => b.User)
+                                    .Include(b => b.Location)
+                                    .ThenInclude(l => l.Ward)
+                                    .ThenInclude(w=> w.District)
+                                    .Where(b => b.Status == enumStatus.WaitDeposit 
+                                                || b.Status == enumStatus.WaitConfirm 
+                                                || b.Status == enumStatus.Deposited 
+                                                || b.Status == enumStatus.ReceivedCar)
+                                    .Where(b => b.Car.UserId == idUser).ToList();
         }
     }
 }
