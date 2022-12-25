@@ -114,35 +114,38 @@ namespace RentalCar.API.Controllers
             }
         }
 
-        // [HttpPost("admin/login")]
-        // public IActionResult LoginAdmin([FromBody] Login login)
-        // {
-        //     try
-        //     {
-        //         var user = _userService.GetUserByUsername(login.UserName);
-        //         if(user == null) {
-        //             return Unauthorized("Username is invalid.");
-        //         } 
+        [HttpPost("/api/admin/login")]
+        public IActionResult LoginAdmin([FromBody] Login login)
+        {
+            try
+            {
+                var user = _userService.GetUserByUsername(login.UserName);
+                if(user == null) {
+                    return Unauthorized("Username is invalid.");
+                } 
 
+                if(!_userService.IsAdminAccount(user.Id))
+                {
+                    return Unauthorized("Username is invalid");
+                }
                 
-                
-        //         using var hmac = new HMACSHA512(user.PasswordSalt);
-        //         var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
-        //         for( var i = 0; i < computeHash.Length; i++){
-        //             if(computeHash[i] != user.PasswordHash[i]){
-        //                 return Unauthorized("Password is invalid.");
-        //             } 
-        //         }
-        //         var token = _tokenService.CreateToken(user);
-        //         return Ok(new TokenDto()
-        //         {
-        //             AccessToken = token
-        //         });
-        //     }
-        //     catch (UnauthorizedAccessException ex)
-        //     {
-        //         return BadRequest(ex);
-        //     }
-        // }
+                using var hmac = new HMACSHA512(user.PasswordSalt);
+                var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
+                for( var i = 0; i < computeHash.Length; i++){
+                    if(computeHash[i] != user.PasswordHash[i]){
+                        return Unauthorized("Password is invalid.");
+                    } 
+                }
+                var token = _tokenService.CreateToken(user);
+                return Ok(new TokenDto()
+                {
+                    AccessToken = token
+                });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

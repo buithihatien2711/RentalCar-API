@@ -153,5 +153,12 @@ namespace RentalCar.Data.Repositories
             var cars = _context.Cars.Where(c => c.UserId == idUser);
             return _context.Cars.Where(c => c.UserId == idUser).Select(c => c.NumberTrip).Sum();
         }
+
+        public bool IsAdminAccount(int idUser)
+        {
+            var check = _context.RoleUsers.Where(ru => (ru.UserId == idUser) && (ru.RoleId == 1)).Count();
+
+            return check > 0;
+        }
     }
 }

@@ -148,27 +148,19 @@ namespace RentalCar.API.Controllers
             _bookingService.ConfirmBooking(idBooking);
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
+                    StatusCode = enumMessage.Success,
+                    Message = "Chấp nhận yêu cầu đặt xe thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
             
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Chấp nhận yêu cầu đặt xe không thành công");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Chấp nhận yêu cầu đặt xe thất bại"
+            };
             return Ok(error);
         }
 
@@ -180,26 +172,18 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
+                    StatusCode = enumMessage.Success,
+                    Message = "Hủy đặt xe thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Hủy đặt xe không thành công");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Hủy đặt xe thất bại"
+            };
             return Ok(error);
         }
         
@@ -211,26 +195,18 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
+                    StatusCode = enumMessage.Success,
+                    Message = "Hủy đặt xe thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Hủy đặt xe không thành công");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Hủy đặt xe thất bại"
+            };
             return Ok(error);
         }
 
@@ -242,26 +218,18 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
+                    StatusCode = enumMessage.Success,
+                    Message = "Xác nhận nhận xe thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Không thể xác nhận đã nhận xe");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Xác nhận nhận xe thất bại"
+            };
             return Ok(error);
         }
 
@@ -273,27 +241,18 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    },
-                    RoleId = 2
+                    StatusCode = enumMessage.Success,
+                    Message = "Xác nhận hoàn thành chuyến thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Xác nhận hoàn thành chuyến không thành công");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Xác nhận hoàn thành chuyến thất bại"
+            };
             return Ok(error);
         }
 
@@ -309,26 +268,18 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
-                var booking = _bookingService.GetBookingById(idBooking);
-                var bookingDto = new BookingOverviewDto()
+                MessageReturn success = new MessageReturn()
                 {
-                    BookingId = booking.Id,
-                    CarId = booking.CarId,
-                    CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-                    CarName = booking.Car.Name,
-                    RentDate = booking.RentDate,
-                    ReturnDate = booking.ReturnDate,
-                    Total = booking.Total,
-                    Status = new StatusDto()
-                    {
-                        Id = ((int)booking.Status),
-                        Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-                    }
+                    StatusCode = enumMessage.Success,
+                    Message = "Hủy đặt xe thành công"
                 };
-                return Ok(bookingDto);
+                return Ok(success);
             }
-            Dictionary<string, string> error = new Dictionary<string, string>();
-            error.Add("error", "Hủy đặt xe không thành công");
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Hủy đặt xe thất bại"
+            };
             return Ok(error);
         }
 
