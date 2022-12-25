@@ -232,6 +232,7 @@ namespace RentalCar.API.Controllers
                     ToUserId = admin.Id,
                     CreateAt = DateTime.Now,
                     Status = false,
+                    Title = "Kiểm duyệt xe",
                     Message = caradd.Name + " đang chờ phê duyệt"
                 });
                 return Ok(caradd);
