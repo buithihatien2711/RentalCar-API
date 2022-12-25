@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
 using RentalCar.Model.Models;
 using RentalCar.Service;
+using RentalCar_API.RentalCar.Service;
 
 namespace RentalCar.API.Controllers
 {
@@ -13,11 +14,13 @@ namespace RentalCar.API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notifiService;
 
-        public AuthController(ITokenService tokenService,IUserService userService)
+        public AuthController(ITokenService tokenService,IUserService userService,INotificationService notifiService)
         {
             _tokenService = tokenService;
             _userService = userService;
+            _notifiService = notifiService;
         }
 
         [HttpPost("register")]
@@ -45,7 +48,19 @@ namespace RentalCar.API.Controllers
                     UpdateAt = DateTime.Now
                 };
                 _userService.CreateUser(user);
-                _userService.SaveChanges();
+                // _userService.SaveChanges();
+                if(_userService.SaveChanges()){
+                    var userByUserName = _userService.GetUserByUsername(register.UserName);
+                    var admin = _userService.GetUserByUsername("admin");
+                    _notifiService.CreateINotifi(new Notification{
+                        FromUserId = userByUserName.Id,
+                        ToUserId = admin.Id,
+                        CreateAt = DateTime.Now,
+                        Status = false,
+                        Title = "Thông báo",
+                        Message = "Người dùng " + userByUserName.Username + " đã đăng kí"
+                    });
+                }
                 var token = _tokenService.CreateToken(user);
                 return Ok(new TokenDto()
                 {
