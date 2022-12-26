@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using RentalCar.Data.Repositories;
 using RentalCar.Service.Models;
 
 namespace RentalCar.Service
@@ -21,5 +22,9 @@ namespace RentalCar.Service
         Task<bool> PaymentExecute(PaymentResponseDto collection); 
 
         Task<string> DepositBooking(int idBooking, HttpContext context);
+
+        List<TotalStatistics> StatistRevenueByMonth(int year);
+
+        List<TotalStatistics> StatistRevenueByDay(int month);
     }
 }

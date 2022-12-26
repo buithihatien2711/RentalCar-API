@@ -11,5 +11,9 @@ namespace RentalCar.Data.Repositories
         void AddPayment(Payment payment);
 
         bool SaveChange();
+
+        List<TotalStatistics> StatistRevenueByMonth(int year);
+
+        List<TotalStatistics> StatistRevenueByDay(int month);
     }
 }

@@ -19,9 +19,12 @@ namespace RentalCar.API.Controllers
         private readonly IBookingService _bookingService;
         private readonly INotificationService _notifiService;
         private readonly IMapper _mapper;
-        public BookingController(ICarService carService,IUserService userService,IBookingService bookingService,INotificationService notifiService,IMapper mapper)
+        private readonly IPaymentService _paymentService;
+
+        public BookingController(ICarService carService,IUserService userService,IBookingService bookingService,INotificationService notifiService,IMapper mapper, IPaymentService paymentService)
         {
             _mapper = mapper;
+            _paymentService = paymentService;
             _carService = carService;
             _userService = userService;
             _bookingService = bookingService;
@@ -859,6 +862,55 @@ namespace RentalCar.API.Controllers
             };
             return Ok(bookingDto);
         }
-    
+
+        // Admin statist revenue by month in year
+        [Route("/api/admin/statist/revenue/month/{year}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, decimal[]>> StatistCarsByMonth(int year)
+        {
+            var revenue = _paymentService.StatistRevenueByMonth(year);
+            decimal[] revenueArr = new decimal[12];
+
+            for (var i = 0; i < revenueArr.Length; i++)
+            {
+                revenueArr[i] = 0;
+            }
+            for (var i = 0; i < revenue.Count ; i++)
+            {
+                revenueArr[revenue[i].Time - 1] = revenue[i].Total;
+            }
+
+            Dictionary<string, decimal[]> statist = new Dictionary<string, decimal[]>();
+            statist.Add("revenue", revenueArr);
+
+            return Ok(statist);
+        }
+
+        // Admin statist revenue by day in month
+        [Route("/api/admin/statist/revenue/day/{month}")]
+        [HttpGet]
+        public ActionResult<Dictionary<string, decimal[]>> StatistCarsByDay(int month)
+        {
+            var revenue = _paymentService.StatistRevenueByDay(month);
+
+            int days = DateTime.DaysInMonth(DateTime.Now.Year, month);
+
+            decimal[] revenueArr = new decimal[days];
+
+            for (var i = 0; i < revenueArr.Length; i++)
+            {
+                revenueArr[i] = 0;
+            }
+            for (var i = 0; i < revenue.Count ; i++)
+            {
+                revenueArr[revenue[i].Time - 1] = revenue[i].Total;
+            }
+
+            Dictionary<string, decimal[]> statist = new Dictionary<string, decimal[]>();
+            statist.Add("revenue", revenueArr);
+
+            return Ok(statist);
+        }
+
     }
 }
