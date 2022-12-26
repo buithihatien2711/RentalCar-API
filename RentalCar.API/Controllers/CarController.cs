@@ -175,7 +175,12 @@ namespace RentalCar.API.Controllers
                 };
 
                 if(_carService.GetCarByPateNumber(car.Plate_number) != null){
-                    return NotFound("Plate number is invalid.");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Biển số xe đã tồn tại."
+                    };
+                    return Ok(fail);
                     // Dictionary<string, string> message = new Dictionary<string, string>();
                     // message.Add("Message", "Plate number is invalid.");
                     // return NotFound(message);
@@ -450,10 +455,20 @@ namespace RentalCar.API.Controllers
                 var carSer = _carService.GetCarById(id);
                 var ward = _carService.GetWardById(carInput.WardId);
                 if(carSer == null) {
-                    return NotFound("Car doesn't exist");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy xe."
+                    };
+                    return Ok(fail);
                 }
                 if(ward == null) {
-                    return NotFound("Ward doesn't exist");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy ward."
+                    };
+                    return Ok(fail);
                 }
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var userId = _userService.GetUserByUsername(username).Id;
@@ -495,7 +510,12 @@ namespace RentalCar.API.Controllers
         {
             var car = _carService.GetCarById(id);
             if(car == null){
-                return NotFound("Car doesn't exist");
+                MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy xe."
+                    };
+                    return Ok(fail);
             }
 
             var CarImage = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
@@ -511,7 +531,12 @@ namespace RentalCar.API.Controllers
                 var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var car = _carService.GetCarById(id);
                 if(car == null){
-                    return NotFound("Car doesn't exist");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy xe."
+                    };
+                    return Ok(fail);
                 } 
                 foreach(var image in listImage){
                     var linkImage = await _uploadImgService.UploadImage("car",username,image);
@@ -615,7 +640,12 @@ namespace RentalCar.API.Controllers
             try{
                 var car = _carService.GetCarById(id);
                 if(car == null){
-                    return NotFound("Car doesn't exist");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy xe."
+                    };
+                    return Ok(fail);
                 } 
                 if(images !=null){
                     foreach(var image in images){
@@ -832,7 +862,14 @@ namespace RentalCar.API.Controllers
         public ActionResult<CarDetailAdminDto> GetCarById(int id)
         {
             var car = _carService.GetCarById(id);
-            if(car == null) return NotFound("Car doesn't exist");
+            if(car == null){
+                MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Không tìm thấy xe."
+                    };
+                    return Ok(fail);
+            }
 
             var carImages = _carService.GetImageByCarId(id);
             return Ok(new CarDetailAdminDto()

@@ -30,10 +30,12 @@ namespace RentalCar.API.Controllers
             {
                 var username = register.UserName.ToLower();
                 if(_userService.GetUserByUsername(username) != null){
-                    // Dictionary<string, string> message = new Dictionary<string, string>();
-                    // message.Add("Message", "Username already exists");
-                    // return BadRequest(message);
-                    return BadRequest("Username already exists");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Username đã tồn tại."
+                    };
+                    return Ok(fail);
                 }
 
                 using var hmac = new HMACSHA512();
@@ -91,20 +93,25 @@ namespace RentalCar.API.Controllers
                 // return Ok(_authService.Login(authUserDto));
                 var user = _userService.GetUserByUsername(login.UserName);
                 if(user == null) {
-                    return Unauthorized("Username is invalid.");
-                    // Dictionary<string, string> message = new Dictionary<string, string>();
-                    // message.Add("Message", "Username is invalid.");
-                    // return BadRequest(message);
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Username không đúng."
+                    };
+                    return Ok(fail);
+                    // return Unauthorized("Username is invalid.");
                 } 
                 
                 using var hmac = new HMACSHA512(user.PasswordSalt);
                 var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
                 for( var i = 0; i < computeHash.Length; i++){
                     if(computeHash[i] != user.PasswordHash[i]){
-                        return Unauthorized("Password is invalid.");
-                        // Dictionary<string, string> message = new Dictionary<string, string>();
-                        // message.Add("Message", "Password is invalid.");
-                        // return BadRequest(message);
+                        MessageReturn fail = new MessageReturn()
+                        {
+                            StatusCode = enumMessage.Fail,
+                            Message = "Password không đúng."
+                        };
+                        return Ok(fail);
                     } 
                 }
                 var token = _tokenService.CreateToken(user);
@@ -128,19 +135,36 @@ namespace RentalCar.API.Controllers
             {
                 var user = _userService.GetUserByUsername(login.UserName);
                 if(user == null) {
-                    return Unauthorized("Username is invalid.");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Username không hợp lệ."
+                    };
+                    return Ok(fail);
                 } 
 
                 if(!_userService.IsAdminAccount(user.Id))
                 {
-                    return Unauthorized("Username is invalid");
+                    // return Unauthorized("Username is invalid");
+                    MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Username không hợp lệ."
+                    };
+                    return Ok(fail);
                 }
                 
                 using var hmac = new HMACSHA512(user.PasswordSalt);
                 var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
                 for( var i = 0; i < computeHash.Length; i++){
                     if(computeHash[i] != user.PasswordHash[i]){
-                        return Unauthorized("Password is invalid.");
+                        // return Unauthorized("Password is invalid.");
+                        MessageReturn fail = new MessageReturn()
+                        {
+                            StatusCode = enumMessage.Fail,
+                            Message = "Password không hợp lệ."
+                        };
+                        return Ok(fail);
                     } 
                 }
                 var token = _tokenService.CreateToken(user);

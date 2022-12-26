@@ -42,6 +42,6 @@ namespace RentalCar.Data.Repositories
         bool IsAdminAccount(int idUser);
 
         bool DeleteUser(User user);
-
+        bool IsLease(string username);
     }
 }
