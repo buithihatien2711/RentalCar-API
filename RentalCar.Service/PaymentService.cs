@@ -80,7 +80,7 @@ namespace RentalCar.Service
                 {
                     BookingId = bookingId,
                     Status = response.Success,
-                    Amount = paymentResponseDto.vnp_Amount,
+                    Amount = paymentResponseDto.vnp_Amount/100,
                     TranCode = paymentResponseDto.vnp_TransactionNo,
                     OrderDesc = paymentResponseDto.vnp_OrderInfo,
                     PayDate = DateTime.ParseExact(paymentResponseDto.vnp_PayDate, "yyyyMMddHHmmss",null)
@@ -100,6 +100,16 @@ namespace RentalCar.Service
             {
                 return false;
             }
-        } 
+        }
+
+        public List<TotalStatistics> StatistRevenueByDay(int month)
+        {
+            return _paymentRepository.StatistRevenueByDay(month);
+        }
+
+        public List<TotalStatistics> StatistRevenueByMonth(int year)
+        {
+            return _paymentRepository.StatistRevenueByMonth(year);
+        }
     }
 }
