@@ -166,5 +166,26 @@ namespace RentalCar.Data.Repositories
             _context.Remove(user);
             return SaveChanges();
         }
+
+        public bool IsLease(string username)
+        {
+            var user = _context.Users.Include(p => p.RoleUsers)
+                                .FirstOrDefault(p => p.Username == username);
+            // foreach(var role in user.RoleUsers){
+            //     if(role.RoleId == 3){
+            //         user.RoleUsers.Remove(role);
+            //         _context.SaveChanges();
+            //     }
+            // }
+            var rolelease = new RoleUser()
+            {
+                UserId = user.Id,
+                User = user,
+                RoleId = 2,
+                Role = GetRoleById(2)
+            };
+            _context.RoleUsers.Add(rolelease);
+            return SaveChanges();
+        }
     }
 }

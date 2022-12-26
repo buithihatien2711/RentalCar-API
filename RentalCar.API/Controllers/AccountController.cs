@@ -182,6 +182,25 @@ namespace RentalCar.API.Controllers
             return BadRequest("Profile update failed");
         }
 
+        [HttpPut("/api/account/isLease")]
+        public ActionResult<string> Put()
+        {
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if(_userService.IsLease(username)){
+                MessageReturn succcess = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Bạn đã trở thành chủ xe."
+                    };
+                    return Ok(succcess);
+            }
+            MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Trở thành chủ xe thất bại."
+                    };
+                    return Ok(fail);
+        }
         
     }
 }

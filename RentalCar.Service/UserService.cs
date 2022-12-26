@@ -102,5 +102,10 @@ namespace RentalCar.Service
             var user = GetUserById(id);
             return _repository.DeleteUser(user);
         }
+
+        public bool IsLease(string username)
+        {
+            return _repository.IsLease(username);
+        }
     }
 }

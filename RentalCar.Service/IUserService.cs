@@ -38,6 +38,7 @@ namespace RentalCar.Service
 
         bool IsAdminAccount(int idUser);
         bool DeleteUser(int id);
+        bool IsLease(string username);
 
     }
 }
