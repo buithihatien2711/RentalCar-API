@@ -160,5 +160,11 @@ namespace RentalCar.Data.Repositories
 
             return check > 0;
         }
+
+        public bool DeleteUser(User user)
+        {
+            _context.Remove(user);
+            return SaveChanges();
+        }
     }
 }

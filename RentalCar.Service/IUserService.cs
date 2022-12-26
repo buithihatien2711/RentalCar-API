@@ -37,5 +37,7 @@ namespace RentalCar.Service
         int GetNumberTripOfUser(int idUser);
 
         bool IsAdminAccount(int idUser);
+        bool DeleteUser(int id);
+
     }
 }

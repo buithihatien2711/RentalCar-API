@@ -96,5 +96,11 @@ namespace RentalCar.Service
         {
             return _repository.IsAdminAccount(idUser);
         }
+
+        public bool DeleteUser(int id)
+        {
+            var user = GetUserById(id);
+            return _repository.DeleteUser(user);
+        }
     }
 }
