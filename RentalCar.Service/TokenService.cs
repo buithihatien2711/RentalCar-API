@@ -24,6 +24,7 @@ namespace RentalCar.Service
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Username),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.Fullname),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.ProfileImage),
             };
 
             // var claims = new List<Claim>();
