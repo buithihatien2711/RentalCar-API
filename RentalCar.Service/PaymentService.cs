@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using RentalCar.Data.Repositories;
 using RentalCar.Model.Models;
 using RentalCar.Service.Models;
 
@@ -13,9 +14,11 @@ namespace RentalCar.Service
     {
         private readonly IConfiguration _configuration;
         private readonly IBookingService _bookingService;
+        private readonly IPaymentRepository _paymentRepository;
 
-        public PaymentService(IConfiguration configuration, IBookingService bookingService)
+        public PaymentService(IConfiguration configuration, IBookingService bookingService, IPaymentRepository paymentRepository)
         {
+            _paymentRepository = paymentRepository;
             _configuration = configuration;
             _bookingService = bookingService;
         }
@@ -73,14 +76,23 @@ namespace RentalCar.Service
             try
             {
                 var bookingId = Int32.Parse(paymentResponseDto.vnp_OrderInfo.Split("-")[0]);
+                var payment = new Payment()
+                {
+                    BookingId = bookingId,
+                    Status = response.Success,
+                    Amount = paymentResponseDto.vnp_Amount,
+                    TranCode = paymentResponseDto.vnp_TransactionNo,
+                    OrderDesc = paymentResponseDto.vnp_OrderInfo,
+                    PayDate = DateTime.ParseExact(paymentResponseDto.vnp_PayDate, "yyyyMMddHHmmss",null)
+                };
+                // Lưu thanh toán vào db
+                _paymentRepository.AddPayment(payment);
+                _paymentRepository.SaveChange();
+
                 if(response.Success)
                 {
                     _bookingService.DepositBooking(bookingId);
-                    if(_bookingService.SaveChanges())
-                    {
-                        return true;
-                    }
-                    return false;
+                    return _bookingService.SaveChanges();
                 }
                 return false;
             }
