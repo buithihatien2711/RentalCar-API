@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
 using RentalCar.Data.Repositories;
@@ -106,6 +108,15 @@ namespace RentalCar.Service
         public bool IsLease(string username)
         {
             return _repository.IsLease(username);
+        }
+
+        public bool ChangPassword(string username, string password)
+        {
+            var user = GetUserByUsername(username);
+            using var hmac = new HMACSHA512();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            user.PasswordSalt = hmac.Key;
+            return SaveChanges();
         }
     }
 }
