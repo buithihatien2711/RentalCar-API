@@ -45,7 +45,8 @@ namespace RentalCar.API.Controllers
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password)),
                     PasswordSalt = hmac.Key,
                     CreatedAt = DateTime.Now,
-                    UpdateAt = DateTime.Now
+                    UpdateAt = DateTime.Now,
+                    ProfileImage = "https://firebasestorage.googleapis.com/v0/b/pbl6-b8cad.appspot.com/o/pbl6%2Favatar%2FAvataDefault%2FAvataDefault.jpg?alt=media&token=1c8be063-80ae-4eef-b0c0-7af84999bdb9&fbclid=IwAR3Vq7RhVsB46Knuo-hyfWyn_XkTgfCI8_u0a_DQTtQAf5D7AcSa9wor6b4"
                 };
                 _userService.CreateUser(user);
                 // _userService.SaveChanges();
