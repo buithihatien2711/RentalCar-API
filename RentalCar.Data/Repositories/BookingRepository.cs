@@ -78,6 +78,14 @@ namespace RentalCar.Data.Repositories
             if(booking.Status == enumStatus.Deposited)
             {
                 booking.Status = enumStatus.ReceivedCar;
+                booking.Car.StatusID = 4;
+                var schedule = new CarSchedule()
+                {
+                    rentDate = booking.RentDate,
+                    returnDate = booking.ReturnDate,
+                    CarId = booking.CarId
+                };
+                _context.CarSchedules.Add(schedule);
             }
         }
 
@@ -87,6 +95,7 @@ namespace RentalCar.Data.Repositories
             if(booking.Status == enumStatus.ReceivedCar)
             {
                 booking.Status = enumStatus.CompletedTrip;
+                booking.Car.StatusID = 3;
             }
         }
 

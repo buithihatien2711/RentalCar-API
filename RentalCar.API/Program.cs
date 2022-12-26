@@ -82,6 +82,7 @@ services.AddScoped<INotificationService, NotificationService>();
 services.AddScoped<IUploadImgService, UploadImgService>();
 
 services.AddScoped<IPaymentService, PaymentService>();
+services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 services.AddAutoMapper(typeof(AutoMappingConfiguration).Assembly);
 
