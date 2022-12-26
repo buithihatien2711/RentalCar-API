@@ -39,7 +39,7 @@ namespace RentalCar.API.Controllers
             var review = new CarReview()
             {
                 Content = reviewDto.Content,
-                Rating = reviewDto.Rating,
+                Rating = reviewDto.Value,
                 CreatedAt = DateTime.Now,
                 UserId = user.Id,
                 CarId = idCar

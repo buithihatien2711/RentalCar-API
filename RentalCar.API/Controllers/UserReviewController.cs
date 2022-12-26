@@ -66,7 +66,7 @@ namespace RentalCar.API.Controllers
             
             var userReview = new UserReview()
             {
-                Rating = reviewAddDto.Rating,
+                Rating = reviewAddDto.Value,
                 LeaseId = lease.Id,
                 RenterId = _userService.GetUserByUsername(username.Value).Id,
                 Content = reviewAddDto.Content,
@@ -74,7 +74,17 @@ namespace RentalCar.API.Controllers
             };
             _userReviewService.AddReviewLease(userReview);
 
-            return NoContent();
+            return Ok(new ReviewViewDto()
+            {
+                Id = userReview.Id,
+                Rating = userReview.Rating,
+                Content = userReview.Content,
+                CreatedAt = userReview.CreatedAt,
+                UpdatedAt = userReview.UpdatedAt,
+                Account = _mapper.Map<User, AccountDto>(lease)
+            });
+
+            // return NoContent();
         }
 
         // Bình luận về một người thuê xe
@@ -90,7 +100,7 @@ namespace RentalCar.API.Controllers
             
             var userReview = new UserReview()
             {
-                Rating = reviewAddDto.Rating,
+                Rating = reviewAddDto.Value,
                 // Lease là người viết cmt
                 LeaseId = _userService.GetUserByUsername(username.Value).Id,
                 RenterId = renter.Id,
@@ -99,17 +109,17 @@ namespace RentalCar.API.Controllers
             };
             _userReviewService.AddReviewRenter(userReview);
 
-            // return Ok(new ReviewViewDto()
-            // {
-            //     Id = userReview.Id,
-            //     Rating = userReview.Rating,
-            //     Content = userReview.Content,
-            //     CreatedAt = userReview.CreatedAt,
-            //     UpdatedAt = userReview.UpdatedAt,
-            //     Account = _mapper.Map<User, AccountDto>(renter)
-            // });
+            return Ok(new ReviewViewDto()
+            {
+                Id = userReview.Id,
+                Rating = userReview.Rating,
+                Content = userReview.Content,
+                CreatedAt = userReview.CreatedAt,
+                UpdatedAt = userReview.UpdatedAt,
+                Account = _mapper.Map<User, AccountDto>(renter)
+            });
             
-            return NoContent();
+            // return NoContent();
         }
 
         // Get review của 1 renter
