@@ -40,5 +40,8 @@ namespace RentalCar.Data.Repositories
         int GetNumberTripOfUser(int idUser);
 
         bool IsAdminAccount(int idUser);
+
+        bool DeleteUser(User user);
+
     }
 }

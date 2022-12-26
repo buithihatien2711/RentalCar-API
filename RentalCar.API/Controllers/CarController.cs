@@ -226,15 +226,29 @@ namespace RentalCar.API.Controllers
                 caradd.Ward = _mapper.Map<Ward,WardDto>(result.Location.Ward);
                 caradd.Username = username;
 
-                var admin = _userService.GetUserByUsername("admin");
-                _notifiService.CreateINotifi(new Notification{
-                    FromUserId = user.Id,
-                    ToUserId = admin.Id,
-                    CreateAt = DateTime.Now,
-                    Status = false,
-                    Title = "Kiểm duyệt xe",
-                    Message = caradd.Name + " đang chờ phê duyệt"
-                });
+                // var admin = _userService.GetUserByUsername("admin");
+                // _notifiService.CreateINotifi(new Notification{
+                //     FromUserId = user.Id,
+                //     ToUserId = admin.Id,
+                //     CreateAt = DateTime.Now,
+                //     Status = false,
+                //     Title = "Kiểm duyệt xe",
+                //     Message = caradd.Name + " đang chờ phê duyệt"
+                // });
+
+                var Tousers = _userService.GetUsersByRole(1);
+                    List<User> admin = new List<User>();
+                    foreach(var touser in Tousers){
+                        // admin.Add(touser);
+                        _notifiService.CreateINotifi(new Notification{
+                            FromUserId = user.Id,
+                            ToUserId = touser.Id,
+                            CreateAt = DateTime.Now,
+                            Status = false,
+                            Title = "Kiểm duyệt xe",
+                            Message = caradd.Name + " đang chờ phê duyệt"
+                        });
+                    }
                 return Ok(caradd);
                 }
             catch (Exception ex)
@@ -260,7 +274,7 @@ namespace RentalCar.API.Controllers
                         CreateAt = DateTime.Now,
                         Status = false,
                         Title = "Kiểm duyệt xe",
-                        Message = "Yêu cầu đăng kí xe " + car.Name + "-" + car.Status
+                        Message = "Xe "+car.Name + "-" + car.Status
                     });
             }
             return Ok("admin update status car successful");

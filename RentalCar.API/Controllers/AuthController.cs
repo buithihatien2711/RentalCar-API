@@ -51,15 +51,21 @@ namespace RentalCar.API.Controllers
                 // _userService.SaveChanges();
                 if(_userService.SaveChanges()){
                     var userByUserName = _userService.GetUserByUsername(register.UserName);
-                    var admin = _userService.GetUserByUsername("admin");
-                    _notifiService.CreateINotifi(new Notification{
-                        FromUserId = userByUserName.Id,
-                        ToUserId = admin.Id,
-                        CreateAt = DateTime.Now,
-                        Status = false,
-                        Title = "Thông báo",
-                        Message = "Người dùng " + userByUserName.Username + " đã đăng kí"
-                    });
+                    // var admin = _userService.GetUserByUsername("admin");
+
+                    var Tousers = _userService.GetUsersByRole(1);
+                    List<User> admin = new List<User>();
+                    foreach(var touser in Tousers){
+                        // admin.Add(touser);
+                        _notifiService.CreateINotifi(new Notification{
+                            FromUserId = userByUserName.Id,
+                            ToUserId = touser.Id,
+                            CreateAt = DateTime.Now,
+                            Status = false,
+                            Title = "Thông báo",
+                            Message = "Người dùng " + userByUserName.Username + " đã đăng kí"
+                        });
+                    }
                 }
                 var token = _tokenService.CreateToken(user);
                 return Ok(new TokenDto()

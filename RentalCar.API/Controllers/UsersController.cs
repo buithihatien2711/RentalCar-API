@@ -239,6 +239,29 @@ namespace RentalCar.API.Controllers
             return BadRequest("License update failed");
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpDelete("/api/admin/user/{id}")]
+        public ActionResult<string> Delete(int id)
+        {
+            var user = _userService.GetUserById(id);
+            if(user == null) return NotFound();
+
+             if(_userService.DeleteUser(id))
+            {
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Xóa user thành công"
+                };
+                return Ok(success);
+            }
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Xóa user thất bại"
+            };
+            return Ok(error);
+        }
         
     }
 }
