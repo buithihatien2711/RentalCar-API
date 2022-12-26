@@ -547,7 +547,13 @@ namespace RentalCar.API.Controllers
                 return Ok(images);
             }
             catch(Exception ex){
-                return BadRequest(ex.Message);
+                MessageReturn fail = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = ex.Message
+                };
+                return Ok(fail);
+                // return BadRequest(ex.Message);
             }
         }
 
@@ -556,9 +562,20 @@ namespace RentalCar.API.Controllers
         {
                 _carService.DeleteCarImagebyId(ImgId);
                 if(_carService.SaveChanges()) {
-                    return NoContent();
+                    MessageReturn success = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Success,
+                        Message = "Xóa ảnh thành công"
+                    };
+                    return Ok(success);
                 }
-                return BadRequest();
+                // return BadRequest();
+                MessageReturn fail = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = "Lỗi server"
+                };
+                return Ok(fail);
         }
 
         // [HttpGet("{id}/CarImageRegister")]
@@ -658,7 +675,12 @@ namespace RentalCar.API.Controllers
                 
             }
             catch(Exception ex){
-                return BadRequest(ex.Message);
+                MessageReturn fail = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = ex.Message
+                };
+                return Ok(fail);
             }
         }
        
@@ -668,9 +690,19 @@ namespace RentalCar.API.Controllers
         {
                 _carService.DeleteCarImageRgtbyId(ImgId);
                 if(_carService.SaveChanges()) {
-                    return NoContent();
+                    MessageReturn success = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Success,
+                        Message = "Xóa ảnh thành công"
+                    };
+                    return Ok(success);
                 }
-                return BadRequest();
+                MessageReturn fail = new MessageReturn()
+                    {
+                        StatusCode = enumMessage.Fail,
+                        Message = "Xóa ảnh thất bại"
+                    };
+                    return Ok(fail);
         }
 
         [HttpGet("cars/{idStatus}")]
