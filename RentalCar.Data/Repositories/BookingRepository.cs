@@ -19,25 +19,25 @@ namespace RentalCar.Data.Repositories
             _context.Bookings.Add(booking);
         }
 
-        /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận)
-        public void CancelBySystemWaitConfirm(Booking booking)
-        {
-            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
-            if(booking.Status == enumStatus.WaitConfirm)
-            {
-                booking.Status = enumStatus.CancelBySystemWaitConfirm;
-            }
-        }
+        // /// Hệ thống hủy chuyến (nếu quá thời gian mà chủ xe chưa xác nhận)
+        // public void CancelBySystemWaitConfirm(Booking booking)
+        // {
+        //     // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
+        //     if(booking.Status == enumStatus.WaitConfirm)
+        //     {
+        //         booking.Status = enumStatus.CancelBySystemWaitConfirm;
+        //     }
+        // }
 
-        /// Hệ thống hủy chuyến (nếu quá thời gian mà khách thuê chưa đặt cọc)
-        public void CancelBySystemWaitDeposit(Booking booking)
-        {
-            // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
-            if(booking.Status == enumStatus.WaitDeposit)
-            {
-                booking.Status = enumStatus.CancelBySystemDeposit;
-            }
-        }
+        // /// Hệ thống hủy chuyến (nếu quá thời gian mà khách thuê chưa đặt cọc)
+        // public void CancelBySystemWaitDeposit(Booking booking)
+        // {
+        //     // Hệ thống hủy booking khi xe đang ở trạng thái chờ xác nhận
+        //     if(booking.Status == enumStatus.WaitDeposit)
+        //     {
+        //         booking.Status = enumStatus.CancelBySystemDeposit;
+        //     }
+        // }
 
         // // Chủ xe hủy chuyến (Chưa đặt cọc)
         // public void CancelByLease(Booking booking)
@@ -204,9 +204,7 @@ namespace RentalCar.Data.Repositories
                                     .Include(b => b.Location)
                                     .ThenInclude(l => l.Ward)
                                     .ThenInclude(w=> w.District)
-                                    .Where(b => b.Status == enumStatus.CancelBySystemDeposit 
-                                                || b.Status == enumStatus.CancelBySystemWaitConfirm 
-                                                || b.Status == enumStatus.CanceledByLease 
+                                    .Where(b => b.Status == enumStatus.CanceledByLease 
                                                 || b.Status == enumStatus.CanceledByRenter
                                                 || b.Status == enumStatus.CompletedTrip)
                                     .Where(b => b.UserId == idUser).ToList();
@@ -235,9 +233,7 @@ namespace RentalCar.Data.Repositories
                                     .Include(b => b.Location)
                                     .ThenInclude(l => l.Ward)
                                     .ThenInclude(w=> w.District)
-                                    .Where(b => b.Status == enumStatus.CancelBySystemDeposit 
-                                                || b.Status == enumStatus.CancelBySystemWaitConfirm 
-                                                || b.Status == enumStatus.CanceledByLease 
+                                    .Where(b => b.Status == enumStatus.CanceledByLease 
                                                 || b.Status == enumStatus.CanceledByRenter
                                                 || b.Status == enumStatus.CompletedTrip)
                                     .Where(b => b.Car.UserId == idUser).ToList();            

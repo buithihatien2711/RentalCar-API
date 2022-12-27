@@ -15,9 +15,9 @@ namespace RentalCar.Service
 
         void ConfirmBooking(int idBooking);
 
-        void CancelBySystemWaitConfirm(int idBooking);
+        // void CancelBySystemWaitConfirm(int idBooking);
 
-        void CancelBySystemWaitDeposit(int idBooking);
+        // void CancelBySystemWaitDeposit(int idBooking);
 
         // void CancelByLease(int idBooking);
 
