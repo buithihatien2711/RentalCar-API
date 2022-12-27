@@ -49,5 +49,8 @@ namespace RentalCar.Data.Repositoriess
         List<Booking> GetHistoryReservations(int idUser);
 
         List<Booking> GetCurrentReservations(int idUser);
+
+        // lease = 1, renter = 2
+        int GetRoleUserInBooking(int idBooking, int idUser);
     }
 }

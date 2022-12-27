@@ -228,5 +228,10 @@ namespace RentalCar.Service
                 Schedule =message
             };
         }
+
+        public int GetRoleUserInBooking(int idBooking, int idUser)
+        {
+            return _bookingRepository.GetRoleUserInBooking(idBooking, idUser);
+        }
     }
 }

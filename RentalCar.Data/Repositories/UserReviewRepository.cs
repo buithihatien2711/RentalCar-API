@@ -26,7 +26,7 @@ namespace RentalCar.Data.Repositories
                 {
                     UserId = userReview.LeaseId,
                     UserReviewId = userReview.Id,
-                    RoleId = ((int)EnumClass.RoleUserInComment.Lease)
+                    RoleId = (EnumClass.RoleUserInComment.Lease)
                 }
             );
 
@@ -36,7 +36,7 @@ namespace RentalCar.Data.Repositories
                 {
                     UserId = userReview.RenterId,
                     UserReviewId = userReview.Id,
-                    RoleId = ((int)EnumClass.RoleUserInComment.Writer)
+                    RoleId = (EnumClass.RoleUserInComment.Writer)
                 }
             );
 
@@ -61,7 +61,7 @@ namespace RentalCar.Data.Repositories
             return _context.UserReviewUsers.Include(r => r.UserReview)
                                 // get UserReviewUsers by id lease
                                 .Where(r => r.UserId == idUser)
-                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Lease))
+                                .Where(r => r.RoleId == (EnumClass.RoleUserInComment.Lease))
                                 .Select(uru => new UserReview()
                                 {
                                     Id = uru.UserReviewId,
@@ -80,7 +80,7 @@ namespace RentalCar.Data.Repositories
             return _context.UserReviewUsers.Include(r => r.UserReview)
                                 // get UserReviewUsers by id renter
                                 .Where(r => r.UserId == idRenter)
-                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Renter))
+                                .Where(r => r.RoleId == (EnumClass.RoleUserInComment.Renter))
                                 .Select(uru => new UserReview()
                                 {
                                     Id = uru.UserReviewId,
@@ -105,7 +105,7 @@ namespace RentalCar.Data.Repositories
                 {
                     UserId = userReview.LeaseId,
                     UserReviewId = userReview.Id,
-                    RoleId = ((int)EnumClass.RoleUserInComment.Writer)
+                    RoleId = (EnumClass.RoleUserInComment.Writer)
                 }
             );
 
@@ -115,7 +115,7 @@ namespace RentalCar.Data.Repositories
                 {
                     UserId = userReview.RenterId,
                     UserReviewId = userReview.Id,
-                    RoleId = ((int)EnumClass.RoleUserInComment.Renter)
+                    RoleId = (EnumClass.RoleUserInComment.Renter)
                 }
             );
 
@@ -130,7 +130,7 @@ namespace RentalCar.Data.Repositories
             var userReview = _context.UserReviewUsers.Include(r => r.UserReview)
                                 // get UserReviewUsers by id renter
                                 .Where(r => r.UserId == idLease)
-                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Lease))
+                                .Where(r => r.RoleId == (EnumClass.RoleUserInComment.Lease))
                                 .Select(r => r.UserReview);
 
             if(!userReview.Any()) return new ReviewOverview(){Rating = 0, NumberTrip = 0};
@@ -148,7 +148,7 @@ namespace RentalCar.Data.Repositories
             var userReview = _context.UserReviewUsers.Include(r => r.UserReview)
                                 // get UserReviewUsers by id renter
                                 .Where(r => r.UserId == idRenter)
-                                .Where(r => r.RoleId == ((int)EnumClass.RoleUserInComment.Renter))
+                                .Where(r => r.RoleId == (EnumClass.RoleUserInComment.Renter))
                                 .Select(r => r.UserReview);
 
             if(!userReview.Any()) return new ReviewOverview(){Rating = 0, NumberTrip = 0};  
