@@ -50,8 +50,24 @@ namespace RentalCar.API.Controllers
 
             _userService.UpdateUserPatch(username.Value, userModel);
 
-            if(_userService.SaveChanges()) return Ok(_mapper.Map <User, UserProfile>(_userService.GetUserByUsername(username.Value)));
-            return BadRequest("Profile update failed");
+            if(_userService.SaveChanges())
+            {
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Cập nhật thông tin thành công"
+                };
+                return Ok(success);
+                // return Ok(_mapper.Map <User, UserProfile>(_userService.GetUserByUsername(username.Value)));
+            }
+
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Cập nhật thông tin thất bại"
+            };
+            return Ok(error);
+            // return BadRequest("Profile update failed");
         }
 
         [HttpPut("/api/account/avatar")]
@@ -70,11 +86,26 @@ namespace RentalCar.API.Controllers
 
             if (_userService.SaveChanges())
             {
-                Dictionary<string, string> response = new Dictionary<string, string>();
-                response.Add("profileImage", userExist.ProfileImage);
-                return Ok(response);
+                // Dictionary<string, string> response = new Dictionary<string, string>();
+                // response.Add("profileImage", userExist.ProfileImage);
+                // return Ok(response);
+
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Cập nhật ảnh đại diện thành công"
+                };
+                return Ok(success);
             } 
-            return BadRequest("Avatar update failed");
+
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Cập nhật ảnh đại diện thất bại"
+            };
+            return Ok(error);
+
+            // return BadRequest("Avatar update failed");
         }
 
         [HttpPut("/api/account/license")]
@@ -101,9 +132,21 @@ namespace RentalCar.API.Controllers
 
             if (_userService.SaveChanges())
             {
-                return NoContent();
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Cập nhật giấy phép lái xe thành công"
+                };
+                return Ok(success);
             } 
-            return BadRequest("License update failed");
+
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Cập nhật giấy phép lái xe thất bại"
+            };
+            return Ok(error);
+            // return BadRequest("License update failed");
         }
 
         [HttpGet("/api/account/license")]

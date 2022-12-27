@@ -371,8 +371,23 @@ namespace RentalCar.API.Controllers
             if(car == null) return NotFound();
 
             _carService.DeleteCar(car);
-            if(_carService.SaveChanges()) return NoContent();
-            return BadRequest();
+            if(_carService.SaveChanges())
+            {
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Xóa xe thành công"
+                };
+                return Ok(success);
+                // return NoContent();
+            } 
+            MessageReturn error = new MessageReturn()
+            {
+                StatusCode = enumMessage.Fail,
+                Message = "Xóa xe thất bại"
+            };
+            return Ok(error);
+            // return BadRequest();
         }
 
         [Authorize(Roles="lease, admin")]

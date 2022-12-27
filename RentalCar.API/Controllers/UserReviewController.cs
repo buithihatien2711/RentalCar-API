@@ -56,7 +56,7 @@ namespace RentalCar.API.Controllers
 
         // Bình luận về một chủ xe
         [HttpPost("/api/leaseComments/{idLease}")]
-        public ActionResult<ReviewViewDto> AddUserReview([FromBody] ReviewAddDto reviewAddDto, int idLease)
+        public ActionResult<MessageReturn> AddUserReview([FromBody] ReviewAddDto reviewAddDto, int idLease)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             if(username == null) return Unauthorized("Please login");
@@ -74,22 +74,29 @@ namespace RentalCar.API.Controllers
             };
             _userReviewService.AddReviewLease(userReview);
 
-            return Ok(new ReviewViewDto()
+            MessageReturn success = new MessageReturn()
             {
-                Id = userReview.Id,
-                Rating = userReview.Rating,
-                Content = userReview.Content,
-                CreatedAt = userReview.CreatedAt,
-                UpdatedAt = userReview.UpdatedAt,
-                Account = _mapper.Map<User, AccountDto>(lease)
-            });
+                StatusCode = enumMessage.Success,
+                Message = "Bình luận về chủ xe thành công"
+            };
+            return Ok(success);
+
+            // return Ok(new ReviewViewDto()
+            // {
+            //     Id = userReview.Id,
+            //     Rating = userReview.Rating,
+            //     Content = userReview.Content,
+            //     CreatedAt = userReview.CreatedAt,
+            //     UpdatedAt = userReview.UpdatedAt,
+            //     Account = _mapper.Map<User, AccountDto>(lease)
+            // });
 
             // return NoContent();
         }
 
         // Bình luận về một người thuê xe
         [HttpPost("/api/renterComments/{idRenter}")]
-        public ActionResult<ReviewViewDto> AddRenterReview([FromBody] ReviewAddDto reviewAddDto, int idRenter)
+        public ActionResult<MessageReturn> AddRenterReview([FromBody] ReviewAddDto reviewAddDto, int idRenter)
         {
             // Người viết cmt đang là chủ xe
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -109,15 +116,22 @@ namespace RentalCar.API.Controllers
             };
             _userReviewService.AddReviewRenter(userReview);
 
-            return Ok(new ReviewViewDto()
+            MessageReturn success = new MessageReturn()
             {
-                Id = userReview.Id,
-                Rating = userReview.Rating,
-                Content = userReview.Content,
-                CreatedAt = userReview.CreatedAt,
-                UpdatedAt = userReview.UpdatedAt,
-                Account = _mapper.Map<User, AccountDto>(renter)
-            });
+                StatusCode = enumMessage.Success,
+                Message = "Bình luận về người thuê thành công"
+            };
+            return Ok(success);
+
+            // return Ok(new ReviewViewDto()
+            // {
+            //     Id = userReview.Id,
+            //     Rating = userReview.Rating,
+            //     Content = userReview.Content,
+            //     CreatedAt = userReview.CreatedAt,
+            //     UpdatedAt = userReview.UpdatedAt,
+            //     Account = _mapper.Map<User, AccountDto>(renter)
+            // });
             
             // return NoContent();
         }

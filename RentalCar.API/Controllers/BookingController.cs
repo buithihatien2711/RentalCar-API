@@ -371,12 +371,65 @@ namespace RentalCar.API.Controllers
                 // Cost = booking.Car.Cost,
                 Deposit = booking.Total*(decimal)0.3,
                 RestFee = booking.Total - booking.Total*(decimal)0.3,
-                LeaseAccount = new LeaseAccountDto()
+                UserAccount = new UserAccountDto()
                 {
                     Id = booking.Car.UserId,
                     Fullname = booking.Car.User.Fullname,
                     Rating = booking.Car.User.RatingLease,
                     Contact = booking.Car.User.Contact
+                },
+                Status = new StatusDto()
+                {
+                    Id = ((int)booking.Status),
+                    Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
+                },
+                Message = _bookingService.GetMessageByStatus(booking.Status)
+            };
+
+            return Ok(bookingView);
+        }
+
+        [HttpGet("/api/reservation/{id}")]
+        public ActionResult<BookingViewDto> GetReservationById(int id)
+        {
+            var booking = _bookingService.GetBookingById(id);
+
+            BookingViewDto bookingView = new BookingViewDto()
+            {
+                BookingId = booking.Id,
+                CarId = booking.CarId,
+                CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
+                CarName = booking.Car.Name,
+                NumberStar = booking.Car.NumberStar,
+                RentDate = booking.RentDate,
+                ReturnDate = booking.ReturnDate,
+                // NumberDay = ((int)(booking.ReturnDate - booking.RentDate).TotalDays),
+                Location = new LocationDto()
+                {
+                    Id = booking.LocationId,
+                    Address = booking.Location.Address
+                },
+                Ward = booking.Location.Ward == null ? null : new WardDto()
+                {
+                    Id = booking.Location.WardId.Value,
+                    Name = booking.Location.Ward.Name
+                },
+                District = new DistrictDto()
+                {
+                    Id = booking.Location.Ward.DistrictID,
+                    Name = booking.Location.Ward.District.Name
+                },
+                Rule = booking.Car.Rule,
+                // Total = booking.Total,
+                // Cost = booking.Car.Cost,
+                Deposit = booking.Total*(decimal)0.3,
+                RestFee = booking.Total - booking.Total*(decimal)0.3,
+                UserAccount = new UserAccountDto()
+                {
+                    Id = booking.UserId,
+                    Fullname = booking.User.Fullname,
+                    Rating = booking.User.RatingRent,
+                    Contact = booking.User.Contact
                 },
                 Status = new StatusDto()
                 {
@@ -490,6 +543,7 @@ namespace RentalCar.API.Controllers
         // }
         
         // Admin get all booking
+        
         [HttpGet("/api/admin/bookings")]
         public ActionResult<BookingViewAdminDto> GetAllBookingAdmin()
         {
