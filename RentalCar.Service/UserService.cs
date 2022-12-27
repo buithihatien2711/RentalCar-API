@@ -131,7 +131,7 @@ namespace RentalCar.Service
             if(SaveChanges()){
                 MessaggeService success = new MessaggeService()
                             {
-                                StatusCode = 0,
+                                StatusCode = 1,
                                 Message = "Đổi mật khẩu thành công."
                             };
                         return success;
