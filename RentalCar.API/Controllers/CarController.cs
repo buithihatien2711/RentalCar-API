@@ -254,11 +254,22 @@ namespace RentalCar.API.Controllers
                             Message = caradd.Name + " đang chờ phê duyệt"
                         });
                     }
-                return Ok(caradd);
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Xe bạn đang được chờ phê duyệt."
+                };
+                return Ok(success);
+                // return Ok(caradd);
                 }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                MessageReturn fail = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = "Thêm xe thất bại."
+                };
+                return Ok(fail);
             }
             
         }
@@ -282,10 +293,13 @@ namespace RentalCar.API.Controllers
                         Message = "Xe "+car.Name + "-" + car.Status
                     });
             }
-            return Ok("admin update status car successful");
-            // Dictionary<string, string> message = new Dictionary<string, string>();
-            // message.Add("Message", "admin update status car successful");
-            // return Ok(message);
+            // return Ok("admin update status car successful");
+            MessageReturn success = new MessageReturn()
+            {
+                StatusCode = enumMessage.Success,
+                Message = "Admin đã xử lí xe."
+            };
+            return Ok(success);
         }
         [HttpGet("{id}")]
         public ActionResult<CarDetailDto> Get(int id)
@@ -511,12 +525,21 @@ namespace RentalCar.API.Controllers
                     Description = car.Description,
                     carImages = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id)),
                 };
-
-            return Ok(carInfoView);
-                return Ok(_mapper.Map<Car, CarViewDto>(_carService.GetCarById(id)));
+            MessageReturn success = new MessageReturn()
+            {
+                StatusCode = enumMessage.Success,
+                Message = "Cập nhật thông tin xe thành công."
+            };
+            return Ok(success);
+                // return Ok(_mapper.Map<Car, CarViewDto>(_carService.GetCarById(id)));
             }
             catch(Exception ex){
-                return BadRequest(ex.Message);
+                MessageReturn fail = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = "Cập nhật thông tin xe thất bại."
+                };
+                return Ok(fail);
             }
         }
         
@@ -558,16 +581,22 @@ namespace RentalCar.API.Controllers
                     _carService.InsertImage(id,linkImage);
                     _carService.SaveChanges();
                 }
-                List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
-                return Ok(images);
+                // List<CarImageDtos> images = _mapper.Map<List<CarImage>,List<CarImageDtos>>(_carService.GetImageByCarId(id));
+                // return Ok(images);
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = "Thêm ảnh thành công."
+                };
+                return Ok(success);
             }
             catch(Exception ex){
                 MessageReturn fail = new MessageReturn()
                 {
                     StatusCode = enumMessage.Fail,
-                    Message = ex.Message
+                    Message = "Thêm ảnh thất bại"
                 };
-                return Ok(fail);
+                return Ok(fail);;
                 // return BadRequest(ex.Message);
             }
         }
@@ -588,7 +617,7 @@ namespace RentalCar.API.Controllers
                 MessageReturn fail = new MessageReturn()
                 {
                     StatusCode = enumMessage.Fail,
-                    Message = "Lỗi server"
+                    Message = "Xóa ảnh thất bại"
                 };
                 return Ok(fail);
         }
@@ -686,14 +715,20 @@ namespace RentalCar.API.Controllers
                     }
                 }
                 var CarRegister =_carService.GetCarImgRegistersByCarIdAndTypeId(id,idType);
-                return Ok(_mapper.Map<List<CarImgRegister>,List<CarImageDtos>>(CarRegister));
+                // return Ok(_mapper.Map<List<CarImgRegister>,List<CarImageDtos>>(CarRegister));
+                MessageReturn success = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Success,
+                    Message = "Thêm ảnh thành công."
+                };
+                return Ok(success);
                 
             }
             catch(Exception ex){
                 MessageReturn fail = new MessageReturn()
                 {
                     StatusCode = enumMessage.Fail,
-                    Message = ex.Message
+                    Message = "Thêm ảnh thất bại."
                 };
                 return Ok(fail);
             }

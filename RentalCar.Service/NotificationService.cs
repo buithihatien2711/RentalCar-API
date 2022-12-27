@@ -25,6 +25,11 @@ namespace RentalCar_API.RentalCar.Service
             return _notifiRepository.NotifiByUserId(userid);
         }
 
+        public List<Notification> NotifiNotReadByUserId(int userid)
+        {
+            return _notifiRepository.NotifiNotReadByUserId(userid);
+        }
+
         public bool UpdateStatusNotifi(int id)
         {
             return _notifiRepository.UpdateStatusNotifi(id);
