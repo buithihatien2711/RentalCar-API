@@ -266,5 +266,14 @@ namespace RentalCar.Data.Repositories
 
             return -1;
         }
+
+        public Booking GetCurrentBooking()
+        {
+            var currentBooking = _context.Bookings.Max(p => p.Id);
+            if(currentBooking != null){
+                return GetBookingById(_context.Bookings.Max(p => p.Id));
+            } 
+            return null;
+        }
     }
 }

@@ -52,5 +52,6 @@ namespace RentalCar.Data.Repositoriess
 
         // lease = 1, renter = 2
         int GetRoleUserInBooking(int idBooking, int idUser);
+        Booking GetCurrentBooking();
     }
 }
