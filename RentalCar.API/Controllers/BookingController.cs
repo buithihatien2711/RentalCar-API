@@ -67,8 +67,9 @@ namespace RentalCar.API.Controllers
             //     Total = price,
             //     Schedule =message
             // };
-
-            var result = _bookingService.CalculatePriceAverage(id, RentDate, ReturnDate);
+            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userService.GetUserByUsername(username);
+            var result = _bookingService.CalculatePriceAverage(id,user,RentDate, ReturnDate);
             return Ok(result);
         }
 
@@ -109,11 +110,14 @@ namespace RentalCar.API.Controllers
 
                 _bookingService.CreateBooking(value);
                 if(_bookingService.SaveChanges()) {
+                    var bookingCur = _bookingService.GetCurrentBooking();
                     _notifiService.CreateINotifi(new Notification{
                         FromUserId = user.Id,
                         ToUserId = car.User.Id,
                         CreateAt = DateTime.Now,
                         Status = false,
+                        BookingId = bookingCur.Id,
+                        Booking = bookingCur,
                         Title = "Đặt xe",
                         Message = user.Username + " gửi yêu cầu đặt xe"
                     });
@@ -151,6 +155,19 @@ namespace RentalCar.API.Controllers
             _bookingService.ConfirmBooking(idBooking);
             if(_bookingService.SaveChanges())
             {
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = _userService.GetUserByUsername(username);
+                var booking = _bookingService.GetBookingById(idBooking);
+                _notifiService.CreateINotifi(new Notification{
+                        FromUserId = user.Id,
+                        ToUserId = booking.UserId,
+                        CreateAt = DateTime.Now,
+                        Status = false,
+                        BookingId = booking.Id,
+                        Booking = booking,
+                        Title = "Đặt xe",
+                        Message = "Chủ xe đã chấp nhận yêu cầu đặt xe"
+                    });
                 MessageReturn success = new MessageReturn()
                 {
                     StatusCode = enumMessage.Success,
@@ -221,6 +238,19 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = _userService.GetUserByUsername(username);
+                var booking = _bookingService.GetBookingById(idBooking);
+                _notifiService.CreateINotifi(new Notification{
+                    FromUserId = user.Id,
+                    ToUserId = booking.Car.UserId,
+                    CreateAt = DateTime.Now,
+                    Status = false,
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Title = "Đặt xe",
+                    Message = "Người dùng " + user.Username +" đã nhận xe"
+                });
                 MessageReturn success = new MessageReturn()
                 {
                     StatusCode = enumMessage.Success,
@@ -244,6 +274,19 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
+                var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var user = _userService.GetUserByUsername(username);
+                var booking = _bookingService.GetBookingById(idBooking);
+                _notifiService.CreateINotifi(new Notification{
+                    FromUserId = user.Id,
+                    ToUserId = booking.UserId,
+                    CreateAt = DateTime.Now,
+                    Status = false,
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Title = "Đặt xe",
+                    Message = "Chủ xe đã xác nhận hoàn thành chuyến"
+                });
                 MessageReturn success = new MessageReturn()
                 {
                     StatusCode = enumMessage.Success,
@@ -271,6 +314,20 @@ namespace RentalCar.API.Controllers
 
             if(_bookingService.SaveChanges())
             {
+                var user = _userService.GetUserByUsername(username.Value);
+                var booking = _bookingService.GetBookingById(idBooking);
+                _notifiService.CreateINotifi(new Notification{
+                    FromUserId = user.Id,
+                    ToUserId = user.Id == booking.UserId ? booking.Car.UserId : booking.UserId,
+                    CreateAt = DateTime.Now,
+                    Status = false,
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Title = "Đặt xe",
+                    Message = user.Id == booking.UserId ? 
+                            "Người dùng " + user.Username + " hủy chuyến"
+                            :"Chủ xe hủy chuyến"
+                });
                 MessageReturn success = new MessageReturn()
                 {
                     StatusCode = enumMessage.Success,
@@ -823,7 +880,7 @@ namespace RentalCar.API.Controllers
             var booking = _bookingService.GetBookingById(idBooking);
             if(booking == null) return Ok(null);
 
-            var priceByDate = _bookingService.CalculatePriceAverage(booking.CarId, booking.RentDate, booking.ReturnDate);
+            var priceByDate = _bookingService.CalculatePriceAverage(booking.CarId, null, booking.RentDate, booking.ReturnDate);
 
             var bookingDto = new BookingViewAdminDto()
             {

@@ -206,7 +206,7 @@ namespace RentalCar.Service
             return _bookingRepository.GetCurrentReservations(idUser);
         }
 
-        public BookingPrice CalculatePriceAverage(int id, DateTime RentDate, DateTime ReturnDate)
+        public BookingPrice CalculatePriceAverage(int id, User? user, DateTime RentDate, DateTime ReturnDate)
         {
             var car = _carService.GetCarById(id);
             string message = "Thời gian đặt xe hợp lệ";
@@ -221,6 +221,9 @@ namespace RentalCar.Service
                 }
                 price = (price != resultBefore) ? price : resultBefore + car.Cost;
             }
+            if(user !=null){
+                if(car.UserId == user.Id) message = "Bạn không thể đặt xe của mình.";
+            }
             return new BookingPrice{
                 Day = count,
                 PriceAverage = price/count,
@@ -232,6 +235,10 @@ namespace RentalCar.Service
         public int GetRoleUserInBooking(int idBooking, int idUser)
         {
             return _bookingRepository.GetRoleUserInBooking(idBooking, idUser);
+        }
+        public Booking GetCurrentBooking()
+        {
+            return _bookingRepository.GetCurrentBooking();
         }
     }
 }
