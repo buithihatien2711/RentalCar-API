@@ -383,7 +383,8 @@ namespace RentalCar.API.Controllers
                     Id = ((int)booking.Status),
                     Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
                 },
-                Message = _bookingService.GetMessageByStatus(booking.Status)
+                Message = _bookingService.GetMessageByStatus(booking.Status),
+                RoleId = 2
             };
 
             return Ok(bookingView);
@@ -436,7 +437,8 @@ namespace RentalCar.API.Controllers
                     Id = ((int)booking.Status),
                     Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
                 },
-                Message = _bookingService.GetMessageByStatus(booking.Status)
+                Message = _bookingService.GetMessageByStatus(booking.Status),
+                RoleId = 1
             };
 
             return Ok(bookingView);
@@ -486,83 +488,8 @@ namespace RentalCar.API.Controllers
             }
             return Ok(bookingDtos);
         }
-    
-        // [HttpGet("/api/booking/mybooking")]
-        // public ActionResult<List<BookingOverviewDto>> GetBookedTrip()
-        // {
-        //     var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-        //     if(username == null) return Unauthorized("Please login");
-        //     var user = _userService.GetUserByUsername(username.Value);
-        //     if(user == null) return Unauthorized("Please login");
 
-        //     var bookings = _bookingService.GetBookedTrip(user.Id);
-        //     var bookingDtos = new List<BookingOverviewDto>();
-        //     foreach (var booking in bookings)
-        //     {
-        //         bookingDtos.Add(new BookingOverviewDto()
-        //         {
-        //             BookingId = booking.Id,
-        //             CarId = booking.CarId,
-        //             CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-        //             CarName = booking.Car.Name,
-        //             RentDate = booking.RentDate,
-        //             ReturnDate = booking.ReturnDate,
-        //             Total = booking.Total,
-        //             Status = new StatusDto()
-        //             {
-        //                 Id = ((int)booking.Status),
-        //                 Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-        //             }
-        //         });
-        //     }
-        //     return Ok(bookingDtos);
-        // }
-            
-        // [HttpGet("/api/booking/myreservation")]
-        // public ActionResult<List<BookingOverviewDto>> GetReservation()
-        // {
-        //     try
-        //     {
-        //         var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
-        //         if(username == null) return Unauthorized("Please login");
-        //         var user = _userService.GetUserByUsername(username.Value);
-        //         if(user == null) return Unauthorized("Please login");
-
-        //         var bookings = _bookingService.GetReservations(user.Id);
-        //         var bookingDtos = new List<BookingOverviewDto>();
-        //         foreach (var booking in bookings)
-        //         {
-        //             bookingDtos.Add(new BookingOverviewDto()
-        //             {
-        //                 BookingId = booking.Id,
-        //                 CarId = booking.CarId,
-        //                 CarImage = booking.Car.CarImages == null ? null : booking.Car.CarImages[0].Path,
-        //                 CarName = booking.Car.Name,
-        //                 RentDate = booking.RentDate,
-        //                 ReturnDate = booking.ReturnDate,
-        //                 Total = booking.Total,
-        //                 Status = new StatusDto()
-        //                 {
-        //                     Id = ((int)booking.Status),
-        //                     Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
-        //                 }
-        //             });
-        //         }
-        //         return Ok(bookingDtos);
-        //     }
-        //     catch (System.Exception ex)
-        //     {
-        //         MessageReturn exception = new MessageReturn()
-        //             {
-        //                 StatusCode = enumMessage.Fail,
-        //                 Message = ex.Message
-        //             };
-        //         return Ok(exception);
-        //     }
-        // }
-        
         // Admin get all booking
-        
         [HttpGet("/api/admin/bookings")]
         public ActionResult<BookingViewAdminDto> GetAllBookingAdmin()
         {

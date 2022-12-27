@@ -56,5 +56,9 @@ namespace RentalCar.API.Models
         public StatusDto? Status { get; set; }
         
         public string? Message { get; set; }
+
+        public int RoleId { get; set; }
+        
+        
     }
 }
