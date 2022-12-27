@@ -30,7 +30,7 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpPost("/api/carreview/{idCar}")]
-        public ActionResult<ReviewViewDto> AddCarReview([FromBody] ReviewAddDto reviewDto, int idCar)
+        public ActionResult<MessageReturn> AddCarReview([FromBody] ReviewAddDto reviewDto, int idCar)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier);
             if(username == null) return Unauthorized("Please login");
@@ -46,15 +46,22 @@ namespace RentalCar.API.Controllers
             };
             
             _carReviewService.AddCarReview(review);
-            return Ok(new ReviewViewDto()
+            MessageReturn success = new MessageReturn()
             {
-                Id = review.Id,
-                Rating = review.Rating,
-                Content = review.Content,
-                CreatedAt = review.CreatedAt,
-                UpdatedAt = review.UpdateAt,
-                Account = _mapper.Map<User, AccountDto>(user)
-            });
+                StatusCode = enumMessage.Success,
+                Message = "Bình luận xe thành công"
+            };
+            return Ok(success);
+
+            // return Ok(new ReviewViewDto()
+            // {
+            //     Id = review.Id,
+            //     Rating = review.Rating,
+            //     Content = review.Content,
+            //     CreatedAt = review.CreatedAt,
+            //     UpdatedAt = review.UpdateAt,
+            //     Account = _mapper.Map<User, AccountDto>(user)
+            // });
         }
     }
 }

@@ -6,7 +6,7 @@ using RentalCar.Model.Models;
 
 namespace RentalCar.API.Models
 {
-    public class LeaseAccountDto
+    public class UserAccountDto
     {
         public int Id { get; set; }
         
@@ -51,7 +51,7 @@ namespace RentalCar.API.Models
         
         public decimal RestFee { get; set; }
 
-        public LeaseAccountDto? LeaseAccount { get; set; }
+        public UserAccountDto? UserAccount { get; set; }
 
         public StatusDto? Status { get; set; }
         
