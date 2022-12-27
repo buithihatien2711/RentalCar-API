@@ -52,5 +52,7 @@ namespace RentalCar.Service
         List<Booking> GetCurrentReservations(int idUser);
 
         BookingPrice CalculatePriceAverage(int id, DateTime RentDate, DateTime ReturnDate);
+
+        int GetRoleUserInBooking(int idBooking, int idUser);
     }
 }

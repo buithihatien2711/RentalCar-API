@@ -442,6 +442,25 @@ namespace RentalCar.API.Controllers
             return Ok(bookingView);
         }
 
+        
+        [HttpGet("/api/booking/role/{idBooking}/{idUser}")]
+        public ActionResult<Dictionary<string, int>> GetRoleUserInBooking(int idBooking, int idUser)
+        {
+            var role = _bookingService.GetRoleUserInBooking(idBooking, idUser);
+            if(role == -1)
+            {
+                MessageReturn error = new MessageReturn()
+                {
+                    StatusCode = enumMessage.Fail,
+                    Message = "Người dùng này không phải là người đặt xe hay chủ xe"
+                };
+                return Ok(error);
+            }
+            Dictionary<string, int> roleReturn = new Dictionary<string, int>();
+            roleReturn.Add("role", role);
+            return(roleReturn);
+        }
+
         [HttpGet("/api/booking")]
         public ActionResult<List<BookingOverviewDto>> GetAllBooking()
         {

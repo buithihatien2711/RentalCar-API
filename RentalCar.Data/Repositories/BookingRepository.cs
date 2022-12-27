@@ -257,5 +257,18 @@ namespace RentalCar.Data.Repositories
                                                 || b.Status == enumStatus.ReceivedCar)
                                     .Where(b => b.Car.UserId == idUser).ToList();
         }
+
+        public int GetRoleUserInBooking(int idBooking, int idUser)
+        {
+            var booking = GetBookingById(idBooking);
+            if(booking == null) return -1;
+            // renter
+            if(booking.UserId == idUser) return 2;
+
+            // lease
+            if(booking.Car.UserId == idUser) return 1;
+
+            return -1;
+        }
     }
 }
