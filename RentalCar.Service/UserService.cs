@@ -110,13 +110,45 @@ namespace RentalCar.Service
             return _repository.IsLease(username);
         }
 
-        public bool ChangPassword(string username, string password)
+        public MessaggeService ChangPassword(string username,string passwordBefor, string passwordAfter)
         {
             var user = GetUserByUsername(username);
-            using var hmac = new HMACSHA512();
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            user.PasswordSalt = hmac.Key;
-            return SaveChanges();
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+                var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(passwordBefor));
+                for( var i = 0; i < computeHash.Length; i++){
+                    if(computeHash[i] != user.PasswordHash[i]){
+                        MessaggeService fail = new MessaggeService()
+                                    {
+                                        StatusCode = 0,
+                                        Message = "Mật khẩu hiện tại không đúng."
+                                    };
+                        return fail;
+                    } 
+                }
+            using var hmac1 = new HMACSHA512();
+            user.PasswordHash = hmac1.ComputeHash(Encoding.UTF8.GetBytes(passwordAfter));
+            user.PasswordSalt = hmac1.Key;
+            if(SaveChanges()){
+                MessaggeService success = new MessaggeService()
+                            {
+                                StatusCode = 0,
+                                Message = "Đổi mật khẩu thành công."
+                            };
+                        return success;
+            }
+            MessaggeService failAll = new MessaggeService()
+                            {
+                                StatusCode = 0,
+                                Message = "Đổi mật khẩu thất bại."
+                            };
+            return failAll; 
         }
+        
+    }
+    public class MessaggeService
+    {
+        public int StatusCode { get; set; }
+        
+        public string Message { get; set; }
     }
 }

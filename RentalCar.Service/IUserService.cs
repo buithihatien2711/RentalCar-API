@@ -39,6 +39,7 @@ namespace RentalCar.Service
         bool IsAdminAccount(int idUser);
         bool DeleteUser(int id);
         bool IsLease(string username);
-        bool ChangPassword(string username, string password);
+        MessaggeService ChangPassword(string username,string passwordBefor, string passwordAfter);
+        
     }
 }

@@ -246,23 +246,10 @@ namespace RentalCar.API.Controllers
         }
 
         [HttpPut("/api/account/changePassword")]
-        public ActionResult<string> Put(string Password)
+        public ActionResult<string> Put(string PasswordBefor, string PasswordAfter)
         {
             var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if(_userService.ChangPassword(username,Password)){
-                MessageReturn success = new MessageReturn()
-                {
-                    StatusCode = enumMessage.Success,
-                    Message = "Thay đổi mật khẩu thành công"
-                };
-                return Ok(success);
-            }
-            MessageReturn fail = new MessageReturn()
-            {
-                StatusCode = enumMessage.Fail,
-                Message = "Thay đổi mật khẩu thất bại"
-            };
-            return Ok(fail);
+            return Ok(_userService.ChangPassword(username,PasswordBefor,PasswordAfter));
         }
         
     }
