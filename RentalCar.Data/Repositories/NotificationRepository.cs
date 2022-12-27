@@ -36,5 +36,10 @@ namespace RentalCar.Data.Repositories
             _context.SaveChanges();
             return true;
         }
+        public List<Notification> NotifiNotReadByUserId(int userid)
+        {
+            return _context.Notifications.Where(p => p.ToUserId == userid && p.Status == false).ToList();
+
+        }
     }
 }
