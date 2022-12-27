@@ -36,19 +36,19 @@ namespace RentalCar.Service
             _bookingRepository.CancelByUser(booking, idUser);
         }
 
-        public void CancelBySystemWaitConfirm(int idBooking)
-        {
-            var booking = GetBookingById(idBooking);
-            if(booking == null) return;
-            _bookingRepository.CancelBySystemWaitConfirm(booking);
-        }
+        // public void CancelBySystemWaitConfirm(int idBooking)
+        // {
+        //     var booking = GetBookingById(idBooking);
+        //     if(booking == null) return;
+        //     _bookingRepository.CancelBySystemWaitConfirm(booking);
+        // }
 
-        public void CancelBySystemWaitDeposit(int idBooking)
-        {
-            var booking = GetBookingById(idBooking);
-            if(booking == null) return;
-            _bookingRepository.CancelBySystemWaitDeposit(booking);
-        }
+        // public void CancelBySystemWaitDeposit(int idBooking)
+        // {
+        //     var booking = GetBookingById(idBooking);
+        //     if(booking == null) return;
+        //     _bookingRepository.CancelBySystemWaitDeposit(booking);
+        // }
 
         public void ConfirmBooking(int idBooking)
         {
@@ -113,11 +113,11 @@ namespace RentalCar.Service
                 case enumStatus.CompletedTrip:
                     return "Chuyến đã hoàn thành";
                     
-                case enumStatus.CancelBySystemWaitConfirm:
-                    return "Chuyến đã bị hủy. Lý do: Hệ thống đã hủy chuyến do thời gian chờ chủ xe xác nhận quá lâu";
+                // case enumStatus.CancelBySystemWaitConfirm:
+                //     return "Chuyến đã bị hủy. Lý do: Hệ thống đã hủy chuyến do thời gian chờ chủ xe xác nhận quá lâu";
 
-                case enumStatus.CancelBySystemDeposit:
-                    return "Chuyến đã bị hủy. Lý do: Hệ thống đã hủy chuyến do quá hạn đặt cọc";
+                // case enumStatus.CancelBySystemDeposit:
+                //     return "Chuyến đã bị hủy. Lý do: Hệ thống đã hủy chuyến do quá hạn đặt cọc";
                 
                 case enumStatus.ReceivedCar:
                     return "Khách thuê đã nhận xe";
@@ -150,11 +150,11 @@ namespace RentalCar.Service
                 case ((int)enumStatus.CompletedTrip):       //8
                     return "Hoàn thành chuyến đi";
                     
-                case ((int)enumStatus.CancelBySystemWaitConfirm):   //4
-                    return "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu";
+                // case ((int)enumStatus.CancelBySystemWaitConfirm):   //4
+                //     return "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu";
 
-                case ((int)enumStatus.CancelBySystemDeposit):   //5
-                    return "Bị hủy bởi hệ thống do khách thuê không đặt cọc";
+                // case ((int)enumStatus.CancelBySystemDeposit):   //5
+                //     return "Bị hủy bởi hệ thống do khách thuê không đặt cọc";
 
                 case ((int)enumStatus.ReceivedCar):   //5
                     return "Đã nhận xe";

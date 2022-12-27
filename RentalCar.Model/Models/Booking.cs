@@ -7,8 +7,8 @@ namespace RentalCar.Model.Models
         WaitDeposit = 1,    // Chủ xe đã xác nhận và đang chờ đặt cọc
         WaitConfirm = 2,    // Chờ xác nhận
         Deposited = 3,      // Đã đặt cọc
-        CancelBySystemWaitConfirm = 4,      // Bị hủy bởi hệ thống do chờ xác nhận quá lâu
-        CancelBySystemDeposit = 5,       // Bị hủy bởi hệ thống do khách không đặt cọc
+        // CancelBySystemWaitConfirm = 4,      // Bị hủy bởi hệ thống do chờ xác nhận quá lâu
+        // CancelBySystemDeposit = 5,       // Bị hủy bởi hệ thống do khách không đặt cọc
         CanceledByRenter = 6,   // Bị hủy bởi người thuê
         CanceledByLease = 7,    // Bị hủy bởi người cho thuê
         ReceivedCar = 8,  // Đã hoàn thành đặt xe

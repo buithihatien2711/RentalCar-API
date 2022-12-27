@@ -167,51 +167,51 @@ namespace RentalCar.API.Controllers
             return Ok(error);
         }
 
-        [Authorize]
-        [HttpPut("/api/booking/cancelBySystemWaitConfirm/{idBooking}")]
-        public ActionResult CancelBookingBySystemWaitConfirm(int idBooking)
-        {
-            _bookingService.CancelBySystemWaitConfirm(idBooking);
+        // [Authorize]
+        // [HttpPut("/api/booking/cancelBySystemWaitConfirm/{idBooking}")]
+        // public ActionResult CancelBookingBySystemWaitConfirm(int idBooking)
+        // {
+        //     _bookingService.CancelBySystemWaitConfirm(idBooking);
 
-            if(_bookingService.SaveChanges())
-            {
-                MessageReturn success = new MessageReturn()
-                {
-                    StatusCode = enumMessage.Success,
-                    Message = "Hủy đặt xe thành công"
-                };
-                return Ok(success);
-            }
-            MessageReturn error = new MessageReturn()
-            {
-                StatusCode = enumMessage.Fail,
-                Message = "Hủy đặt xe thất bại"
-            };
-            return Ok(error);
-        }
+        //     if(_bookingService.SaveChanges())
+        //     {
+        //         MessageReturn success = new MessageReturn()
+        //         {
+        //             StatusCode = enumMessage.Success,
+        //             Message = "Hủy đặt xe thành công"
+        //         };
+        //         return Ok(success);
+        //     }
+        //     MessageReturn error = new MessageReturn()
+        //     {
+        //         StatusCode = enumMessage.Fail,
+        //         Message = "Hủy đặt xe thất bại"
+        //     };
+        //     return Ok(error);
+        // }
         
-        [Authorize]
-        [HttpPut("/api/booking/cancelBySystemWaitDeposit/{idBooking}")]
-        public ActionResult CancelBookingBySystemWaitDeposit(int idBooking)
-        {
-            _bookingService.CancelBySystemWaitDeposit(idBooking);
+        // [Authorize]
+        // [HttpPut("/api/booking/cancelBySystemWaitDeposit/{idBooking}")]
+        // public ActionResult CancelBookingBySystemWaitDeposit(int idBooking)
+        // {
+        //     _bookingService.CancelBySystemWaitDeposit(idBooking);
 
-            if(_bookingService.SaveChanges())
-            {
-                MessageReturn success = new MessageReturn()
-                {
-                    StatusCode = enumMessage.Success,
-                    Message = "Hủy đặt xe thành công"
-                };
-                return Ok(success);
-            }
-            MessageReturn error = new MessageReturn()
-            {
-                StatusCode = enumMessage.Fail,
-                Message = "Hủy đặt xe thất bại"
-            };
-            return Ok(error);
-        }
+        //     if(_bookingService.SaveChanges())
+        //     {
+        //         MessageReturn success = new MessageReturn()
+        //         {
+        //             StatusCode = enumMessage.Success,
+        //             Message = "Hủy đặt xe thành công"
+        //         };
+        //         return Ok(success);
+        //     }
+        //     MessageReturn error = new MessageReturn()
+        //     {
+        //         StatusCode = enumMessage.Fail,
+        //         Message = "Hủy đặt xe thất bại"
+        //     };
+        //     return Ok(error);
+        // }
 
         [Authorize]
         [HttpPut("/api/booking/confirmReceivedCar/{idBooking}")]
@@ -328,8 +328,8 @@ namespace RentalCar.API.Controllers
             statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.Deposited), Name = "Đã đặt cọc"});
             statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CanceledByRenter), Name = "Bị hủy bởi khách thuê"});
             statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CanceledByLease), Name = "Bị hủy bởi chủ xe"});
-            statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CancelBySystemDeposit), Name = "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu"});
-            statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CancelBySystemWaitConfirm), Name = "Bị hủy bởi hệ thống do khách thuê không đặt cọc"});
+            // statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CancelBySystemDeposit), Name = "Bị hủy bởi hệ thống do thời gian chờ chấp nhận quá lâu"});
+            // statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CancelBySystemWaitConfirm), Name = "Bị hủy bởi hệ thống do khách thuê không đặt cọc"});
             statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.ReceivedCar), Name = "Đã nhận xe"});
             statusBookings.Add(new StatusDto(){Id = ((int)enumStatus.CompletedTrip), Name = "Đã hoàn thành chuyến đi"});
 

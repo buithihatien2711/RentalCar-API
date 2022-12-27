@@ -60,7 +60,7 @@ namespace RentalCar.Service
             {
                 BookingInfor = String.Format("{0}-phone : {1} deposit", idBooking, booking.User.Contact),
                 // Do trong db giá đã đc bỏ 3 số 0 nên phải nhân thêm 10000 mới thanh toán
-                Amount = Math.Floor(booking.Total*1000*(decimal)0.3),
+                Amount = Math.Floor(booking.Total*(decimal)0.3),
                 RentDate = booking.RentDate,
                 ReturnDate = booking.ReturnDate
             };
