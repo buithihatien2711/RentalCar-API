@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentalCar.API.Models;
 using RentalCar.Model.Models;
 using RentalCar.Service;
+using RentalCar.Service.Models;
 using RentalCar_API.RentalCar.Service;
 
 namespace RentalCar.API.Controllers
@@ -48,28 +49,29 @@ namespace RentalCar.API.Controllers
         [HttpGet("/api/Car/{id}/PriceAverage")]
         public ActionResult<string> Get(int id, DateTime RentDate, DateTime ReturnDate)
         {
-            // var car = _carService.GetCarById(id);
-            // string message = "Thời gian đặt xe hợp lệ";
-            // decimal price = 0;
-            // int count = 0;
-            // for(var day = RentDate ; day <= ReturnDate ; day = day.AddDays(1)){
-            //     count++;
-            //     if(_carService.CheckScheduleByDate(id,day) == true) message = "Xe bận trong khoảng thời gian trên. Vui lòng đặt xe khác hoặc thay đổi lịch trình thích hợp.";
-            //     var resultBefore = price;
-            //     foreach(var priceDate in car.PriceByDates){
-            //         if(priceDate.Date.Date == day.Date) price += priceDate.Cost;
-            //     }
-            //     price = (price != resultBefore) ? price : resultBefore + car.Cost;
-            // }
-            // var result = new BookingPrice{
-            //     Day = count,
-            //     PriceAverage = price/count,
-            //     Total = price,
-            //     Schedule =message
-            // };
-            var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _userService.GetUserByUsername(username);
-            var result = _bookingService.CalculatePriceAverage(id,user,RentDate, ReturnDate);
+            var car = _carService.GetCarById(id);
+            string message = "Thời gian đặt xe hợp lệ";
+            decimal price = 0;
+            int count = 0;
+            for(var day = RentDate ; day <= ReturnDate ; day = day.AddDays(1)){
+                count++;
+                if(_carService.CheckScheduleByDate(id,day) == true) message = "Xe bận trong khoảng thời gian trên. Vui lòng đặt xe khác hoặc thay đổi lịch trình thích hợp.";
+                var resultBefore = price;
+                foreach(var priceDate in car.PriceByDates){
+                    if(priceDate.Date.Date == day.Date) price += priceDate.Cost;
+                }
+                price = (price != resultBefore) ? price : resultBefore + car.Cost;
+            }
+            var result = new BookingPrice{
+                Day = count,
+                PriceAverage = price/count,
+                Total = price,
+                Schedule =message
+            };
+
+            // var username = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // var user = _userService.GetUserByUsername(username);
+            // var result = _bookingService.CalculatePriceAverage(id,user,RentDate, ReturnDate);
             return Ok(result);
         }
 
@@ -884,7 +886,7 @@ namespace RentalCar.API.Controllers
             var booking = _bookingService.GetBookingById(idBooking);
             if(booking == null) return Ok(null);
 
-            var priceByDate = _bookingService.CalculatePriceAverage(booking.CarId, null, booking.RentDate, booking.ReturnDate);
+            var priceByDate = _bookingService.CalculatePriceAverage(booking.CarId, booking.RentDate, booking.ReturnDate);
 
             var bookingDto = new BookingViewAdminDto()
             {
