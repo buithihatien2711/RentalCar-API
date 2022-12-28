@@ -194,7 +194,7 @@ namespace RentalCar.Data.Repositories
 
             if(GetStatuById(idStatus) == null)
             {
-                cars.ToList();
+                return cars.ToList();
             }    
 
             return cars.Where(s => s.StatusID == idStatus).ToList();
