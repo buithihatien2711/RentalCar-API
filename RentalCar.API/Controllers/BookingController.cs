@@ -445,7 +445,7 @@ namespace RentalCar.API.Controllers
                     Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
                 },
                 Message = _bookingService.GetMessageByStatus(booking.Status),
-                RoleId = 2
+                RoleId = 1
             };
 
             return Ok(bookingView);
@@ -501,7 +501,7 @@ namespace RentalCar.API.Controllers
                     Name = _bookingService.GetNameStatusBookingById((int)booking.Status)
                 },
                 Message = _bookingService.GetMessageByStatus(booking.Status),
-                RoleId = 1
+                RoleId = 2
             };
 
             return Ok(bookingView);
