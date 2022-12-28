@@ -585,7 +585,7 @@ namespace RentalCar.API.Controllers
                 // return Ok(images);
                 MessageReturn success = new MessageReturn()
                 {
-                    StatusCode = enumMessage.Fail,
+                    StatusCode = enumMessage.Success,
                     Message = "Thêm ảnh thành công."
                 };
                 return Ok(success);
