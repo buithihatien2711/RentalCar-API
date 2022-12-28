@@ -96,6 +96,7 @@ namespace RentalCar.Data.Repositories
             {
                 booking.Status = enumStatus.CompletedTrip;
                 booking.Car.StatusID = 3;
+                booking.Car.NumberTrip = booking.Car.NumberTrip + 1;
             }
         }
 
