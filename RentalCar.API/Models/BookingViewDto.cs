@@ -12,7 +12,7 @@ namespace RentalCar.API.Models
         
         public string? Fullname { get; set; }
         
-        public double Rating { get; set; }
+        public string Rating { get; set; }
 
         public string? Contact { get; set; }
     }

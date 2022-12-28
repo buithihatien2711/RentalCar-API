@@ -7,7 +7,7 @@ namespace RentalCar.API.Models
 {
     public class ReviewDto
     {
-        public double Rating { get; set; }
+        public string Rating { get; set; }
         
         public int NumberReview { get; set; }
         

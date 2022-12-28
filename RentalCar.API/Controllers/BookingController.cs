@@ -398,6 +398,8 @@ namespace RentalCar.API.Controllers
         {
             var booking = _bookingService.GetBookingById(id);
 
+            if(booking == null) return Ok(null);
+
             BookingViewDto bookingView = new BookingViewDto()
             {
                 BookingId = booking.Id,
@@ -432,7 +434,7 @@ namespace RentalCar.API.Controllers
                 {
                     Id = booking.Car.UserId,
                     Fullname = booking.Car.User.Fullname,
-                    Rating = booking.Car.User.RatingLease,
+                    Rating = String.Format("{0:0.00}", booking.Car.User.RatingLease),
                     Contact = booking.Car.User.Contact
                 },
                 Status = new StatusDto()
@@ -451,6 +453,8 @@ namespace RentalCar.API.Controllers
         public ActionResult<BookingViewDto> GetReservationById(int id)
         {
             var booking = _bookingService.GetBookingById(id);
+
+            if(booking == null) return Ok(null);
 
             BookingViewDto bookingView = new BookingViewDto()
             {
@@ -486,7 +490,7 @@ namespace RentalCar.API.Controllers
                 {
                     Id = booking.UserId,
                     Fullname = booking.User.Fullname,
-                    Rating = booking.User.RatingRent,
+                    Rating = String.Format("{0:0.00}", booking.User.RatingRent),
                     Contact = booking.User.Contact
                 },
                 Status = new StatusDto()

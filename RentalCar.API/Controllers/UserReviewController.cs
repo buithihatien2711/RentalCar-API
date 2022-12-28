@@ -46,7 +46,8 @@ namespace RentalCar.API.Controllers
 
             var reviewDto = new ReviewDto()
             {
-                Rating = ratingNumberTrip.Rating,
+                
+                Rating = String.Format("{0:0.00}", ratingNumberTrip.Rating),
                 NumberReview = ratingNumberTrip.NumberTrip,
                 ReviewViews = userReviewViewDtos
             };
@@ -161,7 +162,7 @@ namespace RentalCar.API.Controllers
 
             var reviewDto = new ReviewDto()
             {
-                Rating = ratingNumberTrip.Rating,
+                Rating = String.Format("{0:0.00}", ratingNumberTrip.Rating),
                 NumberReview = ratingNumberTrip.NumberTrip,
                 ReviewViews = userReviewViewDtos
             };
